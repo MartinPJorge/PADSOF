@@ -7,6 +7,7 @@ package catalogo;
 import cat.quickdb.annotation.Table;
 import cat.quickdb.db.AdminBase;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,6 +30,12 @@ public class CatalogoViajOrg {
         this.archivoCSV = archivoCSV;
         StringTokenizer tokens = new StringTokenizer(this.archivoCSV);
         this.nombreBD = tokens.nextToken(".");
+        
+        // Si existia la BD, borramos lo que habia.
+        File BD = new File(this.nombreBD + ".db");
+        if(BD.exists()) {
+           this.cleanSQL(); 
+        }
         
         this.leerCSV();
     }
@@ -56,8 +63,8 @@ public class CatalogoViajOrg {
     
     
     /**
-     * Lee el fichero CSV pasado como parametro, y a&ntilde;ade a la lista 
-     * 'infoViajesOrg' los viajes leidos que no se encuentren en dicha lista.
+     * Lee el fichero CSV pasado como parametro, y lo vuelca en forma de BD en 
+     * el fichero que toma como nombre el valor almacenado por el atributo nombreBD.
      * @param archivoCSV
      * @throws FileNotFoundException
      * @throws IOException 
@@ -75,9 +82,6 @@ public class CatalogoViajOrg {
         String localidadSalida;
         String localidades;
         String descripcion;
-        
-        // Borramos las entradas que puedan haber en el registro.
-        cleanSQL();
         
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
         
@@ -244,7 +248,7 @@ public class CatalogoViajOrg {
         InfoViajOrg infoVO = new InfoViajOrg();
         List<InfoViajOrg> registros = new ArrayList<InfoViajOrg>();
         
-        registros = admin.obtainAll(infoVO, "precio > 0");
+        registros = admin.obtainAll(infoVO, "1 = 1");
         for(InfoViajOrg inf : registros) {
             admin.delete(inf);
         }

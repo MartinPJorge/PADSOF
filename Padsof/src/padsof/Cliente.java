@@ -4,7 +4,7 @@
  */
 package padsof;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -12,8 +12,24 @@ import java.util.Date;
  */
 public class Cliente extends Persona{
 
-    public Cliente(String nombre, String apellido, String DNI, Date fechaNac) {
-        super(nombre, apellido, DNI, fechaNac);
+    int id;
+    
+    public Cliente() {}
+    
+    public Cliente(int dia, int mes, int year, String nombre, String apellido, String DNI) {
+        super(dia, mes, year, nombre, apellido, DNI);
     }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
 
 }

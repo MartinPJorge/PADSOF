@@ -4,6 +4,10 @@
  */
 package reserva;
 
+import cat.quickdb.annotation.Column;
+import cat.quickdb.annotation.Properties;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,37 +20,43 @@ import padsof.Vendedor;
  * @author Jorge
  */
 public class Paquete {
-    final private int id;
-    private boolean abierto;
-    final private  Cliente cliente;
-    final private  Vendedor vendedor;
-    private List<Reserva> reservas;
+    private int id;
+    private int abierto;
+    private String cliente;
+    private String vendedor;
+    @Column(collectionClass="Reserva")
+    private ArrayList<Reserva> reservas;
+
     
-    public Paquete(int id, boolean abierto, Cliente cliente, Vendedor vendedor) {
-        this.id = id;
+    public Paquete() {
+        this.cliente = null;
+        /*this.vendedor = null;*/
+    }
+    
+    public Paquete(int abierto, String cliente, String vendedor) {
         this.abierto = abierto;
-        this.cliente=cliente;
-        this.vendedor=vendedor;
-        this.reservas= new ArrayList<Reserva>();
+        this.cliente = cliente;
+        this.vendedor = vendedor;
+        this.reservas = new ArrayList<Reserva>();
     }
 
     public int getId() {
         return id;
     }
 
-    public boolean isAbierto() {
+    public int getAbierto() {
         return abierto;
     }
 
-    public List<Reserva> getReservas() {
-        return reservas;
+    public ArrayList<Reserva> getReservas() {
+        return this.reservas;
     }
 
-    public Cliente getCliente() {
+    public String getCliente() {
         return cliente;
     }
 
-    public Vendedor getVendedor() {
+    public String getVendedor() {
         return vendedor;
     }
 
@@ -65,32 +75,49 @@ public class Paquete {
         return this.reservas.size();
     }
 
-    public void setAbierto(boolean abierto) {
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setAbierto(int abierto) {
         this.abierto = abierto;
+    }
+
+    public void setReservas(ArrayList<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+    
+    
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setVendedor(String vendedor) {
+        this.vendedor = vendedor;
     }
 
     public void addReserva(Reserva reserva) {
         this.reservas.add(reserva);
     }
     
-    public Date compPaquete() {
+    public String compPaquete() throws ParseException {
         Date hoy = new Date();
-        Date cercana = this.reservas.get(0).getFechaInicio();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date cercana = sdf.parse(this.reservas.get(0).getFechaInicio());
         boolean algunaEmpezada = false;
         
-        for(int i = 0; i < this.reservas.size(); i++) {
-            Reserva r = this.reservas.get(i);
+        for(Reserva r : this.reservas) {
             
-            if(r.getFechaInicio().equals(hoy)) {
-                this.setAbierto(false);
+            if(sdf.parse(r.getFechaInicio()).equals(hoy)) {
+                this.setAbierto(0);
                 return r.getFechaInicio();
             }
             
-            if(r.getFechaInicio().before(cercana)) {
-                cercana = r.getFechaInicio();
+            if(sdf.parse(r.getFechaInicio()).before(cercana)) {
+                cercana = sdf.parse(r.getFechaInicio());
             }
         }
         
-        return cercana;
+        return sdf.format(cercana);
     }
 }

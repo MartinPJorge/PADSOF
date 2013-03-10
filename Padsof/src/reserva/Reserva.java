@@ -4,49 +4,78 @@
  */
 package reserva;
 
-import java.util.Calendar;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 /**
  *
  * @author e265832
  */
 
-public abstract class Reserva {
+public class Reserva {
+    private int id;
+    private String tipoReserva;  // "reservaHotel" - "reservaVO" - "reservaIMSERSO"
+    private String fechaInicio;
+    protected double precio;
+    private String estado;  // "reservado" - "confirmado" - "cancelado"
     
-    private Date fechaInicio;
-    private double precio;
-    private Estado estado;
     
+    public Reserva() {}
     
-    protected Reserva(Date fechaInicio, double precio) {
-        this.fechaInicio = fechaInicio;
+    public Reserva(int dia, int mes, int year, double precio,
+            String tipoReserva) {
+        GregorianCalendar cal = new GregorianCalendar(year, mes+1, dia);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        this.fechaInicio = sdf.format(cal.getTime());
         this.precio = precio;
-        this.estado = Estado.RESERVADO;
+        this.estado = "reservado";
+        this.tipoReserva = tipoReserva;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public int getId() {
+        return id;
     }
 
-    public Date getFechaInicio() {
-        return fechaInicio;
+    public String getFechaInicio() {
+        return this.fechaInicio;
     }
-    
+
+    public String getTipoReserva() {
+        return this.tipoReserva;
+    }
+
     public double getPrecio() {
         return precio;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public String getEstado() {
+        return estado;
+    }
+    
+    public void setTipoReserva(String tipoReserva) {
+        this.tipoReserva = tipoReserva;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-
 
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    /**
+     * Calcula el precio de la reserva en funci&oacute;n de los servicios 
+     * contratados.
+     */
+    public void calcularPrecio() {}
 }

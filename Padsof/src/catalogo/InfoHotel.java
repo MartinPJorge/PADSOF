@@ -9,6 +9,7 @@ package catalogo;
  * @author e265923
  */
 public class InfoHotel {  
+    
     private int id;
     private String nombre;
     private String pais;

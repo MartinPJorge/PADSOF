@@ -4,7 +4,7 @@
  */
 package padsof;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -13,34 +13,27 @@ import java.util.Date;
 public class Vendedor extends Persona{
     private int id;
     private String password;
-    private Administrador jefe;
     
-    public Vendedor(String nombre, String apellido, String DNI, Date fechaNac, int id, String password,
-            Administrador jefe){
-        super(nombre, apellido, DNI, fechaNac);
-        this.id=id;
+    public Vendedor() {}
+    
+    public Vendedor(int dia, int mes, int year, String nombre, String apellido,
+            String DNI, String password){
+        super(dia, mes, year, nombre, apellido, DNI);
         this.password=password;
-        this.jefe=jefe;
-}
+    }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
     public String getPassword() {
         return password;
-    }
-
-    public Administrador getJefe() {
-        return jefe;
-    }
-
-    public void setJefe(Administrador jefe) {
-        this.jefe = jefe;
     }
 
     public void setPassword(String password) {

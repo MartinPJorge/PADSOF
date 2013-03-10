@@ -4,23 +4,36 @@
  */
 package padsof;
 
-import java.util.Date;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 /**
  *
  * @author e265923
  */
 public class Persona {
+    int id;
     private String nombre;
     private String apellido;
     private String DNI;
-    private Date fechaNac;
+    private String fechaNac;
     
-    public Persona(String nombre, String apellido, String DNI, Date fechaNac){
-        this.nombre=nombre;
-        this.apellido=apellido;
-        this.DNI=DNI;
-        this.fechaNac=fechaNac;
+    public Persona() {}
+    
+    public Persona(int dia, int mes, int year, String nombre, String apellido, 
+            String DNI){
+        GregorianCalendar cal = new GregorianCalendar(dia, mes, year);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.DNI = DNI;
+        this.fechaNac = sdf.format(cal.getTime());
+    }
+    
+    public int getId() {
+        return this.id;
     }
     
     public String getNombre(){
@@ -47,11 +60,15 @@ public class Persona {
         this.DNI=DNI;
     }
     
-    public Date getFechaNac(){
+    public String getFechaNac(){
         return this.fechaNac;
     }
     
-    public void setFechaNac(Date fechaNac){
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public void setFechaNac(String fechaNac){
         this.fechaNac=fechaNac;
     }
     
@@ -59,7 +76,7 @@ public class Persona {
     public String toString(){
         String p = this.nombre + this.apellido + this.DNI + this.fechaNac;
         return p;
-}
+    }
     
     public void mostrarDatos(){
         System.out.println(this.toString());

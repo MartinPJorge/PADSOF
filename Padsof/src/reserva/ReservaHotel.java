@@ -4,57 +4,112 @@
  */
 package reserva;
 
-import java.util.Date;
+import cat.quickdb.annotation.Column;
+import cat.quickdb.annotation.Properties;
+import catalogo.InfoHotel;
+import java.sql.Date;
 
 /**
  *
  * @author e265832
  */
 
-enum Pension{MEDIA, COMPLETA, DESAYUNO}
-enum Habitacion{SUITE, INDIVIDUAL, MATRIMONIO, TRIPLE}
-
 public class ReservaHotel extends Reserva {
     
-    final private String nombre;
-    private Habitacion tipoHabitacion;
-    private Pension tipoPension;
-    private static double margen = 0.1;
-
-
-    public ReservaHotel(Habitacion tipoHabitacion, Pension tipoPension,
-            Date fechaInicio, double precio, String nombre) {
-        super(fechaInicio, precio);
+    private int id;
+    @Column(type=Properties.TYPES.FOREIGNKEY)
+    private InfoHotel infoHotel;
+    private String tipoHabitacion;  // "simple" - "doble" - "triple"
+    private String suplemento;  // "supD" - "supMP" - "supPC"
+    private static double margen = 0.0;
+    
+    public ReservaHotel() {this.infoHotel = null;}
+    
+    public ReservaHotel(int dia, int mes, int year, String tipoHabitacion, 
+            String suplemento, InfoHotel infoHotel) {
+        super(dia, mes, year,0, "reservaHotel");
+        
+        this.infoHotel = infoHotel;
         this.tipoHabitacion = tipoHabitacion;
-        this.tipoPension = tipoPension;
-        this.nombre = nombre;
+        this.suplemento = suplemento;
+        
+        this.calcularPrecio();
     }
 
-    public Habitacion getTipoHabitacion() {
-        return tipoHabitacion;
-    }
-
-    public Pension getTipoPension() {
-        return tipoPension;
+    
+    @Override
+    public int getId() {
+        return this.id;
     }
     
+    public InfoHotel getInfoHotel() {
+        return infoHotel;
+    }
+    
+    public String getTipoHabitacion() {
+        return this.tipoHabitacion;
+    }
+
+    public String getSuplemento() {
+        return suplemento;
+    }
+
     public static double getMargen() {
-        return ReservaHotel.margen;
+        return margen;
+    }    
+    
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setTipoPension(Pension tipoPension) {
-        this.tipoPension = tipoPension;
+    public void setInfoHotel(InfoHotel infoHotel) {
+        this.infoHotel = infoHotel;
     }
-    
-    public void setTipoHabitacion(Habitacion tipoHabitacion) {
+
+    public void setTipoHabitacion(String tipoHabitacion) {
         this.tipoHabitacion = tipoHabitacion;
     }
-    
+
+    public void setSuplemento(String suplemento) {
+        this.suplemento = suplemento;
+    }
+
     public static void setMargen(double margen) {
         ReservaHotel.margen = margen;
     }
-    
-    public String getNombre() {
-        return nombre;
+        
+    /**
+     * Calcula el precio de la reserva en funci&oacute;n de los servicios 
+     * contratados, y asigna el resultado al campo 'precio' de la clase.
+     */
+    @Override
+    public void calcularPrecio() {
+        double precio = 0;
+        
+        // Miramos el tipo de habitacion.
+        if(this.tipoHabitacion.equals("simple")) {
+            precio += this.infoHotel.getPrecioSimple();
+        }
+        else if(this.tipoHabitacion.equals("doble")) {
+            precio += this.infoHotel.getPrecioDoble();
+        }
+        else if(this.tipoHabitacion.equals("triple")) {
+            precio += this.infoHotel.getPrecioTriple();
+        }
+        
+        // Miramos los suplementos.
+        if(this.suplemento.equals("supD")) {
+            precio += this.infoHotel.getSupDesayuno();
+        }
+        else if(this.suplemento.equals("supMP")) {
+            precio += this.infoHotel.getSupMP();
+        }
+        else if(this.suplemento.equals("supPC")) {
+            precio += this.infoHotel.getSupPC();
+        }
+        
+        precio += precio * ReservaHotel.margen;
+        this.precio = precio;
     }
 }

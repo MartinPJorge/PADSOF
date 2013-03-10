@@ -4,8 +4,8 @@
  */
 package reserva;
 
-import java.util.Calendar;
-import java.util.Date;
+import cat.quickdb.annotation.Column;
+import cat.quickdb.annotation.Properties;
 import catalogo.InfoViajOrg;
 
 /**
@@ -13,49 +13,69 @@ import catalogo.InfoViajOrg;
  * @author Jorge
  */
 public class ReservaViajOrg extends Reserva {
-    private static double margen = 0.3;
+    private int id;
+    private static double margen = 0.0;
     private int numPersonas;
-    private final String nombre;
-    private InfoViajOrg info;
-
-    public ReservaViajOrg(int numPersonas, Date fechaInicio, double precio,
-            String nombre, InfoViajOrg info) {
-        super(fechaInicio, precio);
+    @Column(type=Properties.TYPES.FOREIGNKEY)
+    private InfoViajOrg infoViajOrg;
+    
+    public ReservaViajOrg() {this.infoViajOrg = null;}
+    
+    public ReservaViajOrg(int dia, int mes, int year, int numPersonas,
+            InfoViajOrg infoViajOrg) {
+        super(dia, mes, year, infoViajOrg.getPrecio(), "reservaVO");
+        
         this.numPersonas = numPersonas;
-        this.nombre = nombre;
-        this.info = info;
-    }
-
-    public int getNumPersonas() {
-        return numPersonas;
-    }
-
-    public String getNombre() {
-        return nombre;
+        this.infoViajOrg = infoViajOrg;
+        
+        this.calcularPrecio();
     }
     
+    @Override
+    public int getId() {
+        return id;
+    }
+
     public static double getMargen() {
         return ReservaViajOrg.margen;
+    }    
+
+    public int getNumPersonas() {
+        return this.numPersonas;
     }
 
-    public InfoViajOrg getInfo() {
-        return info;
+    public InfoViajOrg getInfoViajOrg() {
+        return this.infoViajOrg;
     }
     
-    public double getPrecioTotal() {
-        return this.getPrecio() * (1 + this.getMargen());
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
-    
-    public void setNumPersonas(int numPersonas) {
-        this.numPersonas = numPersonas;
-    }
-    
+
     public static void setMargen(double margen) {
         ReservaViajOrg.margen = margen;
     }
 
-    public void setInfo(InfoViajOrg info) {
-        this.info = info;
+    public void setNumPersonas(int numPersonas) {
+        this.numPersonas = numPersonas;
+    }
+
+    public void setInfoViajOrg(InfoViajOrg infoViajOrg) {
+        this.infoViajOrg = infoViajOrg;
     }
     
+    /**
+     * Calcula el precio de la reserva.
+     */
+    @Override
+    public void calcularPrecio() {
+        double precio;
+        
+        precio = this.numPersonas * this.precio;
+        precio += precio * this.margen;
+        
+        this.precio = precio;
+    }
+        
 }

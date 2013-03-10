@@ -5,7 +5,7 @@
 package padsof;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -13,10 +13,14 @@ import java.util.List;
  * @author e265923
  */
 public class Administrador extends Vendedor{
+    int id;
     private List<Vendedor> subord;
-
-    public Administrador(String nombre, String apellido, String DNI, Date fechaNac, int id, String password) {
-        super(nombre, apellido, DNI, fechaNac, id, password, null);
+    
+    public Administrador() {}
+    
+    public Administrador(String nombre, String apellido, String DNI, Date fechaNac, 
+            String password) {
+        super(nombre, apellido, DNI, fechaNac, password);
         this.subord = new ArrayList<Vendedor>(); 
     }
 
@@ -29,11 +33,17 @@ public class Administrador extends Vendedor{
     public List<Vendedor> getSubord() {
         return subord;
     }
+    
+    public int getId() {
+        return this.id;
+    }
 
     public void setSubord(ArrayList<Vendedor> subord) {
         this.subord = subord;
     }
      
-    
+    public void setId(int id) {
+        this.id = id;
+    }
     
 }
