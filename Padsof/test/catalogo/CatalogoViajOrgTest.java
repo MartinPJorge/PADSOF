@@ -4,98 +4,122 @@
  */
 package catalogo;
 
+import cat.quickdb.db.AdminBase;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import catalogo.CatalogoViajOrg;
-import java.io.IOException;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Jorge
  */
 public class CatalogoViajOrgTest {
-
-    private CatalogoViajOrg catalogo;
+    private static CatalogoViajOrg catalogo;
+    private static AdminBase admin;
     
+    public CatalogoViajOrgTest() {}
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws FileNotFoundException, IOException {
+        CatalogoViajOrgTest.catalogo = new CatalogoViajOrg("ViajesOrganizados.csv");
+        CatalogoViajOrgTest.admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
     }
     
     @AfterClass
     public static void tearDownClass() {
+        admin.close();
     }
     
     @Before
-    public void setUp() throws IOException {
-        catalogo = new CatalogoViajOrg("ViajesOrganizados.csv");
+    public void setUp() {
     }
     
     @After
     public void tearDown() {
     }
 
-
     /**
-     * Test of addInfoViajesOrg method, of class CatalogoViajOrg.
-     */
-    @Test
-    public void testAddInfoViajesOrg() {
-        System.out.println("addInfoViajesOrg");
-        InfoViajOrg infoViajeOrg = null;
-        catalogo.addInfoViajesOrg(infoViajeOrg);
-    }
-
-    /**
-     * Test of leerCSV method, of class CatalogoViajOrg.
+     * Test of leerCSV method, of class CatalogoViajOrg.<br/>
+     * Comprobamos que si el fichero CSV tiene campos sin rellenar, nuestra BD 
+     * tambi&eacute;n los tenga.
      */
     @Test
     public void testLeerCSV() throws Exception {
-        System.out.println("leerCSV");
-        int registrosIni, registrosEnd;
+        BufferedReader buff = new BufferedReader(new InputStreamReader(
+                                new FileInputStream(catalogo.getArchivoCSV())));
+        boolean campoVacio = false;
+        boolean vacioEncontrado = false;
+        String linea;
         
-        registrosIni = catalogo.getInfoViajesOrg().size();
-        catalogo.leerCSV(catalogo.getArchivoCSV());
-        registrosEnd = catalogo.getInfoViajesOrg().size();
+        // Buscamos filas con campos vacios
+        while((linea = buff.readLine()) != null) {
+            if(linea.indexOf(";;") > -1) {
+                campoVacio = true;
+                break;
+            }
+        }
         
-        assertEquals("Se vuelven a añadir las info. existentes.",registrosIni, registrosEnd);
+        // Comprobamos que se hayan guardado campos vacios
+        AdminBase admin2 = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        Object[] o = admin2.obtainJoin("SELECT * FROM InfoViajOrg", 11);
+        externo: for(Object nav : o) {
+            String[] fila = (String[]) nav;
+            for(String col : fila) {
+                if(col.equals("-1.0") || col.equals("")) {
+                    vacioEncontrado = true;
+                    break externo;
+                }
+            }
+        }
+        
+        assertEquals(campoVacio, vacioEncontrado);
     }
 
-    /**
-     * Test of mostrarCatalogo method, of class CatalogoViajOrg.
-     */
-    @Test
-    public void testMostrarCatalogo() {
-        System.out.println("mostrarCatalogo");
-        catalogo.mostrarCatalogo();
-    }
 
     /**
-     * Test of buscarViajeOrg method, of class CatalogoViajOrg.
+     * Test of buscaHotel method, of class CatalogoViajOrg.<br/>
+     * Buscamos un viaje organizado que no exista y comprobamos que devuelve una
+     *  lista vac&iacute;a.
      */
     @Test
     public void testBuscarViajeOrg() {
-        System.out.println("buscarViajeOrg");
-        String nombre = "Ibiza";
-        int dias = -1;
-        int noches = -1;
-        double precio = -1;
-        String localidades = "";
-        String fechaSalida = "";
-        boolean coinciden;
+        InfoViajOrg info = new InfoViajOrg();
+        ArrayList<InfoViajOrg> arr = new ArrayList<InfoViajOrg>();
         
-        // Creamos un viaje a Ibiza, y luego buscamos lo mismo en el catalogo.   
-        List<InfoViajOrg> result = catalogo.buscarViajeOrg(nombre, dias, noches, 
-                precio, localidades, fechaSalida);
-        coinciden = result.get(0).compareTo(nombre, dias, noches, 
-                precio, localidades, fechaSalida);
+        arr = catalogo.buscarViajeOrg(null, -1, -1, -1, null, null);
         
-        assertSame("No coincide la busqueda con el resultado esperado.",true, coinciden);
+        assertEquals(arr.size(), 0);
+    }
+
+    /**
+     * Test of generaQuery method, of class CatalogoViajOrg.<br/>
+     * Generamos una consulta vac&iacute;a para comprobar que se crea bien.
+     */
+    @Test
+    public void testGeneraQuery() {
+        String query = catalogo.generaQuery(null, -1, -1, -1, null, null);
+        assertEquals(query, "");
+    }
+
+    /**
+     * Test of cleanSQL method, of class CatalogoViajOrg.
+     */
+    @Test
+    public void testCleanSQL() {
+        catalogo.cleanSQL();
+        
+        Object[] o = admin.obtainJoin("SELECT * FROM InfoViajOrg", 11);
+        Object nada = null;
+        
+        assertEquals(o, nada);
     }
 }

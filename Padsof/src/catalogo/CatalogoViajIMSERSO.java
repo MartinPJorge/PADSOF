@@ -32,25 +32,37 @@ public class CatalogoViajIMSERSO {
         
         StringTokenizer tokens = new StringTokenizer(this.archivoCSV);
         this.nombreBD = tokens.nextToken(".");
-        
-        // Si existia la BD, borramos lo que habia.
-        File BD = new File(this.nombreBD + ".db");
-        if(BD.exists()) {
-           this.cleanSQL(); 
+    }
+    
+    
+    /**
+     * 
+     * @return nombre del archivo de la BS (sin extensi&oacute;n)
+     */
+    public String getNombreBD() {
+        return nombreBD;
+    }
+    
+    /**
+     * 
+     * @return nombre del archivo que contiene el cat&aacute;logo.
+     */
+    public String getArchivoCSV() {
+        if(this == null) {
+            return "";
         }
-        
-        this.leerCSV();
+        return archivoCSV;
     }
 
     
     /**
      * Lee el fichero CSV pasado como parametro, y lo vuelca en forma de BD en 
      * el fichero que toma como nombre el valor almacenado por el atributo nombreBD.
-     * @param archivoCSV
+     * @param admin
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public void leerCSV() throws FileNotFoundException, IOException, ParseException {
+    public void leerCSV(AdminBase admin) throws FileNotFoundException, IOException, ParseException {
         BufferedReader buf = new BufferedReader(new InputStreamReader(
                 new FileInputStream(this.archivoCSV)));
         String nombre;
@@ -63,9 +75,7 @@ public class CatalogoViajIMSERSO {
         String descripcion;
         String linea;
         StringTokenizer tokens;
-        
-        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
-        
+                
         linea = buf.readLine();  // Saltamos la cabecera
         while((linea = buf.readLine()) != null) {
             // Quitamos los ';' que aparecen juntos
@@ -142,12 +152,12 @@ public class CatalogoViajIMSERSO {
      * @param fechaSalida
      * @return una lista con los viajes del IMSERSO encontrados.
      */
-    public List<InfoViajeIMSERSO> buscarViajeOrg(String nombre, int dias, int noches,
+    public ArrayList<InfoViajeIMSERSO> buscarViajeOrg(String nombre, int dias, int noches,
             double precio, String localidades, String fechaSalida) {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
         String query;
         InfoViajeIMSERSO infoVO = new InfoViajeIMSERSO();
-        List<InfoViajeIMSERSO> resultados = new ArrayList<InfoViajeIMSERSO>();
+        ArrayList<InfoViajeIMSERSO> resultados = new ArrayList<InfoViajeIMSERSO>();
         
         // Generamos la consulta a la BD.
         query = generaQuery(nombre, dias, noches, precio, localidades, fechaSalida);
@@ -252,13 +262,21 @@ public class CatalogoViajIMSERSO {
      */
     public void mostrarCatalogo() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
-        InfoHotel infoVO = new InfoHotel();
+        InfoViajOrg infoVO = new InfoViajOrg();
         List<InfoViajeIMSERSO> resultados = new ArrayList<InfoViajeIMSERSO>();
         
-        resultados = admin.obtainAll(infoVO, "1 = 1");
+        resultados = admin.obtainAll(infoVO, "precio > -2");
         
+        System.out.println("id\tnombre\tprecio\tdías\tnoches\tfechasSalida\tlocalidades\tdescripción");
         for(InfoViajeIMSERSO info : resultados) {
-            System.out.println(info);
+            System.out.printf("%d\t",info.getId());
+            System.out.printf("%s\t",info.getNombre());
+            System.out.printf("%s\t",info.getPrecio());
+            System.out.printf("%d\t",info.getDias());
+            System.out.printf("%d\t",info.getNoches());
+            System.out.printf("%s\t",info.getFechaSalida());
+            System.out.printf("%s\t",info.getLocalidades());
+            System.out.printf("%s\n",info.getDescripcion());
         }
         
         admin.close();

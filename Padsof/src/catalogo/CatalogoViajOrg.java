@@ -4,7 +4,6 @@
  */
 package catalogo;
 
-import cat.quickdb.annotation.Table;
 import cat.quickdb.db.AdminBase;
 import java.io.BufferedReader;
 import java.io.File;
@@ -123,10 +122,20 @@ public class CatalogoViajOrg {
         InfoViajOrg infoVO = new InfoViajOrg();
         List<InfoViajOrg> resultados = new ArrayList<InfoViajOrg>();
         
-        resultados = admin.obtainAll(infoVO, "precio > 0");
+        resultados = admin.obtainAll(infoVO, "precio > -2");
         
+        System.out.println("id\tnombre\tcompañía\tteléfono\tprecio\tdías\tnoches\tfechasSalida\tlocalidadSalida\tlocalidades\tdescripción");
         for(InfoViajOrg info : resultados) {
-            System.out.println(info);
+            System.out.printf("%d\t",info.getId());
+            System.out.printf("%s\t",info.getCompania());
+            System.out.printf("%s\t",info.getTelefono());
+            System.out.printf("%f\t",info.getPrecio());
+            System.out.printf("%d\t",info.getDias());
+            System.out.printf("%d\t",info.getNoches());
+            System.out.printf("%s\t",info.getFechasSalida());
+            System.out.printf("%s\t",info.getLocalidadSalida());
+            System.out.printf("%s\t",info.getLocalidades());
+            System.out.printf("%s\n",info.getDescripcion());
         }
         
         admin.close();
@@ -150,12 +159,12 @@ public class CatalogoViajOrg {
      * @param fechaSalida
      * @return una lista con los viajes organizados encontrados.
      */
-    public List<InfoViajOrg> buscarViajeOrg(String nombre, int dias, int noches,
+    public ArrayList<InfoViajOrg> buscarViajeOrg(String nombre, int dias, int noches,
             double precio, String localidades, String fechaSalida) {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
         String query;
         InfoViajOrg infoVO = new InfoViajOrg();
-        List<InfoViajOrg> resultados = new ArrayList<InfoViajOrg>();
+        ArrayList<InfoViajOrg> resultados = new ArrayList<InfoViajOrg>();
         
         // Generamos la consulta a la BD.
         query = generaQuery(nombre, dias, noches, precio, localidades, fechaSalida);

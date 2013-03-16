@@ -4,6 +4,7 @@
  */
 package reserva;
 
+import cat.quickdb.db.AdminBase;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -71,6 +72,16 @@ public class Reserva {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+    
+    public void setEstado(String estado, AdminBase admin) {
+        Reserva r = new Reserva();
+        Object[] o = admin.obtainJoin("SELECT rh.parent_id FROM ReservaHotel AS rh"
+                + " WHERE rh.id = " + this.getId(), 1);
+        admin.obtain(r, "id = " + ((String[])o[0])[0]);
+        
+        r.setEstado("confirmado");
+        admin.modify(r);
     }
     
     /**

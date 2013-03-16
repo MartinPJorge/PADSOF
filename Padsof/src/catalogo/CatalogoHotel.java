@@ -54,6 +54,14 @@ public class CatalogoHotel {
     public String getNombreBD() {
         return nombreBD;
     }
+    
+    /**
+     * 
+     * @param nombre 
+     */
+    public void setNombreBD(String nombre) {
+        this.nombreBD = nombre;
+    }
 
     /**
      * Lee el fichero CSV pasado como parametro, y lo vuelca en forma de BD en 
@@ -172,14 +180,28 @@ public class CatalogoHotel {
      * Imprime el cat&aacute;logo de hoteles.
      */
     public void mostrarCatalogo() {
-        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.getNombreBD());
         InfoHotel infoVO = new InfoHotel();
         List<InfoHotel> resultados = new ArrayList<InfoHotel>();
         
         resultados = admin.obtainAll(infoVO, "1 = 1");
         
+        System.out.println("id\tnombre\tpais\tciudad\ttelefono\tdireccion\tCP\tcategoria\tprecioS\tprecioD\tprecioT\tsupDes\tsupMP\tsipPC\tcaracteristicas");
         for(InfoHotel info : resultados) {
-            System.out.println(info);
+            System.out.printf("%d\t",info.getId());
+            System.out.printf("%s\t",info.getPais());
+            System.out.printf("%s\t",info.getCiudad());
+            System.out.printf("%s\t",info.getTelefono());
+            System.out.printf("%s\t",info.getDireccion());
+            System.out.printf("%s\t",info.getCP());
+            System.out.printf("%d\t",info.getCategoria());
+            System.out.printf("%s\t",info.getPrecioSimple());
+            System.out.printf("%s\t",info.getPrecioDoble());
+            System.out.printf("%s\t",info.getPrecioTriple());
+            System.out.printf("%s\t",info.getSupDesayuno());
+            System.out.printf("%s\t",info.getSupMP());
+            System.out.printf("%s\t",info.getSupPC());
+            System.out.printf("%s\n",info.getPais());
         }
         
         admin.close();
@@ -224,14 +246,14 @@ public class CatalogoHotel {
      * @param caracteristicas
      * @return Lista de obetos de tipo 'InfoHotel', que coinciden con la b&uacute;squeda
      */
-    public List<InfoHotel> buscaHotel(String nombre, String pais, String ciudad,
+    public ArrayList<InfoHotel> buscaHotel(String nombre, String pais, String ciudad,
                             int categoria, double precioSimple, double precioDoble, 
                             double precioTriple, double supDesayuno, double supMP,
                             double supPC, String caracteristicas) {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
         String query;
         InfoHotel infoHotel = new InfoHotel();
-        List<InfoHotel> resultados = new ArrayList<InfoHotel>();
+        ArrayList<InfoHotel> resultados = new ArrayList<InfoHotel>();
         
         // Generamos la consulta a la BD.
         query = generaQuery(nombre, pais, ciudad, categoria, precioSimple, precioDoble, 

@@ -6,7 +6,12 @@ package reserva;
 
 import cat.quickdb.annotation.Column;
 import cat.quickdb.annotation.Properties;
+import cat.quickdb.db.AdminBase;
 import catalogo.InfoViajOrg;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -76,6 +81,52 @@ public class ReservaViajOrg extends Reserva {
         precio += precio * this.margen;
         
         this.precio = precio;
+    }
+    
+    
+    /**
+     * Cambia el margen de beneficios de las reservas de viajes organizados
+     * de que el administrador lo solicite.
+     * @param margen
+     * @param usuario 
+     */
+    private static void setMargen(double margen, String usuario) {
+        if(usuario.equals("admin")) {
+            setMargen(margen);
+        }
+    }
+    
+    /**
+     * Cambia el margen de beneficio de las reservas de VO, solo si es el 
+     * administrador el que solicita la acci&oacute;n. Adem&aacute;s se 
+     * encarga de actualizar los registros de la BD.
+     * 
+     * @param margen
+     * @param usuario
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public static void setMargenSQL(double margen, String usuario, AdminBase admin) throws ClassNotFoundException, SQLException {
+        double ant = ReservaViajOrg.margen;
+        
+        if(usuario.equals("admin")) {
+            ReservaViajOrg.setMargen(margen);
+            
+            // Cerramos la conexion del QuickDB
+            String nombreBD = admin.getDB().name();
+            admin.close();
+            
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:vendedores.db");
+            Statement stmt =  conn.createStatement();
+            stmt.executeUpdate("UPDATE ReservaViajOrg SET margen="+
+            ReservaViajOrg.getMargen()+" WHERE id > -1");
+            stmt.close();
+            conn.close();
+            
+            // Volvemos a abrir la conexion QuickDB
+            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+        }        
     }
         
 }

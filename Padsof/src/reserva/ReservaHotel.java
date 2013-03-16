@@ -6,8 +6,13 @@ package reserva;
 
 import cat.quickdb.annotation.Column;
 import cat.quickdb.annotation.Properties;
+import cat.quickdb.db.AdminBase;
 import catalogo.InfoHotel;
-import java.sql.Date;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import cat.quickdb.db.connection.ConnectionDB;
 
 /**
  *
@@ -75,8 +80,57 @@ public class ReservaHotel extends Reserva {
         this.suplemento = suplemento;
     }
 
-    public static void setMargen(double margen) {
+    /**
+     * 
+     * @param margen 
+     */
+    private static void setMargen(double margen) {
         ReservaHotel.margen = margen;
+    }
+    
+    /**
+     * Cambia el margen de beneficios de las reservas de hoteles en caso 
+     * de que el administrador lo solicite.
+     * @param margen
+     * @param usuario 
+     */
+    public static void setMargen(double margen, String usuario) {
+        if(usuario.equals("admin")) {
+            setMargen(margen);
+        }
+    }
+    
+    /**
+     * Cambia el margen de beneficio de las reservas de hotel, solo si es el 
+     * administrador el que solicita la acci&oacute;n. Adem&aacute;s se 
+     * encarga de actualizar los registros de la BD.
+     * 
+     * @param margen
+     * @param usuario
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public static void setMargenSQL(double margen, String usuario, AdminBase admin) throws ClassNotFoundException, SQLException {
+        double ant = ReservaHotel.margen;
+        
+        if(usuario.equals("admin")) {
+            ReservaHotel.setMargen(margen);
+            
+            // Cerramos la conexion del QuickDB
+            String nombreBD = admin.getDB().name();
+            admin.close();
+            
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:vendedores.db");
+            Statement stmt =  conn.createStatement();
+            stmt.executeUpdate("UPDATE ReservaHotel SET margen="+
+                    ReservaHotel.getMargen()+" WHERE id > -1");
+            stmt.close();
+            conn.close();
+            
+            // Volvemos a abrir la conexion QuickDB
+            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+        }        
     }
         
     /**
@@ -112,4 +166,14 @@ public class ReservaHotel extends Reserva {
         precio += precio * ReservaHotel.margen;
         this.precio = precio;
     }
+    
+    public void setParent(Reserva r) {
+        super.setEstado(r.getEstado());
+        super.setFechaInicio(tipoHabitacion);
+        super.setFechaInicio(r.getFechaInicio());
+        super.setId(r.getId());
+        super.setPrecio(r.getPrecio());
+        super.setTipoReserva(r.getTipoReserva());
+    }
+    
 }
