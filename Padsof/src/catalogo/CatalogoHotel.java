@@ -66,6 +66,9 @@ public class CatalogoHotel {
     /**
      * Lee el fichero CSV pasado como parametro, y lo vuelca en forma de BD en 
      * el fichero que toma como nombre el valor almacenado por el atributo nombreBD.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      * @param archivoCSV
      * @throws FileNotFoundException
      * @throws IOException 
@@ -177,14 +180,17 @@ public class CatalogoHotel {
     
     
     /**
-     * Imprime el cat&aacute;logo de hoteles.
+     * Imprime el cat&aacute;logo de hoteles. 
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      */
     public void mostrarCatalogo() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.getNombreBD());
         InfoHotel infoVO = new InfoHotel();
         List<InfoHotel> resultados = new ArrayList<InfoHotel>();
         
-        resultados = admin.obtainAll(infoVO, "1 = 1");
+        resultados = admin.obtainAll(infoVO, "id >= 1");
         
         System.out.println("id\tnombre\tpais\tciudad\ttelefono\tdireccion\tCP\tcategoria\tprecioS\tprecioD\tprecioT\tsupDes\tsupMP\tsipPC\tcaracteristicas");
         for(InfoHotel info : resultados) {
@@ -232,6 +238,10 @@ public class CatalogoHotel {
      * Las cadenas que no queramos especificar para la b&uacute;squeda, han de 
      * pasarse como 'null', mientras que nos par&aacute;metros num&eacute;ricos 
      * han de ser '-1'.
+     * 
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      * 
      * @param nombre
      * @param pais

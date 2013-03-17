@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
+import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,7 +41,69 @@ public class CatalogoHotelTest {
         CatalogoHotelTest.admin.close();
     }
     
+    @Before
+    public void setUp() {
+        admin.close();
+    }
+    
+    @After
+    public void tearDown() {
+    }
+    
 
+    /**
+     * Test of mostrarCatalogo method, of class CatalogoHotel.
+     * <br/>Mostramos el cat&aacute;logo.
+     */
+    @Test
+    public void testMostrarCatalogo() {
+        catalogo.mostrarCatalogo();
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+    }
+
+    /**
+     * Test of buscaHotel method, of class CatalogoHotel.<br/>
+     * Buscamos un hotel que no exista y comprobamos que devuelve una lista vac&iacute;a.
+     */
+    @Test
+    public void testBuscaHotel() {
+        ArrayList result = CatalogoHotelTest.catalogo.buscaHotel("Nada", "Ninguno",
+                "-", -1, -1, -1, -1, -1, -1, -1, "nada");
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        assertEquals(result.size(), 0);
+    }
+
+    /**
+     * Test of generaQuery method, of class CatalogoHotel.<br/>
+     * Generamos una consulta vac&iacute;a para comprobar que se crea bien.
+     */
+    @Test
+    public void testGeneraQuery() {
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        String result = CatalogoHotelTest.catalogo.generaQuery(null, null, 
+                null, -1, -1, -1, -1, -1, -1, -1, null);
+        assertEquals(result, "");
+    }
+    
+    /**
+     * Test of cleanSQL method, of class CatalogoHotel.
+     * 
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
+     */
+    @Test
+    public void testCleanSQL() throws FileNotFoundException, IOException, ParseException {
+        CatalogoHotelTest.catalogo.cleanSQL();
+        
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        Object[] o = admin.obtainJoin("SELECT * FROM InfoHotel", 15);
+        Object nada = null;
+        
+        assertEquals(o, nada);
+    }
+    
+    
     /**
      * Test of leerCSV method, of class CatalogoHotel.<br/>
      * Comprobamos que si el fichero CSV tiene campos sin rellenar, nuestra BD 
@@ -62,8 +126,17 @@ public class CatalogoHotelTest {
         }
         
         // Comprobamos que se hayan guardado campos vacios
-        AdminBase admin2 = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
-        Object[] o = admin2.obtainJoin("SELECT * FROM InfoHotel", 15);
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        Object[] o = admin.obtainJoin("SELECT * FROM InfoHotel", 15);
+        
+        // Se ha ejecutado previamente 'cleanSQL()'
+        if(o == null) {
+            admin.close();
+            catalogo.leerCSV();
+            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+            o = admin.obtainJoin("SELECT * FROM InfoHotel", 15);
+        }
+        
         externo: for(Object nav : o) {
             String[] fila = (String[]) nav;
             for(String col : fila) {
@@ -73,53 +146,8 @@ public class CatalogoHotelTest {
                 }
             }
         }
-        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        
         assertEquals(campoVacio, vacioEncontrado);
-    }
-
-    /**
-     * Test of mostrarCatalogo method, of class CatalogoHotel.
-     * <br/>Mostramos el cat&aacute;logo.
-     */
-    @Test
-    public void testMostrarCatalogo() {
         admin.close();
-        catalogo.mostrarCatalogo();
-        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
-    }
-
-    /**
-     * Test of buscaHotel method, of class CatalogoHotel.<br/>
-     * Buscamos un hotel que no exista y comprobamos que devuelve una lista vac&iacute;a.
-     */
-    @Test
-    public void testBuscaHotel() {
-        ArrayList result = CatalogoHotelTest.catalogo.buscaHotel("Nada", "Ninguno",
-                "-", -1, -1, -1, -1, -1, -1, -1, "nada");
-        assertEquals(result.size(), 0);
-    }
-
-    /**
-     * Test of generaQuery method, of class CatalogoHotel.<br/>
-     * Generamos una consulta vac&iacute;a para comprobar que se crea bien.
-     */
-    @Test
-    public void testGeneraQuery() {
-        String result = CatalogoHotelTest.catalogo.generaQuery(null, null, 
-                null, -1, -1, -1, -1, -1, -1, -1, null);
-        assertEquals(result, "");
-    }
-    
-    /**
-     * Test of cleanSQL method, of class CatalogoHotel.
-     */
-    @Test
-    public void testCleanSQL() throws FileNotFoundException, IOException, ParseException {
-        CatalogoHotelTest.catalogo.cleanSQL();
-        
-        Object[] o = admin.obtainJoin("SELECT * FROM InfoHotel", 15);
-        Object nada = null;
-        
-        assertEquals(o, nada);
     }
 }

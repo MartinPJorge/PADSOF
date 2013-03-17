@@ -64,6 +64,9 @@ public class CatalogoViajOrg {
     /**
      * Lee el fichero CSV pasado como parametro, y lo vuelca en forma de BD en 
      * el fichero que toma como nombre el valor almacenado por el atributo nombreBD.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      * @param archivoCSV
      * @throws FileNotFoundException
      * @throws IOException 
@@ -116,6 +119,9 @@ public class CatalogoViajOrg {
     
     /**
      * Imprime el cat&aacute;logo de viajes organizados.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      */
     public void mostrarCatalogo() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
@@ -150,6 +156,10 @@ public class CatalogoViajOrg {
      * Las cadenas que no queramos especificar para la b&uacute;squeda, han de 
      * pasarse como 'null', mientras que nos par&aacute;metros num&eacute;ricos 
      * han de ser '-1'.
+     * 
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      * 
      * @param nombre
      * @param dias
@@ -251,6 +261,10 @@ public class CatalogoViajOrg {
     
     /**
      * Vac&iacute;a el archivo SQL.
+     * 
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      */
     public void cleanSQL() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);

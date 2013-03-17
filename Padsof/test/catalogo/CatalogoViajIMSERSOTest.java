@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +41,9 @@ public class CatalogoViajIMSERSOTest {
     }
     
     @Before
-    public void setUp() {}
+    public void setUp() {
+        admin.close();
+    }
     
     @After
     public void tearDown() {}
@@ -67,8 +68,17 @@ public class CatalogoViajIMSERSOTest {
         }
         
         // Comprobamos que se hayan guardado campos vacios
-        AdminBase admin2 = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
-        Object[] o = admin2.obtainJoin("SELECT * FROM InfoViajeIMSERSO", 9);
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        Object[] o = admin.obtainJoin("SELECT * FROM InfoViajeIMSERSO", 9);
+        
+        // Se ha ejecutado previamente 'cleanSQL()'
+        if(o == null) {
+            admin.close();
+            catalogo.leerCSV();      
+            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+            o = admin.obtainJoin("SELECT * FROM InfoViajeIMSERSO", 9);
+        }
+        
         externo: for(Object nav : o) {
             String[] fila = (String[]) nav;
             for(String col : fila) {
@@ -92,6 +102,7 @@ public class CatalogoViajIMSERSOTest {
         ArrayList<InfoViajeIMSERSO> arr = new ArrayList<InfoViajeIMSERSO>();
         arr = catalogo.buscarViajeOrg(null, -1, -1, -1, null, null);
         
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
         assertEquals(arr.size(), 0);
     }
 
@@ -101,21 +112,9 @@ public class CatalogoViajIMSERSOTest {
      */
     @Test
     public void testGeneraQuery() {
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
         String query = catalogo.generaQuery(null, -1, -1, -1, null, null);
         assertEquals(query, "");
-    }
-
-    /**
-     * Test of cleanSQL method, of class CatalogoViajIMSERSO.
-     */
-    @Test
-    public void testCleanSQL() {
-        catalogo.cleanSQL();
-        
-        Object[] o = admin.obtainJoin("SELECT * FROM InfoViajOrg", 11);
-        Object nada = null;
-        
-        assertEquals(o, nada);
     }
 
     /**
@@ -124,6 +123,20 @@ public class CatalogoViajIMSERSOTest {
     @Test
     public void testMostrarCatalogo() {
         catalogo.mostrarCatalogo();
-
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+    }
+    
+    /**
+     * Test of cleanSQL method, of class CatalogoViajIMSERSO.
+     */
+    @Test
+    public void testCleanSQL() {
+        catalogo.cleanSQL();
+        
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,catalogo.getNombreBD());
+        Object[] o = admin.obtainJoin("SELECT * FROM InfoViajeIMSERSO", 9);
+        Object nada = null;
+        
+        assertEquals(o, nada);
     }
 }

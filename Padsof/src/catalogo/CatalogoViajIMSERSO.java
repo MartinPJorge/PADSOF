@@ -32,6 +32,14 @@ public class CatalogoViajIMSERSO {
         
         StringTokenizer tokens = new StringTokenizer(this.archivoCSV);
         this.nombreBD = tokens.nextToken(".");
+        
+        // Si existia la BD, borramos lo que habia.
+        File BD = new File(this.nombreBD + ".db");
+        if(BD.exists()) {
+           this.cleanSQL(); 
+        }
+        
+        this.leerCSV();
     }
     
     
@@ -58,11 +66,14 @@ public class CatalogoViajIMSERSO {
     /**
      * Lee el fichero CSV pasado como parametro, y lo vuelca en forma de BD en 
      * el fichero que toma como nombre el valor almacenado por el atributo nombreBD.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      * @param admin
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public void leerCSV(AdminBase admin) throws FileNotFoundException, IOException, ParseException {
+    public void leerCSV() throws FileNotFoundException, IOException, ParseException {
         BufferedReader buf = new BufferedReader(new InputStreamReader(
                 new FileInputStream(this.archivoCSV)));
         String nombre;
@@ -75,6 +86,7 @@ public class CatalogoViajIMSERSO {
         String descripcion;
         String linea;
         StringTokenizer tokens;
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
                 
         linea = buf.readLine();  // Saltamos la cabecera
         while((linea = buf.readLine()) != null) {
@@ -249,7 +261,7 @@ public class CatalogoViajIMSERSO {
         InfoViajeIMSERSO infoVO = new InfoViajeIMSERSO();
         List<InfoViajeIMSERSO> registros = new ArrayList<InfoViajeIMSERSO>();
         
-        registros = admin.obtainAll(infoVO, "1 = 1");
+        registros = admin.obtainAll(infoVO, "id >= 1");
         for(InfoViajeIMSERSO inf : registros) {
             admin.delete(inf);
         }
@@ -262,10 +274,10 @@ public class CatalogoViajIMSERSO {
      */
     public void mostrarCatalogo() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
-        InfoViajOrg infoVO = new InfoViajOrg();
+        InfoViajeIMSERSO infoVIMSERSO = new InfoViajeIMSERSO();
         List<InfoViajeIMSERSO> resultados = new ArrayList<InfoViajeIMSERSO>();
         
-        resultados = admin.obtainAll(infoVO, "precio > -2");
+        resultados = admin.obtainAll(infoVIMSERSO, "precio > -2");
         
         System.out.println("id\tnombre\tprecio\tdías\tnoches\tfechasSalida\tlocalidades\tdescripción");
         for(InfoViajeIMSERSO info : resultados) {
