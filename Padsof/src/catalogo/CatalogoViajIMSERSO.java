@@ -27,6 +27,15 @@ public class CatalogoViajIMSERSO {
 
     CatalogoViajIMSERSO() {}
     
+    /**
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
+     * @param archivoCSV
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ParseException 
+     */
     public CatalogoViajIMSERSO(String archivoCSV) throws FileNotFoundException, IOException, ParseException {
         this.archivoCSV = archivoCSV;
         
@@ -155,6 +164,9 @@ public class CatalogoViajIMSERSO {
      * Las cadenas que no queramos especificar para la b&uacute;squeda, han de 
      * pasarse como 'null', mientras que nos par&aacute;metros num&eacute;ricos 
      * han de ser '-1'.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      * 
      * @param nombre
      * @param dias
@@ -255,6 +267,9 @@ public class CatalogoViajIMSERSO {
     
     /**
      * Vac&iacute;a el archivo SQL.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      */
     public void cleanSQL() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
@@ -270,7 +285,10 @@ public class CatalogoViajIMSERSO {
     }
     
     /**
-     * Imprime el cat&aacute;logo de hoteles.
+     * Imprime el cat&aacute;logo de viajes del IMSERSO.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      */
     public void mostrarCatalogo() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);

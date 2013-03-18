@@ -73,7 +73,6 @@ public class ReservaViajOrg extends Reserva {
     /**
      * Calcula el precio de la reserva.
      */
-    @Override
     public void calcularPrecio() {
         double precio;
         
@@ -100,33 +99,44 @@ public class ReservaViajOrg extends Reserva {
      * Cambia el margen de beneficio de las reservas de VO, solo si es el 
      * administrador el que solicita la acci&oacute;n. Adem&aacute;s se 
      * encarga de actualizar los registros de la BD.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo, adem&aacute;s de pasar por argumento el nombre de la BD a 
+     * utilizar en este momento.
      * 
      * @param margen
      * @param usuario
      * @throws ClassNotFoundException
      * @throws SQLException 
      */
-    public static void setMargenSQL(double margen, String usuario, AdminBase admin) throws ClassNotFoundException, SQLException {
+    public static void setMargenSQL(double margen, String usuario, String nombreBD) throws ClassNotFoundException, SQLException {
         double ant = ReservaViajOrg.margen;
         
         if(usuario.equals("admin")) {
             ReservaViajOrg.setMargen(margen);
             
-            // Cerramos la conexion del QuickDB
-            String nombreBD = admin.getDB().name();
-            admin.close();
-            
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:vendedores.db");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:"+ nombreBD +".db");
             Statement stmt =  conn.createStatement();
             stmt.executeUpdate("UPDATE ReservaViajOrg SET margen="+
             ReservaViajOrg.getMargen()+" WHERE id > -1");
             stmt.close();
             conn.close();
-            
-            // Volvemos a abrir la conexion QuickDB
-            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
         }        
     }
-        
+    
+    
+    /**
+     * 
+     * @return cantidad pagada de la reserva
+     */
+    @Override
+    public double calcularPagado() {
+        if(this.getEstado().equals("reservado") || this.getEstado().equals("canceladoTrasReservar")) {
+            return 0.1 * this.getPrecio();
+        }
+        else {
+            return this.precio;
+        }
+    }
 }

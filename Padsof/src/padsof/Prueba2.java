@@ -5,32 +5,31 @@
 package padsof;
 
 import cat.quickdb.db.AdminBase;
-import catalogo.*;
+import catalogo.InfoHotel;
+import catalogo.InfoViajOrg;
+import catalogo.InfoViajeIMSERSO;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import persona.Vendedor;
-import reserva.*;
-
-/*
- * Usar Date, GregorianCalendar y SimpleDateFormat
- */
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import reserva.Paquete;
+import reserva.ReservaHotel;
+import reserva.ReservaViajOrg;
+import reserva.ReservaViajeIMSERSO;
+import reserva.ReservaVuelo;
+import reserva.Vuelos;
 
 /**
  *
- * @author e265923
+ * @author Jorge
  */
-public class Padsof {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws FileNotFoundException, IOException, ParseException, SQLException, InterruptedException, ClassNotFoundException {
-
-        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,"vendedores");
-        CatalogoHotel catalogo = new CatalogoHotel("Hoteles.csv");
+public class Prueba2 {
+    public static void main(String[] args) throws FileNotFoundException, IOException, ParseException, ClassNotFoundException, SQLException {
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,"reservas");
+        
         
         // Reserva IMSERSO
         InfoViajeIMSERSO info = new InfoViajeIMSERSO("Ibiza", 23, 3, 2, null, null, null, null);
@@ -42,8 +41,6 @@ public class Padsof {
                                             400, 5, 4, "martes, miércoles",
                                             "Madrid", "Bélgica, Holanda", "--");
         ReservaViajOrg reservaVO = new ReservaViajOrg(2, 9, 2007, 5,infoVO);
-        ReservaViajOrg reservaVO2 = new ReservaViajOrg(2, 9, 2007, 2,infoVO);
-        
         
         // Reserva Hotel
         InfoHotel infoHotel = new InfoHotel("Palace", "España", "Madrid", null,
@@ -74,6 +71,13 @@ public class Padsof {
         InfoViajeIMSERSO info3 = new InfoViajeIMSERSO("Noruega", 23, 3, 2, null, null, null, null);
         ReservaViajeIMSERSO reserva3 = new ReservaViajeIMSERSO(1, 2, 2007, 2, info3);
         
+        // ReservaVuelo
+        GregorianCalendar cal = new GregorianCalendar(2014, 0, 1);
+        Date salida = cal.getTime();
+        cal = new GregorianCalendar(2014, 0, 6);
+        Date llegada = cal.getTime();
+        List<String> vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", "PERTH JANDAKOT", salida, llegada);
+        ReservaVuelo reservaVuelo = Vuelos.reservar(vuelos.get(0), "PacoPalomero", "52372839");
         
         
         // Personas asociadas al paquete
@@ -86,52 +90,40 @@ public class Padsof {
         // Anadimos las reservas
         paquete.addReserva(reserva);
         paquete.addReserva(reservaVO);
-        paquete.addReserva(reservaVO2);
         paquete.addReserva(resHotel);
         
         // Anadimos las reservas
         paquete2.addReserva(reserva2);
-        paquete2.addReserva(resHotel2);
+        //paquete2.addReserva(resHotel2);
+        paquete2.addReserva(reservaVuelo);
         
         // Anadimos las reservas
         paquete3.addReserva(reserva3);
         paquete3.addReserva(resHotel3);
         
+        // Guardamos paquetes
+        paquete.guardar(admin);
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,"reservas");
+        paquete2.guardar(admin);
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,"reservas");
+        paquete3.guardar(admin);
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,"reservas");
         
         
-        Vendedor paco = new Vendedor("Paco", "PPorras", "47844956J", 1, 3, 1993, 1, "pass", "juan");
-        paco.addPaquete(paquete);
-        paco.addPaquete(paquete2);
-        paco.addPaquete(paquete3);
-  
         // Reseteamos las variables
-        paquete = new Paquete();
+        /*paquete = new Paquete();
         paquete2 = new Paquete();
         resHotel = new ReservaHotel();
-        paco = new Vendedor();
         
         
-        //admin.save(paco);        
-
-        
-        admin.obtain(paco, "id = 1");
-        paquete = paco.getPaquete().get(0);
+        admin.obtain(paquete, "id = 1");
         paquete.cargarDatosPaqueteSQL(admin);
         
-        paquete.getReservasHotel().get(0).setEstado("confirmado", admin);
-
+        for(Reserva r : paquete.getReservas()) {
+            r.setEstado("confirmado", admin);
+        }*/
         
         
         admin.close();
-        
-        
-        // Actualizamos los indices incorrectos.
-        Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:vendedores.db");
-        Statement stmt =  conn.createStatement();
-        stmt.executeUpdate("UPDATE PaqueteReserva SET related=id WHERE id > 0");
-        stmt.close();
-        conn.close();
-        
     }
 }

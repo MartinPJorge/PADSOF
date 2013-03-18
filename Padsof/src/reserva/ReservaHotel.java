@@ -110,26 +110,19 @@ public class ReservaHotel extends Reserva {
      * @throws ClassNotFoundException
      * @throws SQLException 
      */
-    public static void setMargenSQL(double margen, String usuario, AdminBase admin) throws ClassNotFoundException, SQLException {
+    public static void setMargenSQL(double margen, String usuario, String nombreBD) throws ClassNotFoundException, SQLException {
         double ant = ReservaHotel.margen;
         
         if(usuario.equals("admin")) {
             ReservaHotel.setMargen(margen);
             
-            // Cerramos la conexion del QuickDB
-            String nombreBD = admin.getDB().name();
-            admin.close();
-            
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:vendedores.db");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:"+ nombreBD +".db");
             Statement stmt =  conn.createStatement();
             stmt.executeUpdate("UPDATE ReservaHotel SET margen="+
                     ReservaHotel.getMargen()+" WHERE id > -1");
             stmt.close();
             conn.close();
-            
-            // Volvemos a abrir la conexion QuickDB
-            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
         }        
     }
         
@@ -137,7 +130,6 @@ public class ReservaHotel extends Reserva {
      * Calcula el precio de la reserva en funci&oacute;n de los servicios 
      * contratados, y asigna el resultado al campo 'precio' de la clase.
      */
-    @Override
     public void calcularPrecio() {
         double precio = 0;
         
@@ -167,13 +159,18 @@ public class ReservaHotel extends Reserva {
         this.precio = precio;
     }
     
-    public void setParent(Reserva r) {
-        super.setEstado(r.getEstado());
-        super.setFechaInicio(tipoHabitacion);
-        super.setFechaInicio(r.getFechaInicio());
-        super.setId(r.getId());
-        super.setPrecio(r.getPrecio());
-        super.setTipoReserva(r.getTipoReserva());
-    }
     
+    /**
+     * 
+     * @return cantidad pagada de la reserva
+     */
+    @Override
+    public double calcularPagado() {
+        if(this.getEstado().equals("reservado") || this.getEstado().equals("canceladoTrasReservar")) {
+            return 0.1 * this.getPrecio();
+        }
+        else {
+            return this.precio;
+        }
+    }
 }

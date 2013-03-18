@@ -25,6 +25,14 @@ public class CatalogoViajOrg {
     private String nombreBD;
 
 
+    /**
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
+     * @param archivoCSV
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public CatalogoViajOrg(String archivoCSV) throws FileNotFoundException, IOException {
         this.archivoCSV = archivoCSV;
         StringTokenizer tokens = new StringTokenizer(this.archivoCSV);

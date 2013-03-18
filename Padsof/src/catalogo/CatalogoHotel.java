@@ -25,6 +25,15 @@ public class CatalogoHotel {
     private String archivoCSV;
     private String nombreBD;
     
+    /**
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
+     * @param archivoCSV
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ParseException 
+     */
     public CatalogoHotel(String archivoCSV) throws FileNotFoundException, IOException, ParseException {
         this.archivoCSV = archivoCSV;
         StringTokenizer tokens = new StringTokenizer(this.archivoCSV);
@@ -216,6 +225,9 @@ public class CatalogoHotel {
     
     /**
      * Vac&iacute;a el archivo SQL.
+     * <br/><u>Nota:</u><br/>
+     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
+     * m&eacute;todo.
      */
     public void cleanSQL() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite,this.nombreBD);
