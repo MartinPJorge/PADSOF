@@ -1,69 +1,69 @@
-nombre;precio cliente;duraciÃ³n (dÃ­as);duraciÃ³n (noches);fechas salida;localidad salida;localidades;descripciÃ³n
-Mallorca-temporada baja;125;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid;Mallorca;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Mallorca-temporada alta;235;8;7;Lunes de Febrero a Noviembre;Madrid;Mallorca;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Mallorca-temporada baja-largo;155;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid;Mallorca;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Mallorca-temporada alta-larga;290;10;9;Lunes de Febrero a Noviembre;Madrid;Mallorca;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Tenerife-corto;310;8;7;Lunes de Marzo a Octubre;Madrid;Tenerife;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Tenerife-largo;380;10;9;Lunes de Marzo a Octubre;Madrid;Tenerife;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Tenerife-15;545;15;14;Lunes de Marzo a Octubre;Madrid;Tenerife;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Canarias-Combinado;575;15;14;Lunes de Marzo a Octubre;Madrid;Tenerife y Lanzarote;Vuelo, Hotel 3* en rÃ©gimen de PC y desplazamiento
-Benidorm-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Benidorm;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Benidorm-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Benidorm;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Benidorm-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Benidorm;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Benidorm-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Benidorm;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Benidorm-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Benidorm;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Benidorm-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Benidorm;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Benidorm-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Benidorm;Hotel 4* en rÃ©gimen de PC
-Benidorm-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Benidorm;Hotel 4* en rÃ©gimen de PC
-Benidorm-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Benidorm;Hotel 4* en rÃ©gimen de PC
-Benidorm-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Benidorm;Hotel 4* en rÃ©gimen de PC
-Benidorm-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Benidorm;Hotel 4* en rÃ©gimen de PC
-Benidorm-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Benidorm;Hotel 4* en rÃ©gimen de PC
-Murcia-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;La Manga del Mar Menor;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Murcia-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;La Manga del Mar Menor;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Murci-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;La Manga del Mar Menor;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Murcia-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;La Manga del Mar Menor;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Murcia-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;La Manga del Mar Menor;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Murcia-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;La Manga del Mar Menor;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Murcia-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;La Manga del Mar Menor;Hotel 4* en rÃ©gimen de PC
-Murcia-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;La Manga del Mar Menor;Hotel 4* en rÃ©gimen de PC
-Murcia-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;La Manga del Mar Menor;Hotel 4* en rÃ©gimen de PC
-Murcia-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;La Manga del Mar Menor;Hotel 4* en rÃ©gimen de PC
-Murcia-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;La Manga del Mar Menor;Hotel 4* en rÃ©gimen de PC
-Murcia-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;La Manga del Mar Menor;Hotel 4* en rÃ©gimen de PC
-Cadiz-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Cadiz;AutobÃºs, Hotel 3* en rÃ©gimen de PC
-Cadiz-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Cadiz;AutobÃºs, Hotel 3* en rÃ©gimen de PC
-Cadiz-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Cadiz;AutobÃºs, Hotel 3* en rÃ©gimen de PC
-Cadiz-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Cadiz;AutobÃºs, Hotel 3* en rÃ©gimen de PC
-Cadiz-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Cadiz;AutobÃºs, Hotel 3* en rÃ©gimen de PC
-Cadiz-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Cadiz;AutobÃºs, Hotel 3* en rÃ©gimen de PC
-Cadiz-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Cadiz;Hotel 3* en rÃ©gimen de PC
-Cadiz-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Cadiz;Hotel 3* en rÃ©gimen de PC
-Cadiz-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Cadiz;Hotel 3* en rÃ©gimen de PC
-Cadiz-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Cadiz;Hotel 3* en rÃ©gimen de PC
-Cadiz-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Cadiz;Hotel 3* en rÃ©gimen de PC
-Cadiz-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Cadiz;Hotel 3* en rÃ©gimen de PC
-Tarragona-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Tarragona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Tarragona-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Tarragona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Tarragona-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Tarragona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Tarragona-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Tarragona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Tarragona-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Tarragona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Tarragona-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Tarragona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Tarragona-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Tarragona;Hotel 4* en rÃ©gimen de PC
-Tarragona-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Tarragona;Hotel 4* en rÃ©gimen de PC
-Tarragona-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Tarragona;Hotel 4* en rÃ©gimen de PC
-Tarragona-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Tarragona;Hotel 4* en rÃ©gimen de PC
-Tarragona-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Tarragona;Hotel 4* en rÃ©gimen de PC
-Tarragona-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Tarragona;Hotel 4* en rÃ©gimen de PC
-Gerona-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Gerona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Gerona-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Gerona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Gerona-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Gerona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Gerona-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Gerona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Gerona-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Gerona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Gerona-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Gerona;AutobÃºs, Hotel 4* en rÃ©gimen de PC
-Gerona-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Gerona;Hotel 4* en rÃ©gimen de PC
-Gerona-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Gerona;Hotel 4* en rÃ©gimen de PC
-Gerona-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Gerona;Hotel 4* en rÃ©gimen de PC
-Gerona-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Gerona;Hotel 4* en rÃ©gimen de PC
-Gerona-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Gerona;Hotel 4* en rÃ©gimen de PC
-Gerona-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Gerona;Hotel 4* en rÃ©gimen de PC
+nombre;precio cliente;duración (días);duración (noches);fechas salida;localidad salida;localidades;descripción
+Mallorca-temporada baja;125;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid;Mallorca;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Mallorca-temporada alta;235;8;7;Lunes de Febrero a Noviembre;Madrid;Mallorca;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Mallorca-temporada baja-largo;155;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid;Mallorca;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Mallorca-temporada alta-larga;290;10;9;Lunes de Febrero a Noviembre;Madrid;Mallorca;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Tenerife-corto;310;8;7;Lunes de Marzo a Octubre;Madrid;Tenerife;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Tenerife-largo;380;10;9;Lunes de Marzo a Octubre;Madrid;Tenerife;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Tenerife-15;545;15;14;Lunes de Marzo a Octubre;Madrid;Tenerife;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Canarias-Combinado;575;15;14;Lunes de Marzo a Octubre;Madrid;Tenerife y Lanzarote;Vuelo, Hotel 3* en régimen de PC y desplazamiento
+Benidorm-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Benidorm;Autobús, Hotel 4* en régimen de PC
+Benidorm-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Benidorm;Autobús, Hotel 4* en régimen de PC
+Benidorm-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Benidorm;Autobús, Hotel 4* en régimen de PC
+Benidorm-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Benidorm;Autobús, Hotel 4* en régimen de PC
+Benidorm-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Benidorm;Autobús, Hotel 4* en régimen de PC
+Benidorm-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Benidorm;Autobús, Hotel 4* en régimen de PC
+Benidorm-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Benidorm;Hotel 4* en régimen de PC
+Benidorm-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Benidorm;Hotel 4* en régimen de PC
+Benidorm-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Benidorm;Hotel 4* en régimen de PC
+Benidorm-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Benidorm;Hotel 4* en régimen de PC
+Benidorm-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Benidorm;Hotel 4* en régimen de PC
+Benidorm-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Benidorm;Hotel 4* en régimen de PC
+Murcia-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;La Manga del Mar Menor;Autobús, Hotel 4* en régimen de PC
+Murcia-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;La Manga del Mar Menor;Autobús, Hotel 4* en régimen de PC
+Murci-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;La Manga del Mar Menor;Autobús, Hotel 4* en régimen de PC
+Murcia-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;La Manga del Mar Menor;Autobús, Hotel 4* en régimen de PC
+Murcia-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;La Manga del Mar Menor;Autobús, Hotel 4* en régimen de PC
+Murcia-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;La Manga del Mar Menor;Autobús, Hotel 4* en régimen de PC
+Murcia-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;La Manga del Mar Menor;Hotel 4* en régimen de PC
+Murcia-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;La Manga del Mar Menor;Hotel 4* en régimen de PC
+Murcia-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;La Manga del Mar Menor;Hotel 4* en régimen de PC
+Murcia-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;La Manga del Mar Menor;Hotel 4* en régimen de PC
+Murcia-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;La Manga del Mar Menor;Hotel 4* en régimen de PC
+Murcia-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;La Manga del Mar Menor;Hotel 4* en régimen de PC
+Cadiz-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Cadiz;Autobús, Hotel 3* en régimen de PC
+Cadiz-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Cadiz;Autobús, Hotel 3* en régimen de PC
+Cadiz-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Cadiz;Autobús, Hotel 3* en régimen de PC
+Cadiz-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Cadiz;Autobús, Hotel 3* en régimen de PC
+Cadiz-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Cadiz;Autobús, Hotel 3* en régimen de PC
+Cadiz-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Cadiz;Autobús, Hotel 3* en régimen de PC
+Cadiz-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Cadiz;Hotel 3* en régimen de PC
+Cadiz-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Cadiz;Hotel 3* en régimen de PC
+Cadiz-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Cadiz;Hotel 3* en régimen de PC
+Cadiz-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Cadiz;Hotel 3* en régimen de PC
+Cadiz-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Cadiz;Hotel 3* en régimen de PC
+Cadiz-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Cadiz;Hotel 3* en régimen de PC
+Tarragona-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Tarragona;Autobús, Hotel 4* en régimen de PC
+Tarragona-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Tarragona;Autobús, Hotel 4* en régimen de PC
+Tarragona-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Tarragona;Autobús, Hotel 4* en régimen de PC
+Tarragona-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Tarragona;Autobús, Hotel 4* en régimen de PC
+Tarragona-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Tarragona;Autobús, Hotel 4* en régimen de PC
+Tarragona-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Tarragona;Autobús, Hotel 4* en régimen de PC
+Tarragona-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Tarragona;Hotel 4* en régimen de PC
+Tarragona-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Tarragona;Hotel 4* en régimen de PC
+Tarragona-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Tarragona;Hotel 4* en régimen de PC
+Tarragona-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Tarragona;Hotel 4* en régimen de PC
+Tarragona-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Tarragona;Hotel 4* en régimen de PC
+Tarragona-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Tarragona;Hotel 4* en régimen de PC
+Gerona-temporada baja;145;8;7;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Gerona;Autobús, Hotel 4* en régimen de PC
+Gerona-temporada alta;198;8;7;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Gerona;Autobús, Hotel 4* en régimen de PC
+Gerona-temporada baja-largo;190;10;9;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Gerona;Autobús, Hotel 4* en régimen de PC
+Gerona-temporada alta-largo;250;10;9;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Gerona;Autobús, Hotel 4* en régimen de PC
+Gerona-temporada baja-15;285;15;14;1 al 17 de diciembre, 1 al 31 de Enero;Madrid, Toledo, Albacete;Gerona;Autobús, Hotel 4* en régimen de PC
+Gerona-temporada alta-15;358;15;14;Lunes de Febrero a Noviembre;Madrid, Toledo, Albacete;Gerona;Autobús, Hotel 4* en régimen de PC
+Gerona-sin transporte-temporada baja;120;8;7;1 al 17 de diciembre, 1 al 31 de Enero;;Gerona;Hotel 4* en régimen de PC
+Gerona-sin transporte-temporada alta;164;8;7;Lunes de Febrero a Noviembre;;Gerona;Hotel 4* en régimen de PC
+Gerona-sin transporte-temporada baja-largo;153;10;9;1 al 17 de diciembre, 1 al 31 de Enero;;Gerona;Hotel 4* en régimen de PC
+Gerona-sin transporte-temporada alta-largo;200;10;9;Lunes de Febrero a Noviembre;;Gerona;Hotel 4* en régimen de PC
+Gerona-sin transporte-temporada baja-15;228;15;14;1 al 17 de diciembre, 1 al 31 de Enero;;Gerona;Hotel 4* en régimen de PC
+Gerona-sin transporte-temporada alta-15;288;15;14;Lunes de Febrero a Noviembre;;Gerona;Hotel 4* en régimen de PC

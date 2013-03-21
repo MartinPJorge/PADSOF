@@ -11,9 +11,9 @@ import java.util.Date;
  * @author e265923
  */
 public class Cliente extends Persona{
-
+    int id;
     /**
-     * 
+     * Constructor vacío para Cliente (necesario para la BD).
      */
     public Cliente() {
     }
@@ -23,10 +23,12 @@ public class Cliente extends Persona{
      * @param nombre
      * @param apellido
      * @param DNI
-     * @param fechaNac
+     * @param dia 
+     * @param mes 
+     * @param anio  
      */
-    public Cliente(String nombre, String apellido, String DNI, Date fechaNac) {
-        super(nombre, apellido, DNI, fechaNac);
+    public Cliente(String nombre, String apellido, String DNI, int dia, int mes, int anio) {
+        super(nombre, apellido, DNI, dia, mes, anio);
     }
 
     @Override

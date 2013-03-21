@@ -54,7 +54,7 @@ public class PaqueteTest {
     @Test
     public void testCompPaquete() throws Exception {
         System.out.println("compPaquete");
-        Paquete instance = new Paquete(1, "Juan", "Pedro");
+        Paquete instance = new Paquete(0, 1, "Juan", 12);
         InfoViajeIMSERSO info = new InfoViajeIMSERSO("Ibiza", 123, 1, 2, "", "", "", "");
         ReservaViajeIMSERSO rIMSERSO = new ReservaViajeIMSERSO(1, 2, 1993, 2, info);
         instance.addReserva(rIMSERSO);
@@ -70,7 +70,7 @@ public class PaqueteTest {
     public void testCargarDatosPaqueteSQL() throws Exception {
         System.out.println("cargarDatosPaqueteSQL");
         
-        Paquete paquete = new Paquete(1, "Lucas", "Amador");
+        Paquete paquete = new Paquete(0, 1, "Lucas", 1);
         
         // Reserva IMSERSO
         InfoViajeIMSERSO info = new InfoViajeIMSERSO("Ibiza", 23, 3, 2, null, null, null, null);
@@ -105,11 +105,11 @@ public class PaqueteTest {
         
         
         // Guardamos el paquete
-        paquete.guardar(admin);
-        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, "testReserva");
+        admin = paquete.guardar(admin);
+        
         
         paquete = new Paquete();
-        admin.obtain(paquete, "vendedor = 'Amador'");
+        admin.obtain(paquete, "cliente = 'Lucas'");
         
         paquete.cargarDatosPaqueteSQL(admin);
         

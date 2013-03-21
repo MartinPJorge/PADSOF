@@ -17,11 +17,5 @@ Ref.: http://stackoverflow.com/questions/3911278/inherit-a-static-variable-in-ja
 
 -----------------------
 
-## JUnit ##
-En las pruebas de catálogo, cerramos la BD antes de cada método porque casi todos los métodos requieren esta acción.
 
-## Reserva vuelo ##
-Al hacer una reserva de vuelo 
-
-## Reservas 
 

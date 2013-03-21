@@ -29,7 +29,7 @@ public class Reserva {
     
     public Reserva(int dia, int mes, int year, double precio,
             String tipoReserva) {
-        GregorianCalendar cal = new GregorianCalendar(year, mes+1, dia);
+        GregorianCalendar cal = new GregorianCalendar(year, mes, dia);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         this.fechaInicio = sdf.format(cal.getTime());
         this.precio = precio;
@@ -86,6 +86,11 @@ public class Reserva {
         else {
             this.estado = estado;
         }
+    }
+    
+    @Override
+    public String toString(){
+        return this.tipoReserva+this.fechaInicio+this.estado;
     }
     
     /**

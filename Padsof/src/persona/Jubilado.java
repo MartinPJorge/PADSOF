@@ -11,10 +11,11 @@ import java.util.Date;
  * @author ivan
  */
 public class Jubilado extends Cliente{
+    int id;
     private long numSegSocial;
 
     /**
-     * 
+     * Constructor vacío para Jubilado (necesario para la BD).
      */
     public Jubilado() {
     }
@@ -25,16 +26,18 @@ public class Jubilado extends Cliente{
      * @param nombre
      * @param apellido
      * @param DNI
-     * @param fechaNac
+     * @param dia 
+     * @param mes
+     * @param anio  
      */
-    public Jubilado(long numSegSocial, String nombre, String apellido, String DNI, Date fechaNac) {
-        super(nombre, apellido, DNI, fechaNac);
+    public Jubilado(long numSegSocial, String nombre, String apellido, String DNI, int dia, int mes, int anio) {
+        super(nombre, apellido, DNI, dia, mes, anio);
         this.numSegSocial = numSegSocial;
     }
 
     /**
      * 
-     * @return
+     * @return numSegSocial
      */
     public long getNumSegSocial() {
         return numSegSocial;

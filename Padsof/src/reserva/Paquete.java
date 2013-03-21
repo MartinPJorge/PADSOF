@@ -13,12 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  *
@@ -26,16 +21,18 @@ import java.util.StringTokenizer;
  */
 public class Paquete {
     private int id;
-    private int abierto;  // abierto ->1, cerrado ->0
+    private int idPaq;
+    private int abierto;
     private String cliente;
-    private String vendedor;
+    private int vendedor;
     @Column(collectionClass="Reserva")
     private ArrayList<Reserva> reservas;
 
     
     public Paquete() {}
     
-    public Paquete(int abierto, String cliente, String vendedor) {
+    public Paquete(int idPaq, int abierto, String cliente, int vendedor) {
+        this.idPaq = idPaq;
         this.abierto = abierto;
         this.cliente = cliente;
         this.vendedor = vendedor;
@@ -58,10 +55,7 @@ public class Paquete {
         return cliente;
     }
 
-    public String getVendedor() {
-        return vendedor;
-    }
-
+    
     
     public double getPrecioTotal() {
         double precioTotal = 0.0;
@@ -94,8 +88,21 @@ public class Paquete {
         this.cliente = cliente;
     }
 
-    public void setVendedor(String vendedor) {
+    public int getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(int vendedor) {
         this.vendedor = vendedor;
+    }
+   
+
+    public int getIdPaq() {
+        return idPaq;
+    }
+
+    public void setIdPaq(int idPaq) {
+        this.idPaq = idPaq;
     }
 
     public void addReserva(Reserva reserva) {
@@ -107,7 +114,6 @@ public class Paquete {
         Date hoy = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date cercana = sdf.parse(this.reservas.get(0).getFechaInicio());
-        boolean algunaEmpezada = false;
         
         for(Reserva r : this.reservas) {
             // Si hay alguna reserva que empiece hoy, o ya haya pasado; cerramos.
@@ -127,7 +133,7 @@ public class Paquete {
     
     /**
      * Obtiene las reservas de hotel asociadas al Paquete, a trav&eacute;s de la 
-     * BD.
+     * nombreBD.
      * @param admin
      * @return
      * @throws ClassNotFoundException
@@ -173,7 +179,7 @@ public class Paquete {
             resH.setId(Integer.parseInt(fila2[0]));
             ReservaHotel.setMargen(Double.parseDouble(fila2[4]), "admin");
             
-            
+            resH.setEstado(r.getEstado());
             resHoteles.add(resH);
         }
         
@@ -183,7 +189,7 @@ public class Paquete {
     
     /**
      * Obtiene las reservas de vuelos asociadas al paquete, a trav&eacute;s de la 
-     * BD.
+     * nombreBD.
      * @param admin
      * @return
      * @throws ClassNotFoundException
@@ -242,7 +248,7 @@ public class Paquete {
     /**
      * Este m&eacute;todo ha de llamarse sobre un paquete nada 
      * m&aacute;s hayamos volcado la informaci&oacute;n desde la 
-     * estructura en BD, para cargar correctamente todas las reservas 
+     * estructura en nombreBD, para cargar correctamente todas las reservas 
      * asociadas.
      * @param admin 
      */
@@ -391,28 +397,82 @@ public class Paquete {
     }
     
     /**
+     * Guarda el paquete en la BD.
      * <br/><u>Nota:</u><br/>
-     * Es necesario volver a abrir la conexi&oacute;n con la BD tras hacer la 
-     * llamada.
-     * @param admin 
+     * Tras llamar al m&eacute;todo, reasignar la conexi&oacute;n al retorno.
+     * @param admin
+     * @return AdminBase - la conexi&oacute;n a la BD.
+     * @throws SQLException
+     * @throws ClassNotFoundException 
      */
-    public void guardar(AdminBase admin) throws SQLException, ClassNotFoundException {
+    public AdminBase guardar(AdminBase admin) throws SQLException, ClassNotFoundException {
         admin.save(this);
-        String nombreBD = admin.getConex().getConnection().getMetaData().getURL();
-        String BD = "";
+        String urlBD = admin.getConex().getConnection().getMetaData().getURL();
+        String nombreBD = "";
         admin.close();
         
-        // Consegimos el nombre de la BD
-        StringTokenizer tokens = new StringTokenizer(nombreBD, ":");
+        // Conseguimos el nombre de la nombreBD
+        StringTokenizer tokens = new StringTokenizer(urlBD, ":");
         while(tokens.hasMoreTokens()) {
-            BD = tokens.nextToken(";");
+            nombreBD = tokens.nextToken(":");
         }
+        tokens = new StringTokenizer(nombreBD, ".");
+        nombreBD = tokens.nextToken(".");
+        
         
         Class.forName("org.sqlite.JDBC");
-        Connection conn = DriverManager.getConnection(nombreBD);
+        Connection conn = DriverManager.getConnection(urlBD);
+        Statement stmt =  conn.createStatement();
+        stmt.executeUpdate("UPDATE PaqueteReserva SET related=id WHERE id > 0");
+        
+        stmt.close();
+        conn.close();
+        
+        return AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+    }
+    
+    /**
+     * Modifica el paquete en la BD.
+     * <br/><u>Nota:</u><br/>
+     * Tras llamar al m&eacute;todo, reasignar la conexi&oacute;n al retorno.
+     * @param admin
+     * @return AdminBase - la conexi&oacute;n a la BD.
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase modificar(AdminBase admin) throws SQLException, ClassNotFoundException {
+        admin.modify(this);
+        String urlBD = admin.getConex().getConnection().getMetaData().getURL();
+        String nombreBD = "";
+        admin.close();
+        
+        // Conseguimos el nombre de la nombreBD
+        StringTokenizer tokens = new StringTokenizer(urlBD, ":");
+        while(tokens.hasMoreTokens()) {
+            nombreBD = tokens.nextToken(":");
+        }
+        tokens = new StringTokenizer(nombreBD, ".");
+        nombreBD = tokens.nextToken(".");
+        
+        
+        Class.forName("org.sqlite.JDBC");
+        Connection conn = DriverManager.getConnection(urlBD);
         Statement stmt =  conn.createStatement();
         stmt.executeUpdate("UPDATE PaqueteReserva SET related=id WHERE id > 0");
         stmt.close();
         conn.close();
+        
+        return AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+    }
+
+    /**
+     * Imprime las reservas.
+     */
+    public void mostrarReservas(){
+        int i=1;
+        System.out.println("Reservas del paquete:");
+        for(Reserva r:this.getReservas()){
+            System.out.println(i+".-"+r.toString());
+        }
     }
 }

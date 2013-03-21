@@ -7,13 +7,15 @@ package reserva;
 import java.util.Comparator;
 
 /**
- *
- * @author ivan
+ * Esta clase, que implementa la interface Comparator<Paquete>, la usaremos para ordenar los
+ * Paquetes de la BD de mayor a menor id (usado para asignar el idPaq correcto a los nuevos
+ * Paquete que creemos)
+ * 
  */
 public class IdComparator implements Comparator<Paquete>{
     @Override
     public int compare(Paquete p1, Paquete p2) {
-        return p1.getId() - p2.getId();
+        return p2.getId()-p1.getId();
     }
     
 }

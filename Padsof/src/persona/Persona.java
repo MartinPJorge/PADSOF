@@ -19,7 +19,7 @@ public class Persona {
     private String fechaNac;
     
     /**
-     * 
+     * Constructor vacío para Persona (necesario para la BD).
      */
     public Persona() {
     }
@@ -29,11 +29,13 @@ public class Persona {
      * @param nombre
      * @param apellido
      * @param DNI
-     * @param fechaNac
+     * @param dia 
+     * @param mes
+     * @param year  
      */
     public Persona(String nombre, String apellido, String DNI, int dia, int mes,
             int year){
-        GregorianCalendar cal = new GregorianCalendar(dia, mes+1, year);
+        GregorianCalendar cal = new GregorianCalendar(year, mes, dia);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         this.fechaNac = sdf.format(cal.getTime());
         
@@ -42,22 +44,11 @@ public class Persona {
         this.DNI = DNI;
     }
     
-//    public Persona(int dia, int mes, int year, String nombre, String apellido, 
-//            String DNI){
-//        GregorianCalendar cal = new GregorianCalendar(dia, mes, year);
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//        
-//        this.nombre = nombre;
-//        this.apellido = apellido;
-//        this.DNI = DNI;
-//        this.fechaNac = sdf.format(cal.getTime());
-//    }
-    
     
     
     /**
      * 
-     * @return
+     * @return id
      */
     public int getId() {
         return id;
@@ -73,7 +64,7 @@ public class Persona {
 
     /**
      * 
-     * @return
+     * @return nombre
      */
     public String getNombre(){
         return this.nombre;
@@ -89,7 +80,7 @@ public class Persona {
     
     /**
      * 
-     * @return
+     * @return apellido
      */
     public String getApellido(){
         return this.apellido;
@@ -106,7 +97,7 @@ public class Persona {
     
     /**
      * 
-     * @return
+     * @return DNI
      */
     public String getDNI(){
         return this.DNI;
@@ -122,7 +113,7 @@ public class Persona {
     
     /**
      * 
-     * @return
+     * @return fechaNac
      */
     public String getFechaNac(){
         return this.fechaNac;
@@ -138,7 +129,7 @@ public class Persona {
     
     /**
      * 
-     * @return
+     * @return String con info de Persona
      */
     @Override
     public String toString(){
@@ -147,7 +138,7 @@ public class Persona {
 }
     
     /**
-     * 
+     * Muestra los datos de Persona por pantalla.
      */
     public void mostrarDatos(){
         System.out.println(this.toString());
