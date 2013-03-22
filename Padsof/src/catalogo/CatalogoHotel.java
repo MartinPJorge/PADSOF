@@ -87,7 +87,7 @@ public class CatalogoHotel {
      */
     public void leerCSV() throws FileNotFoundException, IOException, ParseException {
         BufferedReader buf = new BufferedReader(new InputStreamReader(
-                new FileInputStream(this.archivoCSV), Charset.forName("ISO-8859-1")));
+                new FileInputStream(this.archivoCSV), "ISO-8859-1"));
         String nombre;
         String pais;
         String ciudad;
@@ -283,6 +283,9 @@ public class CatalogoHotel {
         // Ejecutamos la query y cerramos la conexion.
         resultados = admin.obtainAll(infoHotel, query);
         admin.close();
+        for(InfoHotel info : resultados) {
+            info.setId(0);
+        }
 
         return resultados;
     }

@@ -86,7 +86,7 @@ public class CatalogoViajIMSERSO {
      */
     public void leerCSV() throws FileNotFoundException, IOException, ParseException {
         BufferedReader buf = new BufferedReader(new InputStreamReader(
-                new FileInputStream(this.archivoCSV), Charset.forName("ISO-8859-1")));
+                new FileInputStream(this.archivoCSV), "ISO-8859-1"));
         String nombre;
         double precioCliente;
         int dias;
@@ -191,6 +191,10 @@ public class CatalogoViajIMSERSO {
         // Ejecutamos la query y cerramos la conexion.
         resultados = admin.obtainAll(infoVO, query);
         admin.close();
+        
+        for(InfoViajeIMSERSO info : resultados) {
+            info.setId(0);
+        }
 
         return resultados;
     }
