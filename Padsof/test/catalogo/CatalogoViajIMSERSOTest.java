@@ -20,8 +20,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test de la clase CatalogoViajIMSERSO
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class CatalogoViajIMSERSOTest {
     private static CatalogoViajIMSERSO catalogo;

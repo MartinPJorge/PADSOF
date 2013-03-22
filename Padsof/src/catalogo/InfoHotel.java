@@ -5,11 +5,13 @@
 package catalogo;
 
 /**
+ * Clase InfoHotel
  *
- * @author e265923
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
-public class InfoHotel {  
-    
+public class InfoHotel {
+
     private int id;
     private String nombre;
     private String pais;
@@ -26,11 +28,12 @@ public class InfoHotel {
     private double supPC;
     private String caracteristicas;
 
-    public InfoHotel () {}
-    
-    public InfoHotel(String nombre, String pais, String ciudad, String telefono, String direccion, String CP, 
-            int categoria, double precioSimple, double precioDoble, double precioTriple, 
-                double supDesayuno, double supMP, double supPC, String caracteristicas) {
+    public InfoHotel() {
+    }
+
+    public InfoHotel(String nombre, String pais, String ciudad, String telefono, String direccion, String CP,
+            int categoria, double precioSimple, double precioDoble, double precioTriple,
+            double supDesayuno, double supMP, double supPC, String caracteristicas) {
         this.nombre = nombre;
         this.pais = pais;
         this.ciudad = ciudad;
@@ -47,25 +50,24 @@ public class InfoHotel {
         this.caracteristicas = caracteristicas;
     }
 
-    
     /**
-     * 
+     *
      * @return id del objeto (para la BD)
      */
     public int getId() {
         return id;
-        }
-    
+    }
+
     /**
-     * 
+     *
      * @return nombre del hotel
      */
     public String getNombre() {
         return nombre;
     }
-    
+
     /**
-     * 
+     *
      * @return CP
      */
     public String getCP() {
@@ -73,15 +75,15 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return String con las caracter&iacute;sticas.
      */
     public String getCaracteristicas() {
         return caracteristicas;
     }
-    
+
     /**
-     * 
+     *
      * @return categor&iacute;a
      */
     public int getCategoria() {
@@ -89,7 +91,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return ciudad del hotel
      */
     public String getCiudad() {
@@ -97,16 +99,15 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return direcci&oacute;n del hotel
      */
     public String getDireccion() {
         return direccion;
     }
 
-
     /**
-     * 
+     *
      * @return pa&iacute;s en el que est&aacute; el hotel
      */
     public String getPais() {
@@ -114,7 +115,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return precio de habitaci&oacute;n doble
      */
     public double getPrecioDoble() {
@@ -122,7 +123,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return precio de habitaci&oacute;n simple
      */
     public double getPrecioSimple() {
@@ -130,7 +131,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return precio de habitaci&oacute;n triple
      */
     public double getPrecioTriple() {
@@ -138,7 +139,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return precio del suplemento del desayuno
      */
     public double getSupDesayuno() {
@@ -146,7 +147,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return precio del suplemento de la media pensi&oacute;n
      */
     public double getSupMP() {
@@ -154,7 +155,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return precio del suplemento de la pensi&oacute;n completa
      */
     public double getSupPC() {
@@ -162,7 +163,7 @@ public class InfoHotel {
     }
 
     /**
-     * 
+     *
      * @return n&uacute;mero de tel&eacute;fono
      */
     public String getTelefono() {
@@ -228,22 +229,17 @@ public class InfoHotel {
     public void setCaracteristicas(String caracteristicas) {
         this.caracteristicas = caracteristicas;
     }
-    
-    
 
-    
     @Override
     /**
      * @return devuelve la info. en forma de String
      */
     public String toString() {
-        return "InfoHotel{" + "nombre=" + nombre + ", pais=" + pais + ", ciudad=" + ciudad +
-                ", telefono=" + telefono + ", direccion=" + direccion + ", CP=" + CP +
-                ", categoria=" + categoria + ", precioSimple=" + precioSimple + 
-                ", precioDoble=" + precioDoble + ", precioTriple=" + precioTriple + 
-                ", supDesayuno=" + supDesayuno + ", supMP=" + supMP + 
-                ", supPC=" + supPC + ", caracteristicas=" + caracteristicas + '}';
+        return "InfoHotel{" + "nombre=" + nombre + ", pais=" + pais + ", ciudad=" + ciudad
+                + ", telefono=" + telefono + ", direccion=" + direccion + ", CP=" + CP
+                + ", categoria=" + categoria + ", precioSimple=" + precioSimple
+                + ", precioDoble=" + precioDoble + ", precioTriple=" + precioTriple
+                + ", supDesayuno=" + supDesayuno + ", supMP=" + supMP
+                + ", supPC=" + supPC + ", caracteristicas=" + caracteristicas + '}';
     }
-    
-    
 }

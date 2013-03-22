@@ -7,10 +7,13 @@ package persona;
 import java.util.Date;
 
 /**
+ * Clase Jubilado
  *
- * @author ivan
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
-public class Jubilado extends Cliente{
+public class Jubilado extends Cliente {
+
     int id;
     private long numSegSocial;
 
@@ -21,14 +24,14 @@ public class Jubilado extends Cliente{
     }
 
     /**
-     * 
+     *
      * @param numSegSocial
      * @param nombre
      * @param apellido
      * @param DNI
-     * @param dia 
+     * @param dia
      * @param mes
-     * @param anio  
+     * @param anio
      */
     public Jubilado(long numSegSocial, String nombre, String apellido, String DNI, int dia, int mes, int anio) {
         super(nombre, apellido, DNI, dia, mes, anio);
@@ -36,7 +39,7 @@ public class Jubilado extends Cliente{
     }
 
     /**
-     * 
+     *
      * @return numSegSocial
      */
     public long getNumSegSocial() {
@@ -44,7 +47,7 @@ public class Jubilado extends Cliente{
     }
 
     /**
-     * 
+     *
      * @param numSegSocial
      */
     public void setNumSegSocial(long numSegSocial) {
@@ -58,8 +61,7 @@ public class Jubilado extends Cliente{
     }
 
     @Override
-    public void mostrarDatos(){
+    public void mostrarDatos() {
         System.out.println(this.toString());
     }
-    
 }

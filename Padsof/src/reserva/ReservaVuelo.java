@@ -4,21 +4,17 @@
  */
 package reserva;
 
-import cat.quickdb.db.AdminBase;
-import es.uam.eps.pads.services.ServicesFactory;
-import es.uam.eps.pads.services.flights.FlightsProvider;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.StringTokenizer;
+
 
 /**
+ * Clase ReservaVuelo
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class ReservaVuelo extends Reserva {
     private int id;
@@ -112,8 +108,7 @@ public class ReservaVuelo extends Reserva {
      */
     public static void setMargenSQL(double margen, String usuario, String nombreBD) throws ClassNotFoundException, SQLException {
         if(usuario.equals("admin")) {
-            ReservaVuelo.setMargen(margen);
-            
+            ReservaVuelo.setMargen(margen);           
             
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db");

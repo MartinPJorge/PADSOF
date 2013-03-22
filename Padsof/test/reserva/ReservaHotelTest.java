@@ -15,8 +15,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test de la clase ReservaHotelTest
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class ReservaHotelTest {
     private static AdminBase admin;

@@ -5,11 +5,13 @@
 package catalogo;
 
 /**
+ * Clase InfoViajeIMSERSO
  *
- * @author e265923
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class InfoViajeIMSERSO {
-    
+
     private int id;
     private String nombre;
     private double precio;
@@ -20,12 +22,12 @@ public class InfoViajeIMSERSO {
     private String localidades;
     private String descripcion;
 
-    
-    public InfoViajeIMSERSO() {}
-    
+    public InfoViajeIMSERSO() {
+    }
+
     public InfoViajeIMSERSO(String nombre, double precio, int dias, int noches,
-                            String fechaSalida, String locSalida, 
-                            String localidades, String descripcion) {
+            String fechaSalida, String locSalida,
+            String localidades, String descripcion) {
         this.nombre = nombre;
         this.precio = precio;
         this.dias = dias;
@@ -37,7 +39,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return el id de la clase (usado para la BD)
      */
     public int getId() {
@@ -45,7 +47,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return la descripci&oacute;n del viaje organizado
      */
     public String getDescripcion() {
@@ -53,7 +55,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return d&iaacute;s que dura el viaje
      */
     public int getDias() {
@@ -61,7 +63,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return fechas de salida del viaje
      */
     public String getFechaSalida() {
@@ -69,7 +71,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return localidad de salida
      */
     public String getLocSalida() {
@@ -77,7 +79,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return localidades por las que pasa el viaje
      */
     public String getLocalidades() {
@@ -85,7 +87,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return noches que dura el viaje
      */
     public int getNoches() {
@@ -93,7 +95,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return nombre del viaje del IMSERSO
      */
     public String getNombre() {
@@ -101,7 +103,7 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
+     *
      * @return precio del viaje
      */
     public double getPrecio() {
@@ -114,76 +116,74 @@ public class InfoViajeIMSERSO {
     }
 
     /**
-     * 
-     * @param id 
+     *
+     * @param id
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * 
-     * @param nombre 
+     *
+     * @param nombre
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * 
-     * @param precio 
+     *
+     * @param precio
      */
     public void setPrecio(double precio) {
         this.precio = precio;
     }
 
     /**
-     * 
-     * @param dias 
+     *
+     * @param dias
      */
     public void setDias(int dias) {
         this.dias = dias;
     }
 
     /**
-     * 
-     * @param noches 
+     *
+     * @param noches
      */
     public void setNoches(int noches) {
         this.noches = noches;
     }
 
     /**
-     * 
-     * @param fechaSalida 
+     *
+     * @param fechaSalida
      */
     public void setFechaSalida(String fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
 
     /**
-     * 
-     * @param locSalida 
+     *
+     * @param locSalida
      */
     public void setLocSalida(String locSalida) {
         this.locSalida = locSalida;
     }
 
     /**
-     * 
-     * @param localidades 
+     *
+     * @param localidades
      */
     public void setLocalidades(String localidades) {
         this.localidades = localidades;
     }
 
     /**
-     * 
-     * @param descripcion 
+     *
+     * @param descripcion
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
-    
 }

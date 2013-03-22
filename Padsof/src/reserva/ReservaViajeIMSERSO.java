@@ -14,28 +14,33 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * Clase ReservaViajeIMSERSO
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class ReservaViajeIMSERSO extends Reserva {
+
     private int id;
     private static double margen = 0.0;
     private int numPersonas;
-    @Column(type=Properties.TYPES.FOREIGNKEY)
+    @Column(type = Properties.TYPES.FOREIGNKEY)
     private InfoViajeIMSERSO infoViajeIMSERSO;
-    
-    public ReservaViajeIMSERSO() {this.infoViajeIMSERSO = null;}
-    
+
+    public ReservaViajeIMSERSO() {
+        this.infoViajeIMSERSO = null;
+    }
+
     public ReservaViajeIMSERSO(int dia, int mes, int year, int numPersonas,
             InfoViajeIMSERSO infoViajeIMSERSO) {
         super(dia, mes, year, infoViajeIMSERSO.getPrecio(), "reservaIMSERSO");
-        
+
         this.numPersonas = numPersonas;
         this.infoViajeIMSERSO = infoViajeIMSERSO;
-        
+
         this.calcularPrecio();
     }
-    
+
     @Override
     public int getId() {
         return id;
@@ -43,7 +48,7 @@ public class ReservaViajeIMSERSO extends Reserva {
 
     public static double getMargen() {
         return ReservaViajeIMSERSO.margen;
-    }    
+    }
 
     public int getNumPersonas() {
         return numPersonas;
@@ -56,7 +61,7 @@ public class ReservaViajeIMSERSO extends Reserva {
     public void setInfoViajeIMSERSO(InfoViajeIMSERSO infoViajeIMSERSO) {
         this.infoViajeIMSERSO = infoViajeIMSERSO;
     }
-    
+
     @Override
     public void setId(int id) {
         this.id = id;
@@ -65,72 +70,71 @@ public class ReservaViajeIMSERSO extends Reserva {
     public void setNumPersonas(int numPersonas) {
         this.numPersonas = numPersonas;
     }
-    
+
     /**
      * Calcula el precio de la reserva.
      */
     public void calcularPrecio() {
         double precio;
-        
+
         precio = this.numPersonas * this.precio;
         precio += precio * this.margen;
-        
+
         this.precio = precio;
     }
-    
+
     public static void setMargen(double margen) {
         ReservaViajeIMSERSO.margen = margen;
     }
-    
+
     /**
-     * Cambia el margen de beneficios de las reservas de viajes organizados
-     * de que el administrador lo solicite.
+     * Cambia el margen de beneficios de las reservas de viajes organizados de
+     * que el administrador lo solicite.
+     *
      * @param margen
-     * @param usuario 
+     * @param usuario
      */
     private static void setMargen(double margen, String usuario) {
-        if(usuario.equals("admin")) {
+        if (usuario.equals("admin")) {
             setMargen(margen);
         }
     }
-    
+
     /**
-     * Cambia el margen de beneficio de las reservas de VO, solo si es el 
-     * administrador el que solicita la acci&oacute;n. Adem&aacute;s se 
-     * encarga de actualizar los registros de la BD.
-     * <br/><u>Nota:</u><br/>
-     * Es necesario cerrar toda conexi&oacute;n con la BD antes de llamar a este 
-     * m&eacute;todo, adem&aacute;s de pasar por argumento el nombre de la BD a 
+     * Cambia el margen de beneficio de las reservas de VO, solo si es el
+     * administrador el que solicita la acci&oacute;n. Adem&aacute;s se encarga
+     * de actualizar los registros de la BD. <br/><u>Nota:</u><br/> Es necesario
+     * cerrar toda conexi&oacute;n con la BD antes de llamar a este
+     * m&eacute;todo, adem&aacute;s de pasar por argumento el nombre de la BD a
      * utilizar en este momento.
-     * 
+     *
      * @param margen
      * @param usuario
      * @throws ClassNotFoundException
-     * @throws SQLException 
+     * @throws SQLException
      */
     public static void setMargenSQL(double margen, String usuario, String nombreBD) throws ClassNotFoundException, SQLException {
-        if(usuario.equals("admin")) {
+        if (usuario.equals("admin")) {
             ReservaViajeIMSERSO.setMargen(margen);
 
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:"+ nombreBD +".db");
-            Statement stmt =  conn.createStatement();
-            stmt.executeUpdate("UPDATE ReservaViajeIMSERSO SET margen="+
-            ReservaViajeIMSERSO.getMargen()+" WHERE id > -1");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:" + nombreBD + ".db");
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE ReservaViajeIMSERSO SET margen="
+                    + ReservaViajeIMSERSO.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
-        }        
+        }
     }
-    
+
     /**
-     * 
+     *
      * @return cantidad pagada de la reserva
      */
     public double calularPagado() {
-        if(this.getEstado().equals("reservado") || this.getEstado().equals("canceladoTrasReservar")) {
+        if (this.getEstado().equals("reservado") || this.getEstado().equals("canceladoTrasReservar")) {
             return 0.1 * this.getPrecio();
-        }
-        else {
+        } else {
             return this.precio;
         }
     }

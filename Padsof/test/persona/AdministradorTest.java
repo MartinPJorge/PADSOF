@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import myexception.ClosedPackageExc;
 import myexception.NoResultsExc;
 import myexception.PermissionExc;
 import org.junit.*;
@@ -22,43 +23,45 @@ import static org.junit.Assert.*;
 import reserva.*;
 
 /**
+ * Test de la clase Administrador
  *
- * @author ivan
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class AdministradorTest {
+
     private AdminBase admin;
-    private Administrador adm; 
-    private Vendedor v1; 
-    private Cliente c1; 
+    private Administrador adm;
+    private Vendedor v1;
+    private Cliente c1;
     private Cliente c2;
     private Paquete p1;
     private Paquete p2;
-    
+
     public AdministradorTest() {
     }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
-    public void setUp(){
-        
+    public void setUp() {
+
         // Reserva Hotel
         InfoHotel infoHotel = new InfoHotel("Palace", "España", "Madrid", null,
                 null, null, 5, 300, 400, 450, 40, 80, 120, "lujoso");
-        ReservaHotel resHotel = new ReservaHotel(1, 4, 1994, "simple","supMP", 
-                                                infoHotel);
-        
+        ReservaHotel resHotel = new ReservaHotel(1, 4, 1994, "simple", "supMP",
+                infoHotel);
+
         // Reserva IMSERSO - 2
         InfoViajeIMSERSO info2 = new InfoViajeIMSERSO("Suiza", 23, 3, 2, null, null, null, null);
         ReservaViajeIMSERSO reserva2 = new ReservaViajeIMSERSO(1, 2, 2007, 2, info2);
-        
+
         // ReservaVuelo
         GregorianCalendar cal = new GregorianCalendar(2014, 0, 1);
         Date salida = cal.getTime();
@@ -78,12 +81,17 @@ public class AdministradorTest {
                 "Madrid", "Bélgica, Holanda", "--");
         ReservaViajOrg reservaVO = new ReservaViajOrg(2, 9, 2007, 5, infoVO);
         ReservaViajOrg reservaVO2 = new ReservaViajOrg(2, 9, 2007, 2, infoVO);
-        p1.addReserva(reservaVO);
-        p1.addReserva(resHotel);
-        p1.addReserva(reservaVuelo);
-        p1.addReserva(reserva2);
-        p1.addReserva(reservaVO2);
-        p2.addReserva(reservaVO);
+        try {
+            p1.addReserva(reservaVO);
+            p1.addReserva(resHotel);
+            p1.addReserva(reservaVuelo);
+            p1.addReserva(reserva2);
+            p1.addReserva(reservaVO2);
+            p2.addReserva(reservaVO);
+        } catch (ClosedPackageExc ex) {
+            Logger.getLogger(AdministradorTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
         admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, "testDBAdministrador");
         try {
@@ -102,7 +110,8 @@ public class AdministradorTest {
 
     /**
      * Test of getPaquetes method, of class Vendedor. Administrador example.
-     * Misma prueba de obtencion de paquetes de la BD, ahora con un Administrador.
+     * Misma prueba de obtencion de paquetes de la BD, ahora con un
+     * Administrador.
      */
     @Test
     public void testGetPaquetes() {
@@ -110,13 +119,13 @@ public class AdministradorTest {
             List<Paquete> lleno = new ArrayList<Paquete>();
             lleno.add(p1);
             lleno.add(p2);
-            
+
             List<Paquete> packsBDAdm = adm.getPaquetes("testDBAdministrador");
-            for(Paquete p : lleno){
+            for (Paquete p : lleno) {
                 boolean contenidoEn = false;
-                for(Paquete pDB : packsBDAdm){
-                    if(p.getIdPaq()==pDB.getIdPaq()){
-                        contenidoEn=true;
+                for (Paquete pDB : packsBDAdm) {
+                    if (p.getIdPaq() == pDB.getIdPaq()) {
+                        contenidoEn = true;
                         break;
                     }
                 }
@@ -127,11 +136,11 @@ public class AdministradorTest {
             fail("Los paquetes obtenidos de la BD no coinciden con los originales.");
         }
     }
-    
+
     /**
-     * Test of DB procedures.
-     * En este test, en lugar de comprobar algun metodo de la clase Administrador, comprobamos que
-     * podemos guardar objetos de dicha clase en la DB y obtenerlos sin problemas.
+     * Test of DB procedures. En este test, en lugar de comprobar algun metodo
+     * de la clase Administrador, comprobamos que podemos guardar objetos de
+     * dicha clase en la DB y obtenerlos sin problemas.
      */
     @Test
     public void testAdministradorDB() {

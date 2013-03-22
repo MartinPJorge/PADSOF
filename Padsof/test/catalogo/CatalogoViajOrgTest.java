@@ -19,8 +19,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * Test de la clase CatalogoViajeOrg
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class CatalogoViajOrgTest {
     private static CatalogoViajOrg catalogo;
@@ -102,7 +104,6 @@ public class CatalogoViajOrgTest {
      */
     @Test
     public void testBuscarViajeOrg() {
-        InfoViajOrg info = new InfoViajOrg();
         ArrayList<InfoViajOrg> arr = new ArrayList<InfoViajOrg>();
         
         arr = catalogo.buscarViajeOrg(null, -1, -1, -1, null, null);

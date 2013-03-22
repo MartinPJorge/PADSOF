@@ -7,10 +7,13 @@ package catalogo;
 import java.util.Date;
 
 /**
+ * Clase InfoVuelo
  *
- * @author e265923
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class InfoVuelo {
+
     final private String origen;
     final private String destino;
     final private Date salida;
@@ -26,7 +29,7 @@ public class InfoVuelo {
         this.asientos = asientos;
         this.precio = precio;
     }
-    
+
     public int getAsientos() {
         return asientos;
     }
@@ -50,12 +53,11 @@ public class InfoVuelo {
     public Date getSalida() {
         return salida;
     }
-    
+
     @Override
     public String toString() {
-        return "InfoVuelo{" + "origen=" + origen + ", destino=" + destino +
-                ", salida=" + salida + ", llegada=" + llegada + ", asientos=" +
-                asientos + ", precio=" + precio + '}';
+        return "InfoVuelo{" + "origen=" + origen + ", destino=" + destino
+                + ", salida=" + salida + ", llegada=" + llegada + ", asientos="
+                + asientos + ", precio=" + precio + '}';
     }
-
 }

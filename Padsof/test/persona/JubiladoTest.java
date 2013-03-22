@@ -9,14 +9,17 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 /**
+ * Test de la clase Jubilado
  *
- * @author ivan
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class JubiladoTest {
+
     private AdminBase admin;
-    private Jubilado j1; 
+    private Jubilado j1;
     private Jubilado j2;
-    
+
     public JubiladoTest() {
     }
 
@@ -27,7 +30,7 @@ public class JubiladoTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() {
         j1 = new Jubilado(111119999, "Miguel", "Posada", "5647382D", 11, 3, 1993);
@@ -37,25 +40,24 @@ public class JubiladoTest {
         admin.save(j2);
         admin.close();
     }
-    
+
     @After
     public void tearDown() {
     }
 
-
     /**
-     * Test of DB procedures.
-     * En este test, en lugar de comprobar algun metodo de la clase Jubilado, comprobamos que
-     * podemos guardar objetos de dicha clase en la DB y obtenerlos sin problemas.
+     * Test of DB procedures. En este test, en lugar de comprobar algun metodo
+     * de la clase Jubilado, comprobamos que podemos guardar objetos de dicha
+     * clase en la DB y obtenerlos sin problemas.
      */
     @Test
     public void testVendedorDB() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, "testDBJubilado");
         Jubilado j = new Jubilado();
-        admin.obtain(j, "numSegSocial="+j1.getNumSegSocial());
+        admin.obtain(j, "numSegSocial=" + j1.getNumSegSocial());
         assertEquals(j.getNumSegSocial(), j1.getNumSegSocial());
-        j=new Jubilado();
-        admin.obtain(j, "numSegSocial="+j2.getNumSegSocial());
+        j = new Jubilado();
+        admin.obtain(j, "numSegSocial=" + j2.getNumSegSocial());
         assertEquals(j.getNumSegSocial(), j2.getNumSegSocial());
         admin.close();
     }

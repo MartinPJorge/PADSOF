@@ -14,33 +14,35 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
+ * Test de la clase Reserva
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class ReservaTest {
+
     private static AdminBase admin;
-    
+
     public ReservaTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
         admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, "testReserva");
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
         admin.close();
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
-
 
     /**
      * Test of setEstado method, of class Reserva.
@@ -50,7 +52,7 @@ public class ReservaTest {
         System.out.println("setEstado");
         InfoViajeIMSERSO info = new InfoViajeIMSERSO("Ibiza", 1, 1, 1, null, null, null, null);
         ReservaViajeIMSERSO rIMS = new ReservaViajeIMSERSO(1, 1, 1991, 2, info);
-        
+
         // Guardamos la reserva y cambiamos el estado.
         admin.save(rIMS);
         admin.obtain(rIMS, "id = 1");
@@ -59,7 +61,7 @@ public class ReservaTest {
         // Obtenemos lo guardado
         rIMS = new ReservaViajeIMSERSO();
         admin.obtain(rIMS, "id = 1");
-        
+
         assertEquals("canceladoTrasReservar", rIMS.getEstado());
     }
 }

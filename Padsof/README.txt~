@@ -1,0 +1,27 @@
+PROYECTO DE ANÁLISIS Y DISEÑO DE SOFTWARE
+Autores: Jorge Martín, Iván Márquez
+
+
+Librerías usadas en nuestro proyecto:
+sqlite-jdbc-3.7.2.jar
+QuickDB-1.2.jar
+service.jar
+
+Las librerías se pueden descargar de:
+https://www.dropbox.com/sh/zhvcimwuxjp55ew/J5mqx__3In
+
+QuickDB: http://code.google.com/p/quickdb/
+
+
+
+
+Problemas que han surgido durante la implementación y su resolución:
+
+Relacionados con la Base de Datos y QuickDB:
+- Los Enum no podemos utilizarlos porque la BD nos da errores al intentar almacenarlos. Cambiamos Enum por String.
+- Los Date tampoco los hemos podido utilizar porque daban errores al guardarlos. Cambiamos Date por String.
+- Los boolean no son soportados por QuickDB. Cambiamos boolean por int (true=1, false=0).
+- No podemos declarar algunas clases como abstractas porque QuickDB no soporta la herencia de clases abstractas y no podríamos almacenar las instancias de las clases que heredan de ella. Por esto, la clase Reserva y la clase Persona no son abstractas aunque deberían serlo.
+- Algunos métodos deberían ser privados de la clase, pero QuickDB necesita que todos los métodos sean públicos.
+- Algunos atributos se podrían declarar como final (los atributos de información de cada uno de los tipos de Reserva), pero una vez más, QuickDB no los soporta.
+

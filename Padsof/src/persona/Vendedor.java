@@ -16,47 +16,47 @@ import myexception.NoResultsExc;
 import myexception.PermissionExc;
 import reserva.Paquete;
 
-
 /**
+ * Clase Vendedor
  *
- * @author e265923
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
-public class Vendedor extends Persona{
+public class Vendedor extends Persona {
+
     private int id;
     private int idUsr;
     private String password;
     private int jefe;
-//    @Column(collectionClass="reserva.Paquete")
-//    private ArrayList<Paquete> paquete;
-    
-    
+
     /**
      * Constructor vacío para Vendedor (necesario para la BD).
      */
-    public Vendedor() {}
-    
+    public Vendedor() {
+    }
+
     /**
-     * 
+     *
      * @param nombre
      * @param apellido
      * @param DNI
-     * @param dia 
+     * @param dia
      * @param idUsr
-     * @param mes 
-     * @param anio 
+     * @param mes
+     * @param anio
      * @param password
      * @param jefe
      */
     public Vendedor(String nombre, String apellido, String DNI, int dia, int mes,
-            int anio, int idUsr, String password, int jefe){
+            int anio, int idUsr, String password, int jefe) {
         super(nombre, apellido, DNI, dia, mes, anio);
         this.idUsr = idUsr;
         this.password = password;
         this.jefe = jefe;
-}
+    }
 
     /**
-     * 
+     *
      * @return id
      */
     @Override
@@ -65,7 +65,7 @@ public class Vendedor extends Persona{
     }
 
     /**
-     * 
+     *
      */
     @Override
     public void setId(int id) {
@@ -73,7 +73,7 @@ public class Vendedor extends Persona{
     }
 
     /**
-     * 
+     *
      * @return idUsr
      */
     public int getIdUsr() {
@@ -81,43 +81,39 @@ public class Vendedor extends Persona{
     }
 
     /**
-     * 
+     *
      * @param idUsr
      */
     public void setIdUsr(int idUsr) {
         this.idUsr = idUsr;
     }
-    
 
     /**
-     * Busca en la BD los Paquetes relacionados con un Vendedor y los devuelve en forma
-     * de ArrayList<Paquete>.
-     * Si no encuentra ningún paquete para el vendedor en cuestión, devuelve una Excepcion.
+     * Busca en la BD los Paquetes relacionados con un Vendedor y los devuelve
+     * en forma de ArrayList<Paquete>. Si no encuentra ningún paquete para el
+     * vendedor en cuestión, devuelve una Excepcion.
+     *
      * @param PacksBDname
      * @return ArrayList<Paquete> con los paquetes del vendedor
      * @throws NoResultsExc
      */
     public ArrayList<Paquete> getPaquetes(String PacksBDname) throws NoResultsExc {
         ArrayList<Paquete> packs = new ArrayList<Paquete>();
-        Paquete paquete = new Paquete();
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, PacksBDname);
-        String query = "vendedor="+this.getIdUsr();
-        
+
         String queryIds = "SELECT p.id FROM Paquete AS p WHERE p.vendedor =" + this.getIdUsr();
         Object[] o = admin.obtainJoin(queryIds, 1);
-        if(o==null) {
+        if (o == null) {
             admin.close();
             return null;
         }
-        for(Object nav : o) {
+        for (Object nav : o) {
             String[] res = (String[]) nav;
             Paquete paq = new Paquete();
             admin.obtain(paq, "id = " + res[0]);
             packs.add(paq);
         }
-        
-       // admin.obtain(paquete, query);
-       // packs=admin.obtainAll(paquete, query);
+
         for (Paquete p : packs) {
             try {
                 p.cargarDatosPaqueteSQL(admin);
@@ -131,9 +127,9 @@ public class Vendedor extends Persona{
         admin.close();
         return packs;
     }
-    
+
     /**
-     * 
+     *
      * @return password
      */
     public String getPassword() {
@@ -141,7 +137,7 @@ public class Vendedor extends Persona{
     }
 
     /**
-     * 
+     *
      * @return jefe
      */
     public int getJefe() {
@@ -149,47 +145,48 @@ public class Vendedor extends Persona{
     }
 
     /**
-     * 
+     *
      * @param jefe
      */
     public void setJefe(int jefe) {
         this.jefe = jefe;
     }
 
-    
     /**
-     * 
+     *
      * @param password
      */
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
+
     /**
-     * Determina si el Vendedor sobre el que llamamos el m&eacute;todo es un Administrador o no
+     * Determina si el Vendedor sobre el que llamamos el m&eacute;todo es un
+     * Administrador o no
+     *
      * @return boolean
      */
-    public boolean isAdmin() throws PermissionExc{
+    public boolean isAdmin() throws PermissionExc {
         boolean isAdmin;
-        isAdmin = (this.getIdUsr()==0 && this.getJefe()==this.getIdUsr());
+        isAdmin = (this.getIdUsr() == 0 && this.getJefe() == this.getIdUsr());
         return isAdmin;
     }
-    
+
     /**
-     * 
+     *
      * @return String con info de Vendedor
      */
     @Override
-    public String toString(){
+    public String toString() {
         String v = super.toString() + this.id + this.password;
         return v;
-}
+    }
+
     /**
      * Muestra los datos de Vendedor por pantalla.
      */
     @Override
-    public void mostrarDatos(){
+    public void mostrarDatos() {
         System.out.println(this.toString());
     }
 }

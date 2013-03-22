@@ -5,17 +5,16 @@
 package reserva;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import org.junit.*;
 
 /**
+ * Test de la clase Vuelos
  *
- * @author Jorge
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
 public class VuelosTest {
     
@@ -45,12 +44,11 @@ public class VuelosTest {
      */
     @Test
     public void testParametrosObtenerVuelos() {
-        System.out.println("obtenerVuelos");
+        System.out.println("parametrosObtenerVuelos");
         String salida = "";
         String llegada = "";
         Date ida = null;
         Date vuelta = null;
-        List expResult = null;
         List result = Vuelos.obtenerVuelos(salida, llegada, ida, vuelta);
         assertEquals(0, result.size());
     }
@@ -62,12 +60,9 @@ public class VuelosTest {
      */
     @Test
     public void testObtenerVuelosNoExisten() {
-        System.out.println("obtenerVuelos");
-        String salida = "";
-        String llegada = "";
+        System.out.println("obtenerVuelosNoExisten");
         Date ida = null;
         Date vuelta = null;
-        List expResult = null;
         List result = Vuelos.obtenerVuelos("Jarafuel", "Requena", ida, vuelta);
         assertEquals(0, result.size());
     }
@@ -86,5 +81,34 @@ public class VuelosTest {
         ReservaVuelo expResult = null;
         ReservaVuelo result = Vuelos.reservar(vuelo, nombreApellido, DNI);
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Comprobamos que se obtienen resultados en la consulta de vuelos disponibles 
+     * entre 2 aeropuertos.
+     */
+    @Test
+    public void testObtenerVuelos() {
+        System.out.println("obtenerVuelos");
+        List<String> vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", 
+                "PERTH JANDAKOT", new Date(), new Date());
+        
+        assertEquals(false, vuelos.isEmpty());
+    }
+    
+    /**
+     * Prueba a obtener todos los vuelos existentes entre Berl&iacute;n y Londres 
+     * entre las fechas especificadas.
+     */
+    @Test
+    public void testObtenerVuelosCiudad() {
+        System.out.println("obtenerVuelosCiudad");
+        
+        
+        Date start= new GregorianCalendar(2014, 0, 1).getTime();
+        Date end= new GregorianCalendar(2014, 0, 1).getTime();
+        List<String> vuelos = Vuelos.obtenerVuelosCiudad("BERLIN", 
+                "LONDON", start, end);
+        assertEquals(false, vuelos.isEmpty());
     }
 }

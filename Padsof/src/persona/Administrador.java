@@ -10,22 +10,23 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Clase Administrador
  *
- * @author e265923
+ * @author Jorge Martin, Ivan Marquez
+ * @version 1.0
  */
-public class Administrador extends Vendedor{
+public class Administrador extends Vendedor {
+
     int id;
-//    @Column(collectionClass="Vendedor")
-//    private List<Vendedor> vendedor;
 
     /**
      * Constructor vacío para Administrador (necesario para la BD).
      */
     public Administrador() {
     }
-    
+
     /**
-     * 
+     *
      * @param nombre
      * @param apellido
      * @param DNI
@@ -33,27 +34,10 @@ public class Administrador extends Vendedor{
      * @param id
      * @param password
      */
-    public Administrador(String nombre, String apellido, String DNI, int dia, int mes, int anio, 
+    public Administrador(String nombre, String apellido, String DNI, int dia, int mes, int anio,
             int id, String password) {
         super(nombre, apellido, DNI, dia, mes, anio, id, password, id);
-//        this.vendedor = new ArrayList<Vendedor>(); 
     }
-
-//    /**
-//     * 
-//     * @return
-//     */
-//    public List<Vendedor> getVendedor() {
-//        return vendedor;
-//    }
-//
-//    /**
-//     * 
-//     * @param vendedor
-//     */
-//    public void setVendedor(List<Vendedor> vendedor) {
-//        this.vendedor = vendedor;
-//    }
 
     @Override
     public String toString() {
@@ -65,6 +49,4 @@ public class Administrador extends Vendedor{
     public void mostrarDatos() {
         System.out.println(this.toString());
     }
-    
-    
 }
