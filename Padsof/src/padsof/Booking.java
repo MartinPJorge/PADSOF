@@ -111,8 +111,7 @@ public class Booking {
 
     /**
      * Busca en la BD un Paquete por su campo idPaq.
-     * <br/><u>Nota</u>:<br/>
-     * Hay que cerrar toda conexi&oacute;n con la BD antes de llamar a este m&eacute;todo.
+     *
      * @param id
      * @return Paquete encontrado
      */
@@ -541,9 +540,6 @@ public class Booking {
     /**
      * Devuelve la Facturación total de todos los servicios reservados por todos
      * los Vendedores.
-     * <br/><u>Nota</u>:<br/>
-     * Antes de llamar a este m&eacute;todo es necesario haber cerrado toda posible 
-     * conexi&oacute;n con la BD.
      *
      * @return Facturacion de total de todos los Vendedores.
      */
