@@ -4,7 +4,10 @@
  */
 package persona;
 
+import GUI.Recursos.DateValidator;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -142,5 +145,16 @@ public class Persona {
      */
     public void mostrarDatos() {
         System.out.println(this.toString());
+    }
+    
+    public boolean is3Edad() {
+        int year = DateValidator.obtainYear(this.fechaNac);
+        
+        Calendar cal = GregorianCalendar.getInstance();
+        int yearAct = cal.get(Calendar.YEAR);
+        
+        if((yearAct - year) >= 65) {return true;}
+        
+        return false;
     }
 }

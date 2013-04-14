@@ -250,4 +250,84 @@ public class Vuelos {
             System.out.println("Error en la confirmacion - parámetro inválido.");
         }
     }
+    
+    /**
+     * Devuelve el origen del vuelo.
+     * @param localizador
+     * @return 
+     */
+    public static String getOrigen(String localizador) {
+        FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
+        try {
+            FlightInfo info = fp.flightInfo(localizador);
+            return info.getSource();
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(Vuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Devuelve el destino del vuelo.
+     * @param localizador
+     * @return 
+     */
+    public static String getDestino(String localizador) {
+        FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
+        try {
+            FlightInfo info = fp.flightInfo(localizador);
+            return info.getDestination();
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(Vuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Devuelve la fecha de salida del vuelo.
+     * @param localizador
+     * @return 
+     */
+    public static Date getSalida(String localizador) {
+        FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
+        try {
+            FlightInfo info = fp.flightInfo(localizador);
+            return info.getDeparture();
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(Vuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Devuelve la fecha de llegada del vuelo.
+     * @param localizador
+     * @return 
+     */
+    public static Date getLlegada(String localizador) {
+        FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
+        try {
+            FlightInfo info = fp.flightInfo(localizador);
+            return info.getArrival();
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(Vuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    public static double getPrecio(String localizador) {
+        FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
+        try {
+            FlightInfo info = fp.flightInfo(localizador);
+            return info.getPrice();
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(Vuelos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return 0;
+    }
 }
