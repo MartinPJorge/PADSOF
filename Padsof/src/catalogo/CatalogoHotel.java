@@ -343,49 +343,49 @@ public class CatalogoHotel {
 
         if (precioSimple != -1) {
             if (query.equals("") == false) {
-                query += " AND precioSimple = " + Double.toString(precioSimple);
+                query += " AND precioSimple <= " + Double.toString(precioSimple);
             } else {
-                query += "precioSimple = " + Double.toString(precioSimple);
+                query += "precioSimple <= " + Double.toString(precioSimple);
             }
         }
 
         if (precioDoble != -1) {
             if (query.equals("") == false) {
-                query += " AND precioDoble = " + Double.toString(precioDoble);
+                query += " AND precioDoble <= " + Double.toString(precioDoble);
             } else {
-                query += "precioDoble = " + Double.toString(precioDoble);
+                query += "precioDoble <= " + Double.toString(precioDoble);
             }
         }
 
         if (precioTriple != -1) {
             if (query.equals("") == false) {
-                query += " AND precioTriple = " + Double.toString(precioTriple);
+                query += " AND precioTriple <= " + Double.toString(precioTriple);
             } else {
-                query += "precioTriple = " + Double.toString(precioTriple);
+                query += "precioTriple <= " + Double.toString(precioTriple);
             }
         }
 
         if (supDesayuno != -1) {
             if (query.equals("") == false) {
-                query += " AND supDesayuno = " + Double.toString(supDesayuno);
+                query += " AND supDesayuno <= " + Double.toString(supDesayuno);
             } else {
-                query += "supDesayuno = " + Double.toString(supDesayuno);
+                query += "supDesayuno <= " + Double.toString(supDesayuno);
             }
         }
 
         if (supMP != -1) {
             if (query.equals("") == false) {
-                query += " AND supMP = " + Double.toString(supMP);
+                query += " AND supMP <= " + Double.toString(supMP);
             } else {
-                query += "supMP = " + Double.toString(supMP);
+                query += "supMP <= " + Double.toString(supMP);
             }
         }
 
         if (supPC != -1) {
             if (query.equals("") == false) {
-                query += " AND supPC = " + Double.toString(supPC);
+                query += " AND supPC <= " + Double.toString(supPC);
             } else {
-                query += "supPC = " + Double.toString(supPC);
+                query += "supPC <= " + Double.toString(supPC);
             }
         }
 

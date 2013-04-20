@@ -84,4 +84,33 @@ public class DateValidator {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[2]);
     }
+    
+    public static int obtainDayV2(String date) {
+        String[] elems = date.split("/");
+        return Integer.parseInt(elems[1]);
+    }
+    
+    public static int obtainMonthV2(String date) {
+        String[] elems = date.split("/");
+        return Integer.parseInt(elems[2]);
+    }
+    
+    public static int obtainYearV2(String date) {
+        String[] elems = date.split("/");
+        return Integer.parseInt(elems[0]);
+    }
+    
+    public static String formatHour(int hour, int minutes) {
+        String hourStr = (new Integer(hour)).toString();
+        if(hourStr.length() == 1) {
+            hourStr = "0" + hourStr;
+        }
+        
+        String minutesStr = (new Integer(minutes)).toString();
+        if(minutesStr.length() == 1) {
+            minutesStr = "0" + minutesStr;
+        }
+        
+        return hourStr + ":" + minutesStr;
+    }
 }

@@ -86,6 +86,10 @@ public abstract class Ventana extends JPanel{
             cambiarVentana(claveVentana(pulsado));
         }
     }
+
+    public ActionListener getControlador() {
+        return controlador;
+    }
     
     /**
      * Especifica el controlador que utilizar&aacute; la ventana.
@@ -94,5 +98,7 @@ public abstract class Ventana extends JPanel{
     /*public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
     }*/
+    
+    
     
 }

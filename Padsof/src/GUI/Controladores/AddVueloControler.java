@@ -8,11 +8,16 @@ import GUI.Excepciones.FechaInvalidaEx;
 import GUI.Excepciones.SinRellenarEx;
 import GUI.Excepciones.SinSeleccionarEx;
 import GUI.Recursos.DateValidator;
+import GUI.Recursos.ZebraJTable;
 import GUI.Ventanas.AddVuelo;
+import GUI.Ventanas.NuevoPaquete;
+import es.uam.eps.pads.services.InvalidParameterException;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -50,6 +55,8 @@ public class AddVueloControler implements ActionListener{
                 
                 //Cambiamos de ventana
                 this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
+                NuevoPaquete ventanaPaq = (NuevoPaquete)this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
+                ventanaPaq.mostrarInfo();
             } catch (SinRellenarEx ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             } catch (SinSeleccionarEx ex) {
@@ -68,7 +75,8 @@ public class AddVueloControler implements ActionListener{
         }
         
         else {
-            this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
+            NuevoPaquete ventanaPaq = (NuevoPaquete)this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
+            ventanaPaq.mostrarInfo();
         }
     }
     
@@ -85,42 +93,73 @@ public class AddVueloControler implements ActionListener{
         
         
         //Obtenemos los campos
+        int dia = DateValidator.obtainYear(strHIda);
+        int mes =  DateValidator.obtainMonth(strHIda);
+        int year = DateValidator.obtainDay(strHIda);
+        
         GregorianCalendar cal = new GregorianCalendar(DateValidator.obtainYear(strHIda),
-                DateValidator.obtainMonth(strHIda), DateValidator.obtainDay(strHIda));
+                DateValidator.obtainMonth(strHIda) - 1, DateValidator.obtainDay(strHIda) + 1);
         Date ida = cal.getTime();
         
+        int diaca = cal.get(Calendar.DAY_OF_MONTH);
+        int mesaco = cal.get(Calendar.MONTH);
+        int aniaco = cal.get(Calendar.YEAR);
+        
+        
         cal = new GregorianCalendar(DateValidator.obtainYear(strHLlegada),
-                DateValidator.obtainMonth(strHLlegada), DateValidator.obtainDay(strHLlegada));
+                DateValidator.obtainMonth(strHLlegada) - 1,DateValidator.obtainDay(strHLlegada));
         Date vuelta = cal.getTime();
+        
+        diaca = cal.get(Calendar.DAY_OF_MONTH);
+        mesaco = cal.get(Calendar.MONTH);
+        aniaco = cal.get(Calendar.YEAR);
+        
+        
         
         String salida = this.ventana.getSalida().getText();
         String llegada = this.ventana.getIda().getText();
         
-                
+        try {
+            this.localizadores = Vuelos.obtenerVuelos(salida, llegada, ida, vuelta);
+        } catch (InvalidParameterException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            return;
+        }
         
-        this.localizadores = Vuelos.obtenerVuelos(salida, llegada, ida, vuelta);
         mostrarResultados(this.localizadores);
     }
     
     
     public void mostrarResultados(List<String> localizadores) {
-        SimpleDateFormat dateFormater = new SimpleDateFormat("dd/mm/YYYY");
-        this.ventana.getResultados().deleteRows();
+        SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy/dd/MM");
+        ZebraJTable resultsTable = (ZebraJTable)this.ventana.getScrollResults().getViewport().getView();
+        resultsTable.deleteRows();
         
         for(int i = 0; i < localizadores.size(); i++) {
             //Obtenemos los datos del resultado
             String origen = Vuelos.getOrigen(localizadores.get(i));
             String destino = Vuelos.getDestino(localizadores.get(i));
-            String salida = dateFormater.format(Vuelos.getSalida(localizadores.get(i)));
-            String llegada = dateFormater.format(Vuelos.getLlegada(localizadores.get(i)));
+            Date salidaca = Vuelos.getSalida(localizadores.get(i));
+            
+            //Fecha y precio
+            String fecha = dateFormater.format(Vuelos.getSalida(localizadores.get(i)));
             String precio = Double.toString(Vuelos.getPrecio(localizadores.get(i)));
             
-            //Insertamos la fila
-            String[] fila = {origen,destino,salida,llegada,precio};
+            //Hora llegada
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(Vuelos.getLlegada(localizadores.get(i)));
+            String llegada = DateValidator.formatHour(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE));
             
-            DefaultTableModel modelo = (DefaultTableModel)this.ventana.getResultados().getModel();
+            //Hora salida
+            cal.setTime(Vuelos.getSalida(localizadores.get(i)));
+            String salida = DateValidator.formatHour(cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE));
+            
+            //Insertamos la fila
+            String[] fila = {origen,destino,fecha,salida,llegada,precio};
+            
+            DefaultTableModel modelo = (DefaultTableModel)resultsTable.getModel();
             modelo.insertRow(i, fila);
-            this.ventana.getResultados().repaint();
+            resultsTable.repaint();
         }
     }
     
@@ -130,23 +169,25 @@ public class AddVueloControler implements ActionListener{
         String apellidos = ((JTextField)this.ventana.getDetalles().getTextos().get(1)).getText();
         String dni = ((JTextField)this.ventana.getDetalles().getTextos().get(2)).getText();
         
+        ZebraJTable resultsTable = (ZebraJTable)this.ventana.getScrollResults().getViewport().getView();
+        
         //Miramos si hay campos sin rellenar
         if(nombre.equals("") || apellidos.equals("") || dni.equals("")) {
             throw new SinRellenarEx();
         }
         
         //Miramos si no hemos seleccionado un vuelo
-        int filaSeleccionada = this.ventana.getResultados().getSelectedRow();
+        int filaSeleccionada = resultsTable.getSelectedRow();
         if(filaSeleccionada == -1) {
             throw new SinSeleccionarEx();
         }
         
         //Obtenemos la info. del vuelo seleccionado
-        Object[] fila = this.ventana.getResultados().getRow(filaSeleccionada);
-        int dia = DateValidator.obtainDay((String)fila[2]);
-        int mes = DateValidator.obtainMonth((String)fila[2]);
-        int year = DateValidator.obtainYear((String)fila[2]);
-        double precio = Double.parseDouble((String)fila[4]);
+        Object[] fila = resultsTable.getRow(filaSeleccionada);
+        int dia = DateValidator.obtainDayV2((String)fila[2]);
+        int mes = DateValidator.obtainMonthV2((String)fila[2]);
+        int year = DateValidator.obtainYearV2((String)fila[2]);
+        double precio = Double.parseDouble((String)fila[5]);
         
         ReservaVuelo reservaVuelo = new ReservaVuelo(dia, mes, year, nombre+" "+apellidos, 
            dni, localizadores.get(filaSeleccionada),  precio);
@@ -159,5 +200,27 @@ public class AddVueloControler implements ActionListener{
         }
     }
     
-    
+    /**
+     * Se encarga de vaciar todos los campos de la ventana 'AddVuelo'.
+     */
+    public void resetearCampos() {
+        //Vaciamos los campos del filtro
+        this.ventana.getSalida().setText(null);
+        this.ventana.gethSalida().setText(null);
+        this.ventana.gethLlegada().setText(null);
+        this.ventana.getIda().setText(null);
+        
+        //Ponemos una tabla vacia
+        String[] titulos = {"Origen","Destino", "Fecha", "H.salida", "H.llegada","Precio"};
+        ZebraJTable tablaAntigua = (ZebraJTable)this.ventana.getScrollResults().getViewport().getView();
+        ZebraJTable tablaVacia = new ZebraJTable(null, titulos);
+        
+        this.ventana.getScrollResults().remove(tablaAntigua);
+        this.ventana.getScrollResults().setViewportView(tablaVacia);
+        
+        //Vaciamos los campos de los detalles
+        for(Component cuadro : this.ventana.getDetalles().getTextos()) {
+            ((JTextField)cuadro).setText(null);
+        }
+    }
 }

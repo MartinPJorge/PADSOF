@@ -5,6 +5,9 @@
 package padsof;
 
 import cat.quickdb.db.AdminBase;
+import catalogo.CatalogoHotel;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,6 +34,7 @@ public class Booking {
     private static String csvHoteles = "Hoteles.csv";
     private static String csvIMSERSO = "ViajesIMSERSO.csv";
     private static String csvViajOrg = "ViajesOrganizados.csv";
+    private CatalogoHotel catalogoHotel;
 
     /**
      *
@@ -39,6 +43,14 @@ public class Booking {
     public Booking(String bookingDBName) {
         this.sesion = null;
         this.bookingDBName = bookingDBName;
+        
+        try {
+            this.catalogoHotel = new CatalogoHotel(csvHoteles);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ParseException ex) {
+            Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getBookingDBName() {
@@ -88,6 +100,12 @@ public class Booking {
     public static void setCsvViajOrg(String csvViajOrg) {
         Booking.csvViajOrg = csvViajOrg;
     }
+
+    public CatalogoHotel getCatalogoHotel() {
+        return catalogoHotel;
+    }
+    
+    
 
     /**
      * Busca en la BD un Vendedor con idUsr y password iguales a los pasados

@@ -17,12 +17,12 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import reserva.Paquete;
 import reserva.ReservaVuelo;
@@ -34,9 +34,11 @@ import reserva.Vuelos;
  */
 public class NuevoPaquete extends Ventana implements TableModelListener{
     private JLabel encabezado;
-    private JTable tablaVuelos;
-    private JTable tablaHoteles;
-    private JTable tablaViajOrg;
+    
+    private JScrollPane scrollVuelos;
+    private JScrollPane scrollHoteles;
+    private JScrollPane scrollViajOrg;
+    
     private JPanel addServicio;
     private JPanel suelo;
     private JButton addHotel;
@@ -47,15 +49,12 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     
     public NuevoPaquete(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre, padre, 600,550);
-        this.encabezado = new JLabel("Paquete 002 - Dni cliente: 47474934J");
+        this.encabezado = new JLabel("");
         this.encabezado.setFont(new Font("Times", Font.PLAIN, 34));
         JLabel vuelo = new JLabel("Vuelos:");
         JLabel hotel = new JLabel("Hoteles:");
         JLabel viajOrg = new JLabel("Viajes organizados:");
         
-        vuelo.setLabelFor(this.tablaVuelos);
-        hotel.setLabelFor(this.tablaHoteles);
-        viajOrg.setLabelFor(this.tablaViajOrg);
         
         //Inicializamos las tablas
         this.iniTablaVuelos();
@@ -64,14 +63,18 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.iniAddService();
         this.iniSuelo();
         
+        vuelo.setLabelFor(this.scrollVuelos);
+        hotel.setLabelFor(this.scrollHoteles);
+        viajOrg.setLabelFor(this.scrollViajOrg);
+        
         //Añadimos los elementos
         this.add(this.encabezado);
         this.add(vuelo);
-        this.add(new JScrollPane(this.tablaVuelos));
+        this.add(this.scrollVuelos);
         this.add(hotel);
-        this.add(new JScrollPane(this.tablaHoteles));
+        this.add(this.scrollHoteles);
         this.add(viajOrg);
-        this.add(new JScrollPane(this.tablaViajOrg));
+        this.add(new JScrollPane(this.scrollViajOrg));
         this.add(this.addServicio);
         this.add(this.suelo);
         
@@ -137,19 +140,21 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     /**
      * Inicializa la tabla de vuelos
      */
+    @SuppressWarnings("empty-statement")
     private void iniTablaVuelos() {
         String[] titulos = {"Origen", "Destino", "Salida", "Llegada", "Pasajero","Precio", "Estado"};
-        Object[][] filas = {{"","","","","","",""}};//{{"BAR", "MAD", "11:00", "12:00", "474747934J",34, "Confirmado"}};
         
+        //Creamos el comboBox de estados
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Confirmado");
         comboBox.addItem("Cancelado");
 
+        //Creamos la tabla con su listener
+        ZebraJTable tablaVuelos = new ZebraJTable(null,titulos,6);
+        tablaVuelos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaVuelos.getModel().addTableModelListener(this);
         
-        //Creamos la tabla
-        this.tablaVuelos = new ZebraJTable(new MiModeloTabla(titulos, filas,6));
-        this.tablaVuelos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
-        this.tablaVuelos.getModel().addTableModelListener(this);
+        this.scrollVuelos = new JScrollPane(tablaVuelos);
     }
     
     /**
@@ -158,7 +163,6 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     private void iniTablaHoteles() {
         String[] titulos = {"Hotel", "A nombre", "#Hab.", "Tipo", "Comida", "Entrada",
         "H.entrada", "Días", "Precio", "Estado"};
-        Object[][] filas = {{"","","","","","","","","",""}};//{{"Palace", "43786789I", "1", "Individual", "PC", "1/1/15", "12:34",3,45.6, "Confirmado"}};
         
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Confirmado");
@@ -166,9 +170,11 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         comboBox.addItem("10%");
         
         //Creamos la tabla
-        this.tablaHoteles = new ZebraJTable(new MiModeloTabla(titulos, filas,9));
-        this.tablaHoteles.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(comboBox));
-        this.tablaHoteles.getModel().addTableModelListener(this);
+        ZebraJTable tablaHoteles = new ZebraJTable(null,titulos,9);
+        tablaHoteles.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaHoteles.getModel().addTableModelListener(this);
+        
+        this.scrollHoteles = new JScrollPane(tablaHoteles);
     }
     
     /**
@@ -176,16 +182,17 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
      */
     private void iniTablaViajOrgs() {
         String[] titulos = {"Viaje", "A nombre", "Personas", "F.inicio", "Días", "Precio", "Estado"};
-        Object[][] filas = {{"","","","","","",""}};//{{"Tour", "43786789I", "1", "1/10/13", 3,45.3, "Confirmado"}};
         
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Confirmado");
         comboBox.addItem("Cancelado");
         comboBox.addItem("10%");
         //Creamos la tabla
-        this.tablaViajOrg = new ZebraJTable(new MiModeloTabla(titulos, filas,6));
-        this.tablaViajOrg.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
-        this.tablaViajOrg.getModel().addTableModelListener(this);
+        ZebraJTable tablaViajOrg = new ZebraJTable(null,titulos,6);
+        tablaViajOrg.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaViajOrg.getModel().addTableModelListener(this);
+        
+        this.scrollViajOrg = new JScrollPane(tablaViajOrg);
     }
 
     @Override
@@ -305,23 +312,63 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     
     public void mostrarInfo(){//String dni) {
         ArrayList<ReservaVuelo> vuelos = this.paqActual.getReservasVuelos();
-        String[][] infoVuelos = new String[vuelos.size()][6];
+        Object[][] infoVuelos = new String[vuelos.size()][7];
         
         //Metemos la informacion en la tabla
         for(int i = 0; i < vuelos.size(); i++) {
             ReservaVuelo vuelo = vuelos.get(i);
-            SimpleDateFormat dateFormater = new SimpleDateFormat("dd/mm/YYYY");
+            SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy/dd/MM");
             
             String loc = vuelo.getLocalizador();
-            this.tablaVuelos.getModel().setValueAt(Vuelos.getOrigen(loc), i, 0);
-            this.tablaVuelos.getModel().setValueAt(Vuelos.getDestino(loc), i, 1);
-            this.tablaVuelos.getModel().setValueAt(dateFormater.format(Vuelos.getSalida(loc)), i, 2);
-            this.tablaVuelos.getModel().setValueAt(dateFormater.format(Vuelos.getLlegada(loc)), i, 3);
-            this.tablaVuelos.getModel().setValueAt(vuelo.getPasajeroDNI(), i, 4);
-            this.tablaVuelos.getModel().setValueAt(Double.toString(vuelo.getPrecio()), i, 5);
+            String origen = Vuelos.getOrigen(loc);
+            String destino = Vuelos.getDestino(loc);
+            String salida = dateFormater.format(Vuelos.getSalida(loc));
+            String llegada = dateFormater.format(Vuelos.getLlegada(loc));
+            String dni = vuelo.getPasajeroDNI();
+            String precio = Double.toString(vuelo.getPrecio());
+            
+            Object[] arr = {origen,destino,salida,llegada,dni,precio,"Confirmado"};
+            
+            infoVuelos[i][0] = origen;
+            infoVuelos[i][1] = destino;
+            infoVuelos[i][2] = salida;
+            infoVuelos[i][3] = llegada;
+            infoVuelos[i][4] = dni;
+            infoVuelos[i][5] = precio;
+            infoVuelos[i][6] = "Confirmado";
+            
+            ZebraJTable tablaVuelos = (ZebraJTable)this.scrollVuelos.getViewport().getView();
+            DefaultTableModel modelo = (DefaultTableModel)tablaVuelos.getModel();
+            int numCols = modelo.getColumnCount();
+            int numRows = modelo.getRowCount();
+            //modelo.insertRow(i, arr);
+            //modelo.insertRow(1, arr);
+            //origen destino salida llegada pasajero prcio estado
         }
-
         
+        JComboBox comboBox = new JComboBox();
+        comboBox.addItem("Confirmado");
+        comboBox.addItem("Cancelado");
+        comboBox.addItem("10%");
+        
+        String[] titulos = {"Origen", "Destino", "Salida", "Llegada", "Pasajero","Precio", "Estado"};
+        
+        ZebraJTable tablaVuelos = (ZebraJTable)this.scrollVuelos.getViewport().getView();
+        this.scrollVuelos.remove(tablaVuelos);
+        
+        tablaVuelos = new ZebraJTable(infoVuelos,titulos,6);
+        this.scrollVuelos.add(tablaVuelos);
+        tablaVuelos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaVuelos.getModel().addTableModelListener(this);
+        tablaVuelos.repaint();
+        tablaVuelos.setVisible(true);
+        
+        this.scrollVuelos.setViewportView(tablaVuelos);
+    }
+    
+    public void actualizarEncabezado() {
+        this.encabezado.setText("Paquete: " + this.paqActual.getIdPaq() + 
+                " - Cliente: " + this.paqActual.getCliente());
     }
     
     /**

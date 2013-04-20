@@ -33,6 +33,8 @@ public class NuevoPaqueteControler implements ActionListener{
         
         //En las nuevas ventanas les damos el paquete
         if(pulsado.equals(this.ventana.getAddVuelo().getText())) {
+            AddVueloControler controler = (AddVueloControler) nuevaVen.getControlador();
+            controler.resetearCampos();
             ((AddVuelo)nuevaVen).setCurrentPaq(this.ventana.getPaqActual());
         }
     }

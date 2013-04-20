@@ -63,6 +63,7 @@ public class DatosClienteControler implements ActionListener{
         //Creamos el nuevo paquete
         Paquete paquete = new Paquete(0, 1, c.getNombre(), this.aplicacion.getSesion().getId());
         nuevaVentana.setPaqActual(paquete);
+        nuevaVentana.actualizarEncabezado();
         
         nuevaVentana.mostrarInfo();
     }

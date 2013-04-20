@@ -4,7 +4,10 @@
  */
 package GUI.Recursos;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -181,5 +184,32 @@ public class ZebraJTable
         }
         
         return elems;
+    }
+    
+    /**
+     * A&ntilde;ade una fila vac&iacute;a a una tabla que tiene un comboBox en 
+     * la columna 'indexCombo'.<br/><br/>
+     * <u>Nota</u>:<br/>
+     * Solo funciona en tablas que &uacute;nicamente tengan todas las columnas 
+     * como String, menos la i-&eacute;sima columna, que ser&aacute; un ComboBox.
+     * @param indexCombo 
+     */
+    public void insertEmptyRow_CB(int indexCombo) {
+        /*int numCols = this.getModel().getColumnCount();
+        Object[] filasVacias = new Object[numCols];
+        JTextField texto = new JTextField("s");
+        for(int i = 0; i < numCols; i++) {
+            filasVacias[i] = texto;
+        }
+        
+        this.getColumnModel().getColumn(indexCombo).setCellEditor(new DefaultCellEditor(texto));*/
+        
+       /* JComboBox comboBox = new JComboBox();
+        comboBox.addItem("Confirmado");
+        comboBox.addItem("Cancelado");*/
+        
+        Object[] vacio = {null};
+        ((DefaultTableModel) this.getModel()).insertRow(0,vacio);
+        //this.getColumnModel().getColumn(indexCombo).setCellEditor(new DefaultCellEditor(comboBox));
     }
 }

@@ -38,7 +38,7 @@ public class Vuelos {
      * @return listado de Vuelos solicitados.
      */
     public static List<String> obtenerVuelos(String salida, String llegada,
-            Date ida, Date vuelta) {
+            Date ida, Date vuelta) throws InvalidParameterException {
         List<String> vuelos = new ArrayList<String>();
         int i, j;
 
@@ -67,13 +67,8 @@ public class Vuelos {
         }
 
         // Obtenemos el listados de id's de los vuelos encontrados.
-        try {
-            vuelos = fp.queryFlights(airports.get(i).getCode(),
-                    airports.get(j).getCode(), ida, vuelta);
-        } catch (InvalidParameterException ex) {
-            Logger.getLogger(Vuelos.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error en la busqueda de vuelos - parámetro inválido.");
-        }
+        vuelos = fp.queryFlights(airports.get(i).getCode(),
+                airports.get(j).getCode(), ida, vuelta);
 
 
         return vuelos;

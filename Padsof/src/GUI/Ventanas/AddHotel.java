@@ -8,8 +8,11 @@ import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.Formulario;
 import GUI.Recursos.MiModeloTabla;
 import GUI.Recursos.ZebraJTable;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.table.TableColumnModel;
+import sun.reflect.generics.tree.BottomSignature;
 
 /**
  *
@@ -28,12 +33,20 @@ public class AddHotel extends Ventana {
     private JPanel detalles;
     private JScrollPane resultados;
     private FooterServicios footer;
+    private JButton filtar;
+    private ButtonGroup botones;
+    
+    private JTextField ciudad;
+    private JTextField precioNoche;
+    private JComboBox tipoHab;
+    private JComboBox estrellas;
     
 
     public AddHotel(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre,padre,300,300);
+        super(new SpringLayout(), nombre,padre,600,300);
         this.iniFiltro();
         this.resultados();
+        this.ajustarTamCols();
         this.iniDetalles();
         this.footer = new FooterServicios(padre,"FooterHotel");
         this.add(footer);
@@ -45,19 +58,22 @@ public class AddHotel extends Ventana {
      * Inicializa la secci&oacute;n en la que se muestran los campos para filtrar.
      */
     private void iniFiltro() {
-        this.filtrarRes = new JPanel();
+        JPanel campos = new JPanel();
+        JPanel panBoton = new JPanel(new GridBagLayout());
+        this.filtar = new JButton("Buscar");
+        this.filtrarRes = new JPanel(new SpringLayout());
         JLabel ciudad = new JLabel("Ciudad:");
         JLabel tipoHabitacion = new JLabel("Habitación:");
         JLabel precioNoche = new JLabel("Precio noche:");
         JLabel estrellas = new JLabel("Estrellas:");
         
         //Creamos los campos
-        JTextField ciudadC = new JTextField();
+        this.ciudad = new JTextField();
         String[] tiposHab = {"Individual", "Matrimonio", "Triple", "Suite"};
-        JComboBox tipoHabC = new JComboBox(tiposHab);
-        JTextField precioNocheC = new JTextField();
+        this.tipoHab = new JComboBox(tiposHab);
+        this.precioNoche = new JTextField();
         Integer[] estrellasI = {1,2,3,4,5};
-        JComboBox estrellasC = new JComboBox(estrellasI);
+        this.estrellas = new JComboBox(estrellasI);
         
         //Creamos los formularios
         Formulario iz = new Formulario();
@@ -65,17 +81,24 @@ public class AddHotel extends Ventana {
         
         
         //Introducimos los campos
-        iz.addTexto(ciudad, ciudadC);
-        iz.addTexto(tipoHabitacion, tipoHabC);
-        der.addTexto(precioNoche, precioNocheC);
-        der.addTexto(estrellas, estrellasC);
+        iz.addTexto(ciudad, this.ciudad);
+        iz.addTexto(tipoHabitacion, this.tipoHab);
+        der.addTexto(precioNoche, this.precioNoche);
+        der.addTexto(estrellas, this.estrellas);
         
         //Metemos el panel en la ventana
         iz.aplicarCambios();
         der.aplicarCambios();
-        this.filtrarRes.add(iz);
-        this.filtrarRes.add(der);
+        campos.add(iz);
+        campos.add(der);
+        
+        //Metemos los elementos
+        panBoton.add(this.filtar);
+        this.filtrarRes.add(campos);
+        this.filtrarRes.add(panBoton);
         this.filtrarRes.setBorder(BorderFactory.createTitledBorder("Filtrar resultados"));
+        
+        SpringUtilities.makeCompactGrid(this.filtrarRes, 2, 1, 6, 6, 6, 6);
         
         this.add(this.filtrarRes);
     }
@@ -84,51 +107,9 @@ public class AddHotel extends Ventana {
      * Inicializa la tabla de resultados.
      */
     private void resultados() {
-        String[] titulos = {"Nombre", "Ciudad", "Estrellas", "Habitación", 
-                            "Noche(€)", "Desayunp Incl."};
-        Object[][] resus = {{"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"},
-        {"NH Valencia", "Valencia", "5", "Doble", "23.5", "Si"}};
-        JTable tablaRes = new ZebraJTable(new  MiModeloTabla(titulos, resus, -1));
+        String[] titulos = {"Nombre", "País","Ciudad", "★★★", "Simple", "Doble", 
+                            "Triple", "Desayuno", "M.P", "P.C", "Características"};
+        JTable tablaRes = new ZebraJTable(null, titulos, -1);
         this.resultados = new JScrollPane(tablaRes);
         
         this.add(resultados);
@@ -149,13 +130,13 @@ public class AddHotel extends Ventana {
         
         //Radio botones
         JPanel radioBot = new JPanel(new SpringLayout());
-        ButtonGroup botones = new ButtonGroup();
+        this.botones = new ButtonGroup();
         JRadioButton opcion1 = new JRadioButton("Media pensión");
         JRadioButton opcion2 = new JRadioButton("Pensión completa");
         JRadioButton opcion3 = new JRadioButton("Desayuno");
-        botones.add(opcion1);
-        botones.add(opcion2);
-        botones.add(opcion3);
+        this.botones.add(opcion1);
+        this.botones.add(opcion2);
+        this.botones.add(opcion3);
         radioBot.add(comidas);
         radioBot.add(opcion1);
         radioBot.add(opcion2);
@@ -174,9 +155,68 @@ public class AddHotel extends Ventana {
         this.detalles.add(derecha);
         this.add(this.detalles);
     }
+    
+    /**
+     * Ajusta el tama&ntilde;o de las columnas de la tabla de b&uacute;squeda.
+     */
+    public void ajustarTamCols() {
+        ZebraJTable tabla = (ZebraJTable) this.resultados.getViewport().getView();
+        TableColumnModel modelCol = tabla.getColumnModel();
+        
+        modelCol.getColumn(0).setMinWidth(100);
+        /*modelCol.getColumn(1).setMinWidth(20);
+        modelCol.getColumn(2).setMinWidth(20);
+        modelCol.getColumn(3).setMinWidth(20);
+        modelCol.getColumn(4).setMinWidth(20);
+        modelCol.getColumn(5).setMinWidth(20);
+        modelCol.getColumn(6).setMinWidth(20);
+        modelCol.getColumn(7).setMinWidth(20);
+        modelCol.getColumn(8).setMinWidth(20);
+        modelCol.getColumn(9).setMinWidth(20);   
+        modelCol.getColumn(10).setMinWidth(20);   */
+    }
 
     @Override
     public String claveVentana(String textoBoton) {
         return "NuevoPaquete";
+    }
+
+    public JButton getFiltar() {
+        return filtar;
+    }
+
+    public JTextField getCiudad() {
+        return ciudad;
+    }
+
+    public JTextField getPrecioNoche() {
+        return precioNoche;
+    }
+
+    public JComboBox getTipoHab() {
+        return tipoHab;
+    }
+
+    public JComboBox getEstrellas() {
+        return estrellas;
+    }
+
+    public JScrollPane getResultados() {
+        return resultados;
+    }
+
+    public FooterServicios getFooter() {
+        return footer;
+    }
+    
+    
+    /**
+     * Especifica el controlador a usar por la ventana de a&ntilde;adir hoteles.
+     * @param controlador 
+     */
+    public void setControlador(ActionListener controlador) {
+        this.controlador = controlador;
+        this.footer.getAdd().addActionListener(controlador);
+        this.filtar.addActionListener(controlador);
     }
 }

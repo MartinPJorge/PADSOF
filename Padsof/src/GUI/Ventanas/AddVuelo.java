@@ -32,8 +32,9 @@ public class AddVuelo extends Ventana{
     private JTextField ida;
     private JTextField hLlegada;
     
+    private JScrollPane scrollResults;
+    
     private Formulario detalles;
-    private ZebraJTable resultados;
     private FooterServicios footer;
     private Paquete currentPaq;
     private ReservaVuelo currReserva;
@@ -42,14 +43,14 @@ public class AddVuelo extends Ventana{
     public AddVuelo(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre,padre, 300,100);
         this.iniFiltro();
-        JScrollPane tabla = this.iniResultados();
+        this.iniResultados();
         this.iniDetalles();
         this.footer = new FooterServicios(padre, "FooterVuelo");
         this.footer.getTotal().setVisible(false);
         this.footer.getTotalL().setVisible(false);
         
         this.add(this.filtrarRes);
-        this.add(tabla);
+        this.add(this.scrollResults);
         this.add(this.detalles);
         this.add(this.footer);
         this.currReserva = new ReservaVuelo();
@@ -68,7 +69,7 @@ public class AddVuelo extends Ventana{
         Formulario iz = new Formulario();
         
         JLabel origen = new JLabel("Salida:");
-        JLabel dia = new JLabel("H.Salida:");
+        JLabel dia = new JLabel("F.Salida:");
         this.salida = new JTextField(5);
         this.hSalida = new JTextField(5);
         JTextField diaC = new JTextField(5);
@@ -83,7 +84,7 @@ public class AddVuelo extends Ventana{
         Formulario der = new Formulario();
         
         JLabel destino = new JLabel("Destino:");
-        JLabel company = new JLabel("H.LLegada:");
+        JLabel company = new JLabel("F.LLegada:");
         this.ida = new JTextField(5);
         this.hLlegada = new JTextField(5);
 
@@ -110,12 +111,15 @@ public class AddVuelo extends Ventana{
     /**
      * Inicializa la secci&pacute;n en la que se muestran los resultados.
      */
-    private JScrollPane iniResultados() {
-        String[] tituloColumnas = {"Origen","Destino", "H.salida", 
+    private void iniResultados() {
+        String[] tituloColumnas = {"Origen","Destino", "Fecha","H.salida", 
             "H.llegada","Precio"};
-        String[][] valores = {{"","","","",""}};
-        this.resultados = new ZebraJTable(valores, tituloColumnas, -1);
-        return new JScrollPane(this.resultados);
+        Object[][] filas = {{"Origen","Destino", "Fecha","H.salida", 
+            "H.llegada","Precio"}};
+        
+        ZebraJTable resultados = new ZebraJTable(filas, tituloColumnas, -1);
+        
+        this.scrollResults = new JScrollPane(resultados);
     }
     
     /**
@@ -185,17 +189,18 @@ public class AddVuelo extends Ventana{
         return hLlegada;
     }
 
-    public ZebraJTable getResultados() {
-        return resultados;
+    public JScrollPane getScrollResults() {
+        return scrollResults;
     }
 
-    public void setResultados(ZebraJTable resultados) {
-        this.resultados = resultados;
+    public void setScrollResults(JScrollPane scrollResults) {
+        this.scrollResults = scrollResults;
     }
 
     public Formulario getDetalles() {
         return detalles;
     }
+    
     
     
         
@@ -209,5 +214,4 @@ public class AddVuelo extends Ventana{
         this.footer.getAdd().addActionListener(this.controlador);
         this.footer.getVolver().addActionListener(this.controlador);
     }
-    
 }

@@ -4,6 +4,7 @@
  */
 package GUI.Ventanas;
 
+import GUI.Controladores.AddHotelControler;
 import GUI.Controladores.AddVueloControler;
 import GUI.Controladores.DatosClienteControler;
 import GUI.Controladores.InicioControler;
@@ -49,7 +50,7 @@ public class BookingFrame extends JFrame{
         Login login = new Login(this, nomLogin);
         Inicio ventanaIni = new Inicio(this,nomInicio);
         ModificarPaquete paquete = new ModificarPaquete(this,nomMod);
-        Container contenedor = this.getContentPane();
+            Container contenedor = this.getContentPane();
         
         //Especificamos los controladores
         login.setControlador(new LoginControler(login, aplicacion));
@@ -57,6 +58,7 @@ public class BookingFrame extends JFrame{
         datos.setControlador(new DatosClienteControler(datos, aplicacion));
         vuelos.setControlador(new AddVueloControler(vuelos));
         newPaq.setControlador(new NuevoPaqueteControler(newPaq, aplicacion));
+        hot.setControlador(new AddHotelControler(hot, aplicacion));
 
         //Metemos las ventanas en el hashMap
         this.ventanas = new HashMap<String,Ventana>();
