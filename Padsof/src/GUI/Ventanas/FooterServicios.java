@@ -11,13 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import GUI.Ventanas.Ventana.ClickCambioVentana;
+import java.awt.Dimension;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Jorge
  */
 public class FooterServicios extends Ventana{
-    private JTextArea total;
+    private JTextField total;
     private JButton volver;
     private JButton add;
     private JButton invisible;
@@ -33,7 +35,11 @@ public class FooterServicios extends Ventana{
         
         //Mostrar el total
         this.totalL = new JLabel("Total:");
-        this.total = new JTextArea(1, 4);
+        this.total = new JTextField("");
+        this.total.setEditable(false);
+        this.total.setMinimumSize(new Dimension(100, 20));
+        //this.total.setSize(100, 40);
+        this.total.setPreferredSize(new Dimension(100, 20));
         Formulario left = new Formulario();
         left.addTexto(this.totalL, this.total);
         left.aplicarCambios();
@@ -70,7 +76,7 @@ public class FooterServicios extends Ventana{
         return "NuevoPaquete";
     }
 
-    public JTextArea getTotal() {
+    public JTextField getTotal() {
         return total;
     }
 

@@ -10,6 +10,8 @@ import GUI.Recursos.MiModeloTabla;
 import GUI.Recursos.ZebraJTable;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.table.TableColumnModel;
+import reserva.Paquete;
 import sun.reflect.generics.tree.BottomSignature;
 
 /**
@@ -35,12 +38,15 @@ public class AddHotel extends Ventana {
     private FooterServicios footer;
     private JButton filtar;
     private ButtonGroup botones;
-    
+    private List<JRadioButton> listBotones;
+    private JTextField entrada;
+    private JTextField dias;
     private JTextField ciudad;
     private JTextField precioNoche;
     private JComboBox tipoHab;
     private JComboBox estrellas;
-    
+    private Paquete currentPaq;
+    private JButton calcular;
 
     public AddHotel(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre,padre,600,300);
@@ -49,9 +55,15 @@ public class AddHotel extends Ventana {
         this.ajustarTamCols();
         this.iniDetalles();
         this.footer = new FooterServicios(padre,"FooterHotel");
+        
+        this.calcular = new JButton("Calcular");
+        JPanel panCalcula = new JPanel(new GridBagLayout());
+        panCalcula.add(this.calcular);
+        
+        this.add(panCalcula);
         this.add(footer);
         
-        SpringUtilities.makeCompactGrid(this, 4, 1, 6, 6, 6, 6);
+        SpringUtilities.makeCompactGrid(this, 5, 1, 6, 6, 6, 6);
     }
     
     /**
@@ -69,7 +81,7 @@ public class AddHotel extends Ventana {
         
         //Creamos los campos
         this.ciudad = new JTextField();
-        String[] tiposHab = {"Individual", "Matrimonio", "Triple", "Suite"};
+        String[] tiposHab = {"Individual", "Matrimonio", "Triple"};
         this.tipoHab = new JComboBox(tiposHab);
         this.precioNoche = new JTextField();
         Integer[] estrellasI = {1,2,3,4,5};
@@ -119,24 +131,26 @@ public class AddHotel extends Ventana {
      * Inicializa la secci&oacute;n en la que se muestran los detalles a elegir.
      */
     private void iniDetalles() {
-        this.detalles = new JPanel();
+        this.detalles = new JPanel(new SpringLayout());
         JLabel comidas = new JLabel("Comidas:");
         JLabel entrada = new JLabel("Entrada:");
         JLabel dias = new JLabel("Días:");
-        JTextField entradaC = new JTextField(5);
-        entradaC.setToolTipText("dd/mm/yyyy");
-        JTextField diasC = new JTextField(5);
+        this.entrada = new JTextField(5);
+        this.entrada.setToolTipText("dd/mm/yyyy");
+        this.dias = new JTextField(5);
+        JPanel datosRellenar = new JPanel();
         
         
         //Radio botones
+        this.listBotones = new ArrayList<>();
         JPanel radioBot = new JPanel(new SpringLayout());
         this.botones = new ButtonGroup();
         JRadioButton opcion1 = new JRadioButton("Media pensión");
         JRadioButton opcion2 = new JRadioButton("Pensión completa");
         JRadioButton opcion3 = new JRadioButton("Desayuno");
-        this.botones.add(opcion1);
-        this.botones.add(opcion2);
-        this.botones.add(opcion3);
+        this.botones.add(opcion1); this.listBotones.add(opcion1);
+        this.botones.add(opcion2); this.listBotones.add(opcion2);
+        this.botones.add(opcion3); this.listBotones.add(opcion3);
         radioBot.add(comidas);
         radioBot.add(opcion1);
         radioBot.add(opcion2);
@@ -145,15 +159,19 @@ public class AddHotel extends Ventana {
         
         //Parte de la derecha
         Formulario derecha = new Formulario();
-        derecha.addTexto(entrada, entradaC);
-        derecha.addTexto(dias, diasC);
+        derecha.addTexto(entrada, this.entrada);
+        derecha.addTexto(dias, this.dias);
         derecha.aplicarCambios();
         
         //Introducimos las 2 partes del panel
+        datosRellenar.add(radioBot);
+        datosRellenar.add(derecha);
+        
         this.detalles.setBorder(BorderFactory.createTitledBorder("Detalles"));
-        this.detalles.add(radioBot);
-        this.detalles.add(derecha);
+        this.detalles.add(datosRellenar);
         this.add(this.detalles);
+        
+        SpringUtilities.makeGrid(this.detalles, 1, 1, 6, 6, 6, 6);
     }
     
     /**
@@ -208,6 +226,35 @@ public class AddHotel extends Ventana {
     public FooterServicios getFooter() {
         return footer;
     }
+
+    public ButtonGroup getBotones() {
+        return botones;
+    }
+
+    public List<JRadioButton> getListBotones() {
+        return listBotones;
+    }
+
+    public JTextField getEntrada() {
+        return entrada;
+    }
+
+    public JTextField getDias() {
+        return dias;
+    }
+    
+    public Paquete getCurrentPaq() {
+        return currentPaq;
+    }
+
+    public void setCurrentPaq(Paquete currentPaq) {
+        this.currentPaq = currentPaq;
+    }
+
+    public JButton getCalcular() {
+        return calcular;
+    }
+    
     
     
     /**
@@ -217,6 +264,8 @@ public class AddHotel extends Ventana {
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.footer.getAdd().addActionListener(controlador);
+        this.footer.getVolver().addActionListener(controlador);
         this.filtar.addActionListener(controlador);
+        this.calcular.addActionListener(controlador);
     }
 }

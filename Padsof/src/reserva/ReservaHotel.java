@@ -28,20 +28,27 @@ public class ReservaHotel extends Reserva {
     private String tipoHabitacion;  // "simple" - "doble" - "triple"
     private String suplemento;  // "supD" - "supMP" - "supPC"
     private static double margen = 0.0;
+    private int dias;
 
     public ReservaHotel() {
         this.infoHotel = null;
     }
-
+    
     public ReservaHotel(int dia, int mes, int year, String tipoHabitacion,
-            String suplemento, InfoHotel infoHotel) {
+            String suplemento, int dias, InfoHotel infoHotel) {
         super(dia, mes, year, 0, "reservaHotel");
 
         this.infoHotel = infoHotel;
         this.tipoHabitacion = tipoHabitacion;
         this.suplemento = suplemento;
+        this.dias = dias;
 
         this.calcularPrecio();
+    }
+
+    public ReservaHotel(int dia, int mes, int year, String tipoHabitacion,
+            String suplemento, InfoHotel infoHotel) {
+        this(dia, mes, year, tipoHabitacion, suplemento, 0, infoHotel);
     }
 
     @Override
@@ -102,6 +109,10 @@ public class ReservaHotel extends Reserva {
             setMargen(margen);
         }
     }
+    
+    public int getDia() {
+        return this.dias;
+    }
 
     /**
      * Cambia el margen de beneficio de las reservas de hotel, solo si es el
@@ -153,7 +164,8 @@ public class ReservaHotel extends Reserva {
             precio += this.infoHotel.getSupPC();
         }
 
-        precio += precio * ReservaHotel.margen;
+        precio = (ReservaHotel.margen == 0) ? 
+                (precio * this.dias) : (precio * this.dias * ReservaHotel.margen);
         this.precio = precio;
     }
 

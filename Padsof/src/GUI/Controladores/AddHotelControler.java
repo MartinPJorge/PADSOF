@@ -4,10 +4,16 @@
  */
 package GUI.Controladores;
 
+import GUI.Excepciones.FechaInvalidaEx;
 import GUI.Excepciones.SinRellenarEx;
+import GUI.Excepciones.SinSeleccionarEx;
+import GUI.Recursos.DateValidator;
 import GUI.Recursos.ZebraJTable;
 import GUI.Ventanas.AddHotel;
+import GUI.Ventanas.NuevoPaquete;
 import catalogo.InfoHotel;
+import java.awt.Component;
+import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,8 +22,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import myexception.ClosedPackageExc;
 import padsof.Booking;
+import reserva.ReservaHotel;
 
 /**
  *
@@ -25,13 +35,20 @@ import padsof.Booking;
  */
 public class AddHotelControler implements ActionListener{
     private AddHotel ventana;
-    public Booking aplicacion;
+    private Booking aplicacion;
+    private List<InfoHotel> resBusquedaActual;
+    private ReservaHotel reservaActual;
     
     public AddHotelControler(AddHotel ventana, Booking aplicacion) {
         this.ventana = ventana;
         this.aplicacion = aplicacion;
     }
     
+    /**
+     * Gestiona el comportamiento de la aplicaci&oacute;n atendiendo a los campos 
+     * seleccionados.
+     * @param e 
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String pulsado = ((JButton)e.getSource()).getText();
@@ -39,25 +56,39 @@ public class AddHotelControler implements ActionListener{
         //Boton de busqueda
         if(pulsado.equals(this.ventana.getFiltar().getText())) {
             try {
-                buscarHoteles();
+                this.resBusquedaActual = buscarHoteles();
             } catch (SinRellenarEx ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
         else if(pulsado.equals(this.ventana.getFooter().getAdd().getText())) {
-            /*try {
+            try {
                 addHotel();
+                NuevoPaquete ventanaPaq = (NuevoPaquete)this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
+                ventanaPaq.mostrarInfoHotel();
+            } catch (    SinSeleccionarEx | SinRellenarEx | FechaInvalidaEx ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            catch(SinRellenarEx ex) {
-                
+        }
+        else if(pulsado.equals(this.ventana.getCalcular().getText())) {
+            try {
+                calcularTotal();
+            } catch (    SinSeleccionarEx | SinRellenarEx | FechaInvalidaEx ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-            catch(SinSeleccionarEx ex) {
-                
-            }*/
+        }
+        else {
+            this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
         }
     }
     
-    public void buscarHoteles() throws SinRellenarEx{
+    /**
+     * Se encarga de realizar la b&uacute;squeda del hotel seg&uacute;n los 
+     * valores introducidos y seleccionados en la ventana 'AddHotel' asociada.
+     * @return lista de 'InfoHotel' con los resultados obtenidos
+     * @throws SinRellenarEx 
+     */
+    public List<InfoHotel> buscarHoteles() throws SinRellenarEx{
         String ciudad, tipoHab;
         Double precio;
         Integer estrellas;
@@ -118,9 +149,172 @@ public class AddHotelControler implements ActionListener{
         this.ventana.getResultados().remove(tabla);
         this.ventana.getResultados().setViewportView(new ZebraJTable(filas, titulos));
         this.ventana.ajustarTamCols();
+        
+        return resHoteles;
     }
     
-    public void addHotel() {
+    /**
+     * Se encarga de intentar a&ntilde;adir una reserva de hotel al paquete.
+     * @param resHoteles
+     * @throws SinSeleccionarEx
+     * @throws SinRellenarEx
+     * @throws FechaInvalidaEx 
+     */
+    public void addHotel() throws SinSeleccionarEx, SinRellenarEx, FechaInvalidaEx {
+        ReservaHotel resHotel = this.generarReserva();
         
+        try {
+            this.ventana.getCurrentPaq().addReserva(resHotel);
+        } catch (ClosedPackageExc ex) {
+            Logger.getLogger(AddHotelControler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Se encarga de vaciar todos los campos de la ventana 'AddVuelo'.
+     */
+    public void resetearCampos() {
+        //Vaciamos los campos del filtro
+        this.ventana.getCiudad().setText(null);
+        this.ventana.getPrecioNoche().setText(null);
+        this.ventana.getEntrada().setText(null);
+        this.ventana.getDias().setText(null);
+        
+        //Si es la 1 vez que entramos, anadimos un boton vacio.
+        if(this.ventana.getBotones().getButtonCount() == 3) {
+            JRadioButton botInvisible = new JRadioButton("Invisible");
+            this.ventana.getListBotones().add(botInvisible);
+            this.ventana.getBotones().add(botInvisible);
+            botInvisible.setVisible(false);
+        }
+        
+        //Seleccionamos el boton invisible y deseleccionamos el resto.
+        for(JRadioButton boton : this.ventana.getListBotones()) {
+            if(boton.getText().endsWith("Invisible")) {
+                this.ventana.getBotones().setSelected(boton.getModel(), true);
+            }
+            else {
+                this.ventana.getBotones().setSelected(boton.getModel(), false);
+            }
+        }
+        
+        //Ponemos una tabla vacia
+        String[] titulos = {"Nombre", "País","Ciudad", "★★★", "Simple", "Doble", 
+                            "Triple", "Desayuno", "M.P", "P.C", "Características"};
+        ZebraJTable tablaAntigua = (ZebraJTable)this.ventana.getResultados().getViewport().getView();
+        ZebraJTable tablaVacia = new ZebraJTable(null, titulos);
+        
+        this.ventana.getResultados().remove(tablaAntigua);
+        this.ventana.getResultados().setViewportView(tablaVacia);
+    }
+    
+    /**
+     * Se encarga de mirar si todos los elementos necesarios para llevar a cabo 
+     * la reserva est&acute;n seleccionados. En caso contrario el m&eacute;todo 
+     * lanza las respectivas excepciones.
+     * @throws SinRellenarEx
+     * @throws SinSeleccionarEx
+     * @throws FechaInvalidaEx 
+     */
+    public void checkSelectedEverything() throws SinRellenarEx, SinSeleccionarEx, FechaInvalidaEx {
+        JRadioButton botonSelected = null;
+        String dias = this.ventana.getDias().getText();
+        String entrada = this.ventana.getEntrada().getText();
+        String tipoHab = (String)this.ventana.getTipoHab().getSelectedItem();
+        ZebraJTable tabla = (ZebraJTable)this.ventana.getResultados().getViewport().getView();
+        int filaSel = tabla.getSelectedRow();
+        
+        //Miramos si hay elementos por rellenar o seleccionar
+        if(dias.equals("") || entrada.equals("") || tipoHab.equals("")) {throw new SinRellenarEx();}
+        if(filaSel == -1){throw new SinSeleccionarEx();}
+        
+        //Comprobamos que la fecha introducida es valida
+        DateValidator validator = new DateValidator();
+        if(validator.validate(entrada) == false) {
+            throw new FechaInvalidaEx();
+        }
+        
+        //Buscamos el radio boton escogido (si es que lo hay)
+        for(JRadioButton boton : this.ventana.getListBotones()) {
+            if(this.ventana.getBotones().isSelected(boton.getModel())
+                    && boton.getText().equals("Invisible") == false) {
+                botonSelected = boton;
+                break;
+            }
+        }
+        if(botonSelected == null) {
+            throw new SinSeleccionarEx();
+        }
+    }
+    
+    /**
+     * Calcula el total que supondr&iacute;a llevar a cabo una reserva con los 
+     * datos especificados, y muestra dicha cantidad en el cuadro de texto bajo 
+     * el nombre de 'Total'.
+     * @param resHoteles
+     * @throws SinRellenarEx
+     * @throws SinSeleccionarEx
+     * @throws FechaInvalidaEx 
+     */
+    public void calcularTotal() throws SinRellenarEx, SinSeleccionarEx, FechaInvalidaEx {
+        ReservaHotel resHotel = this.generarReserva();
+        this.ventana.getFooter().getTotal().setText(""+resHotel.getPrecio());
+    }
+    
+    /**
+     * Genera una reserva de hotel a partir de los datos especificados por el usuario.
+     * @return la reserva generada
+     * @throws SinRellenarEx
+     * @throws SinSeleccionarEx
+     * @throws FechaInvalidaEx 
+     */
+    private ReservaHotel generarReserva() throws SinRellenarEx, SinSeleccionarEx, FechaInvalidaEx {
+        JRadioButton botonSelected = null;
+        String dias = this.ventana.getDias().getText();
+        String entrada = this.ventana.getEntrada().getText();
+        String tipoHab = (String)this.ventana.getTipoHab().getSelectedItem();
+        ZebraJTable tabla = (ZebraJTable)this.ventana.getResultados().getViewport().getView();
+        int filaSel = tabla.getSelectedRow();
+        
+        checkSelectedEverything(); //Si hay elementos vacios saltaran excepciones
+        
+        //Buscamos el radio boton escogido
+        for(JRadioButton boton : this.ventana.getListBotones()) {
+            if(this.ventana.getBotones().isSelected(boton.getModel())
+                    && boton.getText().equals("Invisible") == false) {
+                botonSelected = boton;
+                break;
+            }
+        }
+        
+        //Creamos la reserva la metemos en el paquete actual
+        int dia = DateValidator.obtainDay(entrada);
+        int mes = DateValidator.obtainMonth(entrada);
+        int year = DateValidator.obtainYear(entrada);
+        
+        //Asignamos el tipo de habitacion que reconoce la aplicacion
+        if(tipoHab.equals("Individual")) {
+            tipoHab = "simple";
+        }
+        else if(tipoHab.equals("Matrimonio")) {
+            tipoHab = "doble";
+        }
+        else if(tipoHab.equals("Triple")) {
+            tipoHab = "triple";
+        }
+        
+        //Asignamos el tipo de suplemento
+        if(botonSelected.getText().equals("Media pensión")) {
+            botonSelected.setText("supMP");
+        }
+        else if(botonSelected.getText().equals("Pensión completa")) {
+            botonSelected.setText("supPC");
+        }
+        else if(botonSelected.getText().equals("Desayuno")) {
+            botonSelected.setText("supD");
+        }
+        
+        return new ReservaHotel(dia, mes, year, tipoHab, 
+                botonSelected.getText(), Integer.parseInt(dias), this.resBusquedaActual.get(filaSel));
     }
 }

@@ -6,6 +6,7 @@ package GUI.Ventanas;
 
 import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.ZebraJTable;
+import catalogo.InfoHotel;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -25,6 +26,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import reserva.Paquete;
+import reserva.ReservaHotel;
 import reserva.ReservaVuelo;
 import reserva.Vuelos;
 
@@ -161,8 +163,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
      * Inicializa la tabla de Hoteles
      */
     private void iniTablaHoteles() {
-        String[] titulos = {"Hotel", "A nombre", "#Hab.", "Tipo", "Comida", "Entrada",
-        "H.entrada", "Días", "Precio", "Estado"};
+        String[] titulos = {"Hotel", "★★★", "Comida", "Entrada","Días", "Precio", "Estado"};
         
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Confirmado");
@@ -170,8 +171,8 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         comboBox.addItem("10%");
         
         //Creamos la tabla
-        ZebraJTable tablaHoteles = new ZebraJTable(null,titulos,9);
-        tablaHoteles.getColumnModel().getColumn(9).setCellEditor(new DefaultCellEditor(comboBox));
+        ZebraJTable tablaHoteles = new ZebraJTable(null,titulos,6);
+        tablaHoteles.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
         tablaHoteles.getModel().addTableModelListener(this);
         
         this.scrollHoteles = new JScrollPane(tablaHoteles);
@@ -366,6 +367,44 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.scrollVuelos.setViewportView(tablaVuelos);
     }
     
+    public void mostrarInfoHotel() {
+        ArrayList<ReservaHotel> vuelos = this.paqActual.getReservasHotel();
+        Object[][] infoVuelos = new String[vuelos.size()][7];
+        
+        //Metemos la informacion en la tabla
+        for(int i = 0; i < vuelos.size(); i++) {
+            ReservaHotel reserva = vuelos.get(i);
+            InfoHotel info = reserva.getInfoHotel();
+            
+            infoVuelos[i][0] = info.getNombre();
+            infoVuelos[i][1] = ""+info.getCategoria();
+            infoVuelos[i][2] = reserva.getSuplemento();
+            infoVuelos[i][3] = reserva.getFechaInicio();
+            infoVuelos[i][4] = ""+reserva.getDia();
+            infoVuelos[i][5] = ""+reserva.getPrecio();
+            infoVuelos[i][6] = "";
+        }
+        
+        JComboBox comboBox = new JComboBox();
+        comboBox.addItem("Confirmado");
+        comboBox.addItem("Cancelado");
+        comboBox.addItem("10%");
+        
+        String[] titulos = {"Hotel", "★★★", "Comida", "Entrada","Días", "Precio", "Estado"};
+        
+        ZebraJTable tablaVuelos = (ZebraJTable)this.scrollHoteles.getViewport().getView();
+        this.scrollHoteles.remove(tablaVuelos);
+        
+        tablaVuelos = new ZebraJTable(infoVuelos,titulos,6);
+        this.scrollHoteles.add(tablaVuelos);
+        tablaVuelos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaVuelos.getModel().addTableModelListener(this);
+        tablaVuelos.repaint();
+        tablaVuelos.setVisible(true);
+        
+        this.scrollHoteles.setViewportView(tablaVuelos);
+    }
+    
     public void actualizarEncabezado() {
         this.encabezado.setText("Paquete: " + this.paqActual.getIdPaq() + 
                 " - Cliente: " + this.paqActual.getCliente());
@@ -378,5 +417,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.addVuelo.addActionListener(this.controlador);
+        this.addHotel.addActionListener(this.controlador);
+        this.addViajOrg.addActionListener(this.controlador);
     }
 }

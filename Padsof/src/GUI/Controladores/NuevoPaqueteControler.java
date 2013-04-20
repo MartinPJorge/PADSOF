@@ -4,6 +4,7 @@
  */
 package GUI.Controladores;
 
+import GUI.Ventanas.AddHotel;
 import GUI.Ventanas.AddVuelo;
 import GUI.Ventanas.NuevoPaquete;
 import GUI.Ventanas.Ventana;
@@ -36,6 +37,10 @@ public class NuevoPaqueteControler implements ActionListener{
             AddVueloControler controler = (AddVueloControler) nuevaVen.getControlador();
             controler.resetearCampos();
             ((AddVuelo)nuevaVen).setCurrentPaq(this.ventana.getPaqActual());
+        }
+        else if(pulsado.equals(this.ventana.getAddHotel().getText())) {
+            AddHotelControler controlador = (AddHotelControler)nuevaVen.getControlador();
+            ((AddHotel)nuevaVen).setCurrentPaq(this.ventana.getPaqActual());
         }
     }
     
