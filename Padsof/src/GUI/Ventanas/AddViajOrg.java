@@ -4,10 +4,8 @@
  */
 package GUI.Ventanas;
 
-import GUI.Recursos.Formulario;
 import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.ZebraJTable;
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -33,6 +31,7 @@ public class AddViajOrg extends Ventana{
     private JScrollPane resultados;
     private FooterServicios footer;
     private JButton buscar;
+    private JButton calcular;
     private JComboBox tipoViaje;
     private Paquete currPaq;
     
@@ -114,8 +113,8 @@ public class AddViajOrg extends Ventana{
         JPanel corset = new JPanel(new GridBagLayout());
         JPanel corsetCampos = new JPanel(new GridBagLayout());
         JPanel panCampos = new JPanel(new SpringLayout());
-        JButton calcula = new JButton("Calcular");
-        corset.add(calcula);
+        this.calcular = new JButton("Calcular");
+        corset.add(this.calcular);
         
         JLabel personas = new JLabel("Personas:");
         this.personas = new JTextField(3);
@@ -188,6 +187,10 @@ public class AddViajOrg extends Ventana{
     public BookingFrame getPadre() {
         return padre;
     }
+
+    public JButton getCalcular() {
+        return calcular;
+    }
     
     
     
@@ -200,5 +203,6 @@ public class AddViajOrg extends Ventana{
         this.footer.getAdd().addActionListener(controlador);
         this.footer.getVolver().addActionListener(controlador);
         this.buscar.addActionListener(controlador);
+        this.calcular.addActionListener(controlador);
     }
 }

@@ -29,6 +29,7 @@ public class DatosCliente extends Ventana {
     private JButton atras;
     private JTextField nSegSocialF;
     private final int colsTexto = 15;
+    private JCheckBox edad3;
     
     /**
      * Constructor de la ventana para introducir los datos de un cliente.
@@ -88,7 +89,7 @@ public class DatosCliente extends Ventana {
         JTextField fNacimientoF = new JTextField(colsTexto);
         nSegSocialF = new JTextField("Deshabilitado", colsTexto);
         nSegSocialF.setEnabled(false);
-        JCheckBox edad3 = new JCheckBox("3ª edad", false);
+        this.edad3 = new JCheckBox("3ª edad", false);
         ItemListener escucha = new ItemListener(){
                 @Override
                 public void itemStateChanged(ItemEvent e) {
@@ -105,14 +106,14 @@ public class DatosCliente extends Ventana {
                     repaint();
                 }
             };
-        edad3.addItemListener(escucha);
+        this.edad3.addItemListener(escucha);
         
         //Introducimos los elementos en el formulario
         this.nuevoCliente.addTexto(nombre, nombreF);
         this.nuevoCliente.addTexto(apellidos, apellidosF);
         this.nuevoCliente.addTexto(dni, dniF);
         this.nuevoCliente.addTexto(fNacimiento, fNacimientoF);
-        this.nuevoCliente.addTexto(vacia, edad3);
+        this.nuevoCliente.addTexto(vacia, this.edad3);
         this.nuevoCliente.addTexto(nSegSocial, nSegSocialF);
         
         this.nuevoCliente.aplicarCambios();
@@ -130,6 +131,12 @@ public class DatosCliente extends Ventana {
     public Formulario getRegistradoCliente() {
         return registradoCliente;
     }
+
+    public JCheckBox getEdad3() {
+        return edad3;
+    }
+    
+    
     
     /**
      * Especifica el controlador a usar por la ventana de Inicio.

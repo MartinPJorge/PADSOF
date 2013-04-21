@@ -6,6 +6,9 @@ package GUI.Ventanas;
 
 import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.ZebraJTable;
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,24 +22,23 @@ import javax.swing.SpringLayout;
  */
 public class ModificarPaquete extends Ventana{
     private JLabel etiq;
-    private JTextField campo;
+    private JTextField dniCliente;
     private JButton buscar;
     private JPanel resultados;
     private JButton modificar;
-    private JButton cancelar;
-    private JButton addHotel;
-    private JButton addVuelo;
-    private JButton addViajeOrg;
+    private JButton atras;
+    private JScrollPane tablaResults;
+    
     
     public ModificarPaquete(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre, padre, 400,600);
         JPanel introduce = new JPanel();
         this.etiq = new JLabel("DNI cliente:");
-        this.campo = new JTextField(10);
+        this.dniCliente = new JTextField(10);
         this.buscar = new JButton("Buscar");
         
         introduce.add(this.etiq);
-        introduce.add(this.campo);
+        introduce.add(this.dniCliente);
         introduce.add(this.buscar);
         this.add(introduce);
         
@@ -45,12 +47,10 @@ public class ModificarPaquete extends Ventana{
                 
         JPanel botones = new JPanel();
         this.modificar = new JButton("Modificar");
-        this.modificar.addActionListener(new ClickCambioVentana());
-        this.cancelar = new JButton("Cancelar");
-        this.cancelar.addActionListener(new ClickCambioVentana());
+        this.atras = new JButton("Atrás");
+        botones.add(this.atras);
         botones.add(this.modificar);
-        botones.add(this.cancelar);
-        
+
         this.add(botones);
         
         SpringUtilities.makeCompactGrid(this, 3, 1, 6, 6, 6, 6);
@@ -58,19 +58,14 @@ public class ModificarPaquete extends Ventana{
     
     private void iniResultados() {
         JLabel  abiertos = new JLabel("Paquetes abiertos:");
-        String[] titulos = {"IdPaquete", "DNI cliente", "Productos", "Fecha"};
-        Object[][] resuls = {{"Paquete", "1271289D", "4", "12/1/13"},
-        {"Paquete", "1271289D", "4", "12/1/13"},
-        {"Paquete", "1271289D", "4", "12/1/13"},
-        {"Paquete", "1271289D", "4", "12/1/13"},
-        {"Paquete", "1271289D", "4", "12/1/13"}};
-        
-        ZebraJTable tabla = new ZebraJTable(resuls, titulos);
-        JScrollPane scroll = new JScrollPane(tabla);
+        String[] titulos = {"IdPaquete", "DNI cliente", "Productos", "Estado"};
+                
+        ZebraJTable tabla = new ZebraJTable(null, titulos);
+        this.tablaResults = new JScrollPane(tabla);
         
         this.resultados = new JPanel(new SpringLayout());
         this.resultados.add(abiertos);
-        this.resultados.add(scroll);
+        this.resultados.add(this.tablaResults);
         
         SpringUtilities.makeCompactGrid(this.resultados, 2, 1, 6, 6, 6, 6);
     }
@@ -84,4 +79,32 @@ public class ModificarPaquete extends Ventana{
         else
             return "Inicio";
     }
+    
+    /**
+     * Especifica el controlador a usar por la ventana de Inicio.
+     * @param controlador 
+     */
+    public void setControlador(ActionListener controlador) {
+        this.controlador = controlador;
+        this.modificar.addActionListener(controlador);
+        this.buscar.addActionListener(controlador);
+    }
+
+    public JTextField getDniCliente() {
+        return dniCliente;
+    }
+
+    public JButton getBuscar() {
+        return buscar;
+    }
+
+    public JScrollPane getTablaResults() {
+        return tablaResults;
+    }
+
+    public JButton getModificar() {
+        return modificar;
+    }
+    
+    
 }

@@ -12,4 +12,9 @@ public class SinSeleccionarEx extends Exception{
     public SinSeleccionarEx() {
         super("Elige un elemento");
     }
+    
+    @Override
+    public String toString(){
+        return "Elige un elemento";
+    }
 }

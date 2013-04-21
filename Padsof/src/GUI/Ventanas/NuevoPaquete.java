@@ -52,6 +52,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     private JButton addViajOrg;
     private JButton finalizar;
     private Paquete paqActual;
+    private String claveVentanaAnt;
     
     public NuevoPaquete(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre, padre, 600,550);
@@ -104,7 +105,6 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         //Juntamos lo anterior con el botón de finalizar.
         JPanel general = new JPanel(new BorderLayout());
         this.finalizar = new JButton("Finalizar");
-        finalizar.addActionListener(new ClickCambioVentana());
         JButton fantasma = new JButton("Fantasma");
         fantasma.setVisible(false);
         general.add(total, BorderLayout.WEST);
@@ -212,9 +212,15 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         else if(textoBoton.equals(this.addViajOrg.getText())) {
             return "ViajeOrganizado";
         }
-        else {
-            return "ModificarPaquete";
+        else if(textoBoton.equals(this.finalizar.getText())) {
+            if(this.claveVentanaAnt != null) {
+                if(this.claveVentanaAnt.equals("ModificarPaquete")) {
+                    return "ModificarPaquete";
+                }
+            }
         }
+        
+        return "Inicio";
     }
     
     
@@ -298,9 +304,31 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     public Paquete getPaqActual() {
         return paqActual;
     }
-    
-    
 
+    public JButton getFinalizar() {
+        return finalizar;
+    }
+
+    public JScrollPane getScrollVuelos() {
+        return scrollVuelos;
+    }
+
+    public JScrollPane getScrollHoteles() {
+        return scrollHoteles;
+    }
+
+    public JScrollPane getScrollViajOrg() {
+        return scrollViajOrg;
+    }
+
+    public String getClaveVentanaAnt() {
+        return claveVentanaAnt;
+    }
+
+    public void setClaveVentanaAnt(String claveVentanaAnt) {
+        this.claveVentanaAnt = claveVentanaAnt;
+    }
+    
     
     @Override
     public void tableChanged(TableModelEvent e) {
@@ -316,7 +344,15 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.paqActual = paqActual;
     }
     
-    public void mostrarInfo(){//String dni) {
+    
+    public void mostrarInfo() {
+        mostrarInfoVuelo();
+        mostrarInfoHotel();
+        mostrarViajOrg();
+    }
+    
+    
+    public void mostrarInfoVuelo() {
         ArrayList<ReservaVuelo> vuelos = this.paqActual.getReservasVuelos();
         Object[][] infoVuelos = new String[vuelos.size()][7];
         
@@ -347,9 +383,6 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
             DefaultTableModel modelo = (DefaultTableModel)tablaVuelos.getModel();
             int numCols = modelo.getColumnCount();
             int numRows = modelo.getRowCount();
-            //modelo.insertRow(i, arr);
-            //modelo.insertRow(1, arr);
-            //origen destino salida llegada pasajero prcio estado
         }
         
         JComboBox comboBox = new JComboBox();
@@ -422,7 +455,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
             InfoViajOrg info = reserva.getInfoViajOrg();
             
             infoVuelos[i][0] = info.getNombre();
-            infoVuelos[i][1] = ""+info.getPrecio();
+            infoVuelos[i][1] = ""+reserva.getPrecio();
             infoVuelos[i][2] = ""+info.getDias();
             infoVuelos[i][3] = ""+info.getNoches();
             infoVuelos[i][4] = info.getFechasSalida();
@@ -431,11 +464,11 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
             infoVuelos[i][7] = info.getDescripcion();
         }
         while(i < viajesOrg.size() + viajesIMSERSO.size()) {
-            ReservaViajeIMSERSO reserva = viajesIMSERSO.get(i);
+            ReservaViajeIMSERSO reserva = viajesIMSERSO.get(i - viajesOrg.size());
             InfoViajeIMSERSO info = reserva.getInfoViajeIMSERSO();
             
             infoVuelos[i][0] = info.getNombre();
-            infoVuelos[i][1] = ""+info.getPrecio();
+            infoVuelos[i][1] = ""+reserva.getPrecio();
             infoVuelos[i][2] = ""+info.getDias();
             infoVuelos[i][3] = ""+info.getNoches();
             infoVuelos[i][4] = info.getFechaSalida();
@@ -458,9 +491,9 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         ZebraJTable tablaVuelos = (ZebraJTable)this.scrollViajOrg.getViewport().getView();
         this.scrollViajOrg.remove(tablaVuelos);
         
-        tablaVuelos = new ZebraJTable(infoVuelos,titulos,6);
+        tablaVuelos = new ZebraJTable(infoVuelos,titulos,8);
         this.scrollViajOrg.add(tablaVuelos);
-        tablaVuelos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaVuelos.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(comboBox));
         tablaVuelos.getModel().addTableModelListener(this);
         tablaVuelos.repaint();
         tablaVuelos.setVisible(true);
@@ -482,5 +515,6 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.addVuelo.addActionListener(this.controlador);
         this.addHotel.addActionListener(this.controlador);
         this.addViajOrg.addActionListener(this.controlador);
+        this.finalizar.addActionListener(this.controlador);
     }
 }

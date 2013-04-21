@@ -12,4 +12,9 @@ public class FechaInvalidaEx extends Exception{
     public FechaInvalidaEx() {
         super("La fecha introducida no respeta el formato:\ndd/mm/yyyy");
     }
+    
+    @Override
+    public String toString() {
+        return "La fecha introducida no respeta el formato:\ndd/mm/yyyy";
+    }
 }

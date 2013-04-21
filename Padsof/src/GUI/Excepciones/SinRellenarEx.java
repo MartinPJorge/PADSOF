@@ -12,4 +12,9 @@ public class SinRellenarEx extends Exception{
     public SinRellenarEx() {
         super("Faltan campos por rellenar");
     }
+    
+    @Override
+    public String toString() {
+        return "Faltan campos por rellenar";
+    }
 }

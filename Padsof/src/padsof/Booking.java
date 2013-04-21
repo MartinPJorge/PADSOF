@@ -179,6 +179,31 @@ public class Booking {
             return c;
         }
     }
+    
+    /**
+     * Busca todos los paquetes reservados para el cliente con un DNI que pasamos 
+     * por argumento.
+     * @param dniCliente
+     * @return paquetes encontrados.
+     */
+    public List<Paquete> buscarPaquetesPorCliente(String dniCliente) throws NoResultsExc {
+        List<Paquete> resultados = new ArrayList<Paquete>();
+        Paquete paqVacio = new Paquete();
+        
+        //Obtenemos los idPaq del cliente
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
+        Object[] idPaqsObj = admin.obtainJoin("SELECT p.idPaq FROM Paquete AS p WHERE cliente = '" + dniCliente + "'", 1);
+        admin.close();
+        
+        //Buscamos el paquete por su idPaq
+        for(Object idPaq : idPaqsObj) {
+            String[] fila = (String[])idPaq;
+            paqVacio = buscarPaquete(Integer.parseInt(fila[0]));
+            resultados.add(paqVacio);
+        }
+        
+        return resultados;
+    }
 
     /**
      * Busca un Vendedor por su campo idUsr.
@@ -209,11 +234,17 @@ public class Booking {
      *
      * @return idPaq
      */
-    private int maxIdPaquete() {
+    public int maxIdPaquete() {
         int max = 0;
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
         List<Paquete> paquetes = new ArrayList<>();
 
+        Object[] existe = admin.obtainJoin("SELECT name FROM sqlite_master WHERE type='table' AND name='Paquete'", 1);
+        if(existe == null){
+            admin.close();
+            return 0;
+        }
+        
         String queryIds = "SELECT p.id FROM Paquete AS p";
         Object[] o = admin.obtainJoin(queryIds, 1);
         if (o == null) {
@@ -236,7 +267,7 @@ public class Booking {
     }
 
     /**
-     * Crea un nuevo Paquete (que de momento estara vacio) y lo guarda en la BD
+     * Crea un nuevo Paquete (que de momento estar&aacute; vacio) y lo guarda en la BD
      * de Paquetes
      *
      * @param c
@@ -600,5 +631,18 @@ public class Booking {
         admin.close();
         return facturacion;
 
+    }
+    
+    
+    /**
+     * Se encarga de guardar en la BD el paquete pasado por argumento.
+     * @param p
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public void savePaquete(Paquete p) throws SQLException, ClassNotFoundException {
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
+        p.guardar(admin);
+        admin.save(admin);
     }
 }

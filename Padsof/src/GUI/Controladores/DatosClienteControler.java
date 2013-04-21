@@ -5,12 +5,17 @@
 package GUI.Controladores;
 
 import GUI.Excepciones.FechaInvalidaEx;
+import GUI.Excepciones.NoEsAncianoException;
 import GUI.Recursos.DateValidator;
 import GUI.Ventanas.DatosCliente;
 import GUI.Ventanas.NuevoPaquete;
 import GUI.Ventanas.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -41,10 +46,11 @@ public class DatosClienteControler implements ActionListener{
         if(DNIreg.getText().equals("")) {
             try {
                 c = registrarCliente();
-            } catch (FechaInvalidaEx ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
+            } catch (    FechaInvalidaEx | NoEsAncianoException ex) {
+                JOptionPane.showMessageDialog(null, ex);
                 return;
             }
+
         }
         //Cliento registrado
         else {
@@ -59,16 +65,18 @@ public class DatosClienteControler implements ActionListener{
         //Cambiamos de ventana
         String pulsado = ((JButton)e.getSource()).getText();
         NuevoPaquete nuevaVentana = (NuevoPaquete)this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
+        nuevaVentana.setClaveVentanaAnt("Inicio");
         
         //Creamos el nuevo paquete
-        Paquete paquete = new Paquete(0, 1, c.getDNI(), this.aplicacion.getSesion().getId());
+        int idMax = this.aplicacion.maxIdPaquete();
+        Paquete paquete = new Paquete(idMax, 1, c.getDNI(), this.aplicacion.getSesion().getId());
         nuevaVentana.setPaqActual(paquete);
         nuevaVentana.actualizarEncabezado();
         
         nuevaVentana.mostrarInfo();
     }
 
-    private Cliente registrarCliente() throws FechaInvalidaEx {
+    private Cliente registrarCliente() throws FechaInvalidaEx, NoEsAncianoException {
         //ArrayList<Component> componentes = this.ventana.getNuevoCliente().getTextos();
         JTextField nombre = (JTextField)this.ventana.getNuevoCliente().getTextos().get(0);
         JTextField apellido = (JTextField)this.ventana.getNuevoCliente().getTextos().get(1);
@@ -81,6 +89,14 @@ public class DatosClienteControler implements ActionListener{
             comprobarFecha(fNacimiento.getText()); 
         } catch (FechaInvalidaEx ex) {
             throw ex;
+        }
+        
+        //Si esta seleccionada la casilla de 3ªedad vemos si es un jubilado
+        int year = DateValidator.obtainYear(fNac);
+        if(this.ventana.getEdad3().isEnabled()) {
+            if(Calendar.getInstance().get(Calendar.YEAR) - year < 65) {
+                throw new NoEsAncianoException();
+            }
         }
         
         //Creamos el cliente y lo registramos

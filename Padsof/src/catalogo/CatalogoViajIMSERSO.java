@@ -237,9 +237,9 @@ public class CatalogoViajIMSERSO {
 
         if (precio != -1) {
             if (query.equals("")) {
-                query += "precio = " + Double.toString(precio);
+                query += "precio <= " + Double.toString(precio);
             } else {
-                query += " AND precio = " + Double.toString(precio);
+                query += " AND precio <= " + Double.toString(precio);
             }
         }
 

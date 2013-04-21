@@ -5,6 +5,7 @@
 package GUI.Controladores;
 
 import GUI.Ventanas.Inicio;
+import GUI.Ventanas.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -24,6 +25,8 @@ public class InicioControler implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         String pulsado = ((JButton)e.getSource()).getText();
-        this.ventanaInicio.cambiarVentana(this.ventanaInicio.claveVentana(pulsado));
+        
+        Ventana ventana = this.ventanaInicio.cambiarVentana(this.ventanaInicio.claveVentana(pulsado));
+        
     }
 }
