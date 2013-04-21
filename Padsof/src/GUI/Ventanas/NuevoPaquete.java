@@ -7,6 +7,8 @@ package GUI.Ventanas;
 import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.ZebraJTable;
 import catalogo.InfoHotel;
+import catalogo.InfoViajOrg;
+import catalogo.InfoViajeIMSERSO;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -27,6 +29,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import reserva.Paquete;
 import reserva.ReservaHotel;
+import reserva.ReservaViajOrg;
+import reserva.ReservaViajeIMSERSO;
 import reserva.ReservaVuelo;
 import reserva.Vuelos;
 
@@ -76,7 +80,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.add(hotel);
         this.add(this.scrollHoteles);
         this.add(viajOrg);
-        this.add(new JScrollPane(this.scrollViajOrg));
+        this.add(this.scrollViajOrg);
         this.add(this.addServicio);
         this.add(this.suelo);
         
@@ -182,15 +186,16 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
      * Inicializa la tabla de vuelos
      */
     private void iniTablaViajOrgs() {
-        String[] titulos = {"Viaje", "A nombre", "Personas", "F.inicio", "Días", "Precio", "Estado"};
+        String[] titulos = {"Nombre", "Precio", "Días", "Noches", "F.Salida", "Loc.Salida",
+        "Localidades", "Descripción","Estado"};
         
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Confirmado");
         comboBox.addItem("Cancelado");
         comboBox.addItem("10%");
         //Creamos la tabla
-        ZebraJTable tablaViajOrg = new ZebraJTable(null,titulos,6);
-        tablaViajOrg.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        ZebraJTable tablaViajOrg = new ZebraJTable(null,titulos,8);
+        tablaViajOrg.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(comboBox));
         tablaViajOrg.getModel().addTableModelListener(this);
         
         this.scrollViajOrg = new JScrollPane(tablaViajOrg);
@@ -403,6 +408,64 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         tablaVuelos.setVisible(true);
         
         this.scrollHoteles.setViewportView(tablaVuelos);
+    }
+    
+    public void mostrarViajOrg() {
+        ArrayList<ReservaViajOrg> viajesOrg = this.paqActual.getReservasVO();
+        ArrayList<ReservaViajeIMSERSO> viajesIMSERSO = this.paqActual.getReservasIMSERSO();
+        Object[][] infoVuelos = new String[viajesOrg.size() + viajesIMSERSO.size()][9];
+        
+        //Metemos la informacion en la tabla
+        int i;
+        for(i = 0; i < viajesOrg.size(); i++) {
+            ReservaViajOrg reserva = viajesOrg.get(i);
+            InfoViajOrg info = reserva.getInfoViajOrg();
+            
+            infoVuelos[i][0] = info.getNombre();
+            infoVuelos[i][1] = ""+info.getPrecio();
+            infoVuelos[i][2] = ""+info.getDias();
+            infoVuelos[i][3] = ""+info.getNoches();
+            infoVuelos[i][4] = info.getFechasSalida();
+            infoVuelos[i][5] = info.getLocalidadSalida();
+            infoVuelos[i][6] = info.getLocalidades();
+            infoVuelos[i][7] = info.getDescripcion();
+        }
+        while(i < viajesOrg.size() + viajesIMSERSO.size()) {
+            ReservaViajeIMSERSO reserva = viajesIMSERSO.get(i);
+            InfoViajeIMSERSO info = reserva.getInfoViajeIMSERSO();
+            
+            infoVuelos[i][0] = info.getNombre();
+            infoVuelos[i][1] = ""+info.getPrecio();
+            infoVuelos[i][2] = ""+info.getDias();
+            infoVuelos[i][3] = ""+info.getNoches();
+            infoVuelos[i][4] = info.getFechaSalida();
+            infoVuelos[i][5] = info.getLocSalida();
+            infoVuelos[i][6] = info.getLocalidades();
+            infoVuelos[i][7] = info.getDescripcion();
+            
+            i++;
+        }
+        
+        
+        JComboBox comboBox = new JComboBox();
+        comboBox.addItem("Confirmado");
+        comboBox.addItem("Cancelado");
+        comboBox.addItem("10%");
+        
+        String[] titulos = {"Nombre", "Precio", "Días", "Noches", "F.Salida", "Loc.Salida",
+                "Localidades", "Descripción", "Estado"};
+        
+        ZebraJTable tablaVuelos = (ZebraJTable)this.scrollViajOrg.getViewport().getView();
+        this.scrollViajOrg.remove(tablaVuelos);
+        
+        tablaVuelos = new ZebraJTable(infoVuelos,titulos,6);
+        this.scrollViajOrg.add(tablaVuelos);
+        tablaVuelos.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
+        tablaVuelos.getModel().addTableModelListener(this);
+        tablaVuelos.repaint();
+        tablaVuelos.setVisible(true);
+        
+        this.scrollViajOrg.setViewportView(tablaVuelos);
     }
     
     public void actualizarEncabezado() {

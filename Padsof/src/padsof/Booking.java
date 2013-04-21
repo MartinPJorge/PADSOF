@@ -6,6 +6,8 @@ package padsof;
 
 import cat.quickdb.db.AdminBase;
 import catalogo.CatalogoHotel;
+import catalogo.CatalogoViajIMSERSO;
+import catalogo.CatalogoViajOrg;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -35,6 +37,8 @@ public class Booking {
     private static String csvIMSERSO = "ViajesIMSERSO.csv";
     private static String csvViajOrg = "ViajesOrganizados.csv";
     private CatalogoHotel catalogoHotel;
+    private CatalogoViajOrg catalogoViajOrg;
+    private CatalogoViajIMSERSO catalogoViajIMSERSO;
 
     /**
      *
@@ -46,6 +50,8 @@ public class Booking {
         
         try {
             this.catalogoHotel = new CatalogoHotel(csvHoteles);
+            this.catalogoViajOrg = new CatalogoViajOrg(csvViajOrg);
+            this.catalogoViajIMSERSO = new CatalogoViajIMSERSO(csvIMSERSO);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException | ParseException ex) {
@@ -103,6 +109,14 @@ public class Booking {
 
     public CatalogoHotel getCatalogoHotel() {
         return catalogoHotel;
+    }
+
+    public CatalogoViajOrg getCatalogoViajOrg() {
+        return catalogoViajOrg;
+    }
+
+    public CatalogoViajIMSERSO getCatalogoViajIMSERSO() {
+        return catalogoViajIMSERSO;
     }
     
     

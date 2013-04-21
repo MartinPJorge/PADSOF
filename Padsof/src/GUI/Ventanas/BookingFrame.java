@@ -5,6 +5,7 @@
 package GUI.Ventanas;
 
 import GUI.Controladores.AddHotelControler;
+import GUI.Controladores.AddViajOrgControler;
 import GUI.Controladores.AddVueloControler;
 import GUI.Controladores.DatosClienteControler;
 import GUI.Controladores.InicioControler;
@@ -59,6 +60,7 @@ public class BookingFrame extends JFrame{
         vuelos.setControlador(new AddVueloControler(vuelos));
         newPaq.setControlador(new NuevoPaqueteControler(newPaq, aplicacion));
         hot.setControlador(new AddHotelControler(hot, aplicacion));
+        viajOrg.setControlador(new AddViajOrgControler(viajOrg, aplicacion));
 
         //Metemos las ventanas en el hashMap
         this.ventanas = new HashMap<String,Ventana>();
