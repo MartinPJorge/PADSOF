@@ -311,10 +311,11 @@ public class AddViajOrgControler implements ActionListener{
 
         fecha = this.ventana.getFecha().getText();
 
-
-        
-        return new ReservaViajOrg(DateValidator.obtainDay(fecha), DateValidator.obtainMonth(fecha), 
+        ReservaViajOrg reserva = new ReservaViajOrg(DateValidator.obtainDay(fecha), DateValidator.obtainMonth(fecha), 
                 DateValidator.obtainYear(fecha), personas, info);
+        reserva.setEstado("10%");
+        
+        return reserva;
     }
     
     /**
@@ -336,9 +337,11 @@ public class AddViajOrgControler implements ActionListener{
 
         fecha = this.ventana.getFecha().getText();
 
-        
-        return new ReservaViajeIMSERSO(DateValidator.obtainDay(fecha), DateValidator.obtainMonth(fecha), 
+        ReservaViajeIMSERSO reserva = new ReservaViajeIMSERSO(DateValidator.obtainDay(fecha), DateValidator.obtainMonth(fecha), 
                 DateValidator.obtainYear(fecha), personas, info);
+        reserva.setEstado("10%");
+        
+        return reserva;
     }
     
     /**
@@ -350,6 +353,7 @@ public class AddViajOrgControler implements ActionListener{
         this.ventana.getNoches().setText(null);
         this.ventana.getFecha().setText(null);
         this.ventana.getPersonas().setText(null);
+        this.ventana.getFooter().getTotal().setText(null);
         
         this.ultimaBusqueda = null;
         

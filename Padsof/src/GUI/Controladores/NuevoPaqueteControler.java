@@ -17,11 +17,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import padsof.Booking;
+import reserva.Paquete;
 import reserva.ReservaHotel;
 import reserva.ReservaViajOrg;
 import reserva.ReservaViajeIMSERSO;
@@ -45,13 +44,23 @@ public class NuevoPaqueteControler implements ActionListener{
         String pulsado = ((JButton)e.getSource()).getText();
         boolean vamosAModificar = false;
         
+        //Calcular el precio del paquete
+        if(pulsado.equals(this.ventana.getCalcular().getText())) {
+            calcularTotal();
+            return;
+        }
+        
         //Terminar de meter reservas
         if(pulsado.equals(this.ventana.getFinalizar().getText())) {
             try {
                 this.checkEstados();
                 if(this.ventana.getClaveVentanaAnt().equals("ModificarPaquete")) {
                     AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());
-                    admin = this.ventana.getPaqActual().modificar(admin);
+                    
+                    Paquete pacAct = this.ventana.getPaqActual();
+                    //admin = pacAct.modificar(admin);
+                    admin = pacAct.actualizarSQL(admin);
+                    admin = this.aplicacion.desbordaAsociacion(admin);
                     admin.close();
                     vamosAModificar = true;
                 }
@@ -84,6 +93,7 @@ public class NuevoPaqueteControler implements ActionListener{
         }
         else if(pulsado.equals(this.ventana.getAddHotel().getText())) {
             AddHotelControler controlador = (AddHotelControler)nuevaVen.getControlador();
+            controlador.resetearCampos();
             ((AddHotel)nuevaVen).setCurrentPaq(this.ventana.getPaqActual());
         }
         else if(pulsado.equals(this.ventana.getAddViajOrg().getText())) {
@@ -184,5 +194,35 @@ public class NuevoPaqueteControler implements ActionListener{
             
             reservasViajesIMSERSO.get(i).setEstado(estado);
         }
+    }
+    
+    /**
+     * Se encarga de calcular el precio total del paquete, y lo muestra en el 
+     * campo 'total'.
+     */
+    private void calcularTotal() {
+        ZebraJTable vuelos = (ZebraJTable) this.ventana.getScrollVuelos().getViewport().getView();
+        ZebraJTable viajes = (ZebraJTable) this.ventana.getScrollViajOrg().getViewport().getView();
+        ZebraJTable hoteles = (ZebraJTable) this.ventana.getScrollHoteles().getViewport().getView();
+        
+        double total = 0;
+        
+        //Obtenemos los precios
+        for(int i = 0; i < vuelos.getModel().getRowCount(); i++) {
+            Object[] fila = vuelos.getRow(i);
+            total += Double.parseDouble((String)fila[5]);
+        }
+        
+        for(int i = 0; i < viajes.getModel().getRowCount(); i++) {
+            Object[] fila = viajes.getRow(i);
+            total += Double.parseDouble((String)fila[1]);
+        }
+        
+        for(int i = 0; i < hoteles.getModel().getRowCount(); i++) {
+            Object[] fila = hoteles.getRow(i);
+            total += Double.parseDouble((String)fila[5]);
+        }
+        
+        this.ventana.getPrecio().setText(""+total);
     }
 }

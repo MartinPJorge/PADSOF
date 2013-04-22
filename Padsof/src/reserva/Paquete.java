@@ -6,6 +6,7 @@ package reserva;
 
 import cat.quickdb.annotation.Column;
 import cat.quickdb.db.AdminBase;
+import cat.quickdb.query.Query;
 import catalogo.InfoHotel;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -104,6 +105,7 @@ public class Paquete {
     public void setIdPaq(int idPaq) {
         this.idPaq = idPaq;
     }
+    
 
     /**
      * Añade una reserva al paquete si este no esta cerrado.
@@ -293,53 +295,62 @@ public class Paquete {
      */
     public void cargarDatosPaqueteSQL(AdminBase admin) throws ClassNotFoundException, SQLException, ParseException {
         List<Reserva> reservas = new ArrayList<Reserva>();
-        Object[] o;
+        Object[] o = null;
         String query;
         Reserva r = new Reserva();
 
 
         // Reservas del IMSERSO
-        ReservaViajeIMSERSO resIMS = new ReservaViajeIMSERSO();
-        query = "SELECT rIMS.id, r.estado FROM ReservaViajeIMSERSO AS rIMS"
-                + " JOIN Reserva AS r ON r.id = rIMS.parent_id "
-                + " JOIN PaqueteReserva AS pr ON r.id = pr.related"
-                + " WHERE pr.base = " + this.getId();
-        o = admin.obtainJoin(query, 2);
-        if (o != null) {
-            for (Object ids : o) {
-                String[] num = (String[]) ids;
-                admin.obtain(resIMS, "id = " + num[0]);
+        if(this.contieneResViajeIMSERSO()) {
+            
+            query = "SELECT rIMS.id, r.estado FROM ReservaViajeIMSERSO AS rIMS"
+                    + " JOIN Reserva AS r ON r.id = rIMS.parent_id "
+                    + " JOIN PaqueteReserva AS pr ON r.id = pr.related"
+                    + " WHERE pr.base = " + this.getId();
+            o = admin.obtainJoin(query, 2);
+            if (o != null) {
+                for (Object ids : o) {
+                    ReservaViajeIMSERSO resIMS = new ReservaViajeIMSERSO();
+                    String[] num = (String[]) ids;
+                    admin.obtain(resIMS, "id = " + num[0]);
 
-                resIMS.setEstado(num[1], admin);
-                reservas.add(resIMS);
+                    resIMS.setEstado(num[1], admin);
+                    reservas.add(resIMS);
+                }
             }
         }
 
         // Reservas de hotel
-        for (ReservaHotel rH : obtainReservasHotel(admin)) {
-            reservas.add(rH);
+        if(this.contieneResHotel()) {
+            for (ReservaHotel rH : obtainReservasHotel(admin)) {
+                reservas.add(rH);
+            }
         }
 
         // Reservas de viajes organizados
-        ReservaViajOrg resVO = new ReservaViajOrg();
-        query = "SELECT rVO.id, r.estado FROM ReservaViajOrg AS rVO"
-                + " JOIN Reserva AS r ON r.id = rVO.parent_id "
-                + " JOIN PaqueteReserva AS pr ON r.id = pr.related"
-                + " WHERE pr.base = " + this.getId();
-        o = admin.obtainJoin(query, 2);
-        if (o != null) {
-            for (Object ids : o) {
-                String[] num = (String[]) ids;
-                admin.obtain(resVO, "id = " + num[0]);
+        if(this.contieneResViajOrg()) {
+            ReservaViajOrg resVO = new ReservaViajOrg();
+            query = "SELECT rVO.id, r.estado FROM ReservaViajOrg AS rVO"
+                    + " JOIN Reserva AS r ON r.id = rVO.parent_id "
+                    + " JOIN PaqueteReserva AS pr ON r.id = pr.related"
+                    + " WHERE pr.base = " + this.getId();
+            o = admin.obtainJoin(query, 2);
+            if (o != null) {
+                for (Object ids : o) {
+                    String[] num = (String[]) ids;
+                    admin.obtain(resVO, "id = " + num[0]);
 
-                resVO.setEstado(num[1], admin);
-                reservas.add(resVO);
+                    resVO.setEstado(num[1], admin);
+                    reservas.add(resVO);
+                }
             }
         }
 
         // Reservas de vuelos
-        for (ReservaVuelo nav : obtainReservasVuelos(admin)) {
-            reservas.add(nav);
+        if(this.contieneResVuelo()) {
+            for (ReservaVuelo nav : obtainReservasVuelos(admin)) {
+                reservas.add(nav);
+            }
         }
 
 
@@ -498,13 +509,451 @@ public class Paquete {
         Class.forName("org.sqlite.JDBC");
         Connection conn = DriverManager.getConnection(urlBD);
         Statement stmt = conn.createStatement();
-        stmt.executeUpdate("UPDATE PaqueteReserva SET related=id WHERE id > 0");
+        //stmt.executeUpdate("UPDATE PaqueteReserva SET related=id+1 WHERE id >= 0");
         stmt.close();
         conn.close();
 
         return AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
     }
+    
+    
+    /**
+     * Dada una conexi&oacute;n, devuelve el nombre de la BD.
+     * @param admin
+     * @return
+     * @throws SQLException 
+     */
+    public static String getDBName(AdminBase admin) throws SQLException {
+        String urlBD = admin.getConex().getConnection().getMetaData().getURL();
+        String nombreBD = "";
 
+        // Conseguimos el nombre de la nombreBD
+        StringTokenizer tokens = new StringTokenizer(urlBD, ":");
+        while (tokens.hasMoreTokens()) {
+            nombreBD = tokens.nextToken(":");
+        }
+        tokens = new StringTokenizer(nombreBD, ".");
+        nombreBD = tokens.nextToken(".");
+        
+        return nombreBD;
+    }
+    
+    /**
+     * Dada una conexi&oacute;n de quickDB, devuelve una de JDBC.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public static Connection quickDBtoJDBC(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String urlBD = admin.getConex().getConnection().getMetaData().getURL();
+        admin.close();
+
+        Class.forName("org.sqlite.JDBC");
+        Connection conn = DriverManager.getConnection(urlBD);
+        
+        return conn;
+    }
+    
+    /**
+     * Actualiza en la BD los nuevos servicios introducidos en el paquete.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase actualizarSQL(AdminBase admin) throws SQLException, ClassNotFoundException {        
+        if(this.contieneResHotel()) {
+            admin = actualizarHotelesSQL(admin);
+        }
+        if(this.contieneResVuelo()) {
+            admin = actualizarVuelosSQL(admin);
+        }
+        if(this.contieneResViajOrg()) {
+            admin = actualizarViajOrgSQL(admin);
+        }
+        if(this.contieneResViajeIMSERSO()) {
+            admin = actualizarViajeImsersoSQL(admin);
+        }
+        
+        return admin;
+    }
+    
+    /**
+     * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase actualizarHotelesSQL(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String nombreBD = getDBName(admin);
+        
+        //Obtenemos el listado de los nuevos hoteles
+        for(ReservaHotel r : this.getReservasHotel()) {
+            if(r.getId() == 0) {
+                admin.save(r);
+            
+                //Obtenemos el indice que ocupa la reserva
+                Object[] filas = admin.obtainJoin("SELECT MAX(id) FROM ReservaHotel", 1);
+                Object[] fila = (Object[])filas[0];
+                int lastCol = Integer.parseInt((String)fila[0]);
+                
+                try {
+                    admin.obtain(r, "id = "+lastCol);
+                }
+                catch(java.lang.NullPointerException ex) {
+                    //Hacer algo
+                }
+
+                filas = admin.obtainJoin("SELECT parent_id FROM ReservaHotel WHERE id = "+lastCol, 1);
+                fila = (Object[])filas[0];
+                int parentId = Integer.parseInt((String)fila[0]);
+                
+                filas = admin.obtainJoin("SELECT MAX(id) FROM PaqueteReserva", 1);
+                fila = (Object[])filas[0];
+                int lastColPaqRes = Integer.parseInt((String)fila[0]);
+                
+                
+                
+                Connection conn = quickDBtoJDBC(admin);
+                Statement stmt = conn.createStatement();
+                
+                stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + (++lastColPaqRes) + "," + this.id + "," + parentId + ")");
+                
+                conn.close();
+                stmt.close();
+                
+                admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+            }
+        }
+        
+        //ReservaHotel resoca = resNewHoteles.get(0);
+        //admin.save(resoca);
+                
+        //Guardamos las reservas
+        /*for(ReservaHotel r : resNewHoteles) {
+            admin.save(r);
+            
+            Object[] filas = admin.obtainJoin("SELECT MAX(id) FROM ReservaHotel", 1);
+            int lastCol = (Integer)(((Object[][])filas))[0][0];
+            admin.obtain(r, "id = "+lastCol);
+            
+            r.getSuperID();
+        }*/
+        
+       /* Query q = admin.obtain(resoca);
+        
+        Object[] filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(cols[0].equals("0")) {
+                primeraVez = true;
+            }
+        }
+        
+
+        
+        //Actualizamos la asociacion
+        Connection conn = quickDBtoJDBC(admin);
+        Statement stmt = conn.createStatement();
+        
+        
+        for(ReservaHotel r : resNewHoteles) {
+            //admin.save(r);
+            stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + r.getSuperID() + "," + this.id + "," + r.getSuperID() + ")");
+        }
+        
+        if(primeraVez) {
+            stmt.executeUpdate("UPDATE PaqueteReserva SET related=(id+1) WHERE id >= 0");
+        }
+        
+        //Cerramos JDBC y devolvemos la conexi&oacute;n recibida.
+        stmt.close();
+        conn.close();*/
+        return admin;
+    }
+    
+    /**
+     * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase actualizarVuelosSQL(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String nombreBD = getDBName(admin);
+        
+        //Obtenemos el listado de los nuevos hoteles
+        for(ReservaVuelo r : this.getReservasVuelos()) {
+            if(r.getId() == 0) {
+                admin.save(r);
+            
+                //Obtenemos el indice que ocupa la reserva
+                Object[] filas = admin.obtainJoin("SELECT MAX(id) FROM ReservaVuelo", 1);
+                Object[] fila = (Object[])filas[0];
+                int lastCol = Integer.parseInt((String)fila[0]);
+                
+                try {
+                    admin.obtain(r, "id = "+lastCol);
+                }
+                catch(java.lang.NullPointerException ex) {
+                    //Hacer algo
+                }
+
+                filas = admin.obtainJoin("SELECT parent_id FROM ReservaVuelo WHERE id = "+lastCol, 1);
+                fila = (Object[])filas[0];
+                int parentId = Integer.parseInt((String)fila[0]);
+                
+                filas = admin.obtainJoin("SELECT MAX(id) FROM PaqueteReserva", 1);
+                fila = (Object[])filas[0];
+                int lastColPaqRes = Integer.parseInt((String)fila[0]);
+                
+                
+                Connection conn = quickDBtoJDBC(admin);
+                Statement stmt = conn.createStatement();
+                
+                stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + (++lastColPaqRes) + "," + this.id + "," + parentId + ")");
+                
+                conn.close();
+                stmt.close();
+                
+                admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+            }
+        }
+        
+        /*String nombreBD = getDBName(admin);
+        boolean primeraVez = false;
+        
+        //Obtenemos el listado de los nuevos hoteles
+        List<ReservaVuelo> resNewVuelos = new ArrayList<>();
+        for(ReservaVuelo r : this.getReservasVuelos()) {
+            if(r.getId() == 0) {
+                resNewVuelos.add(r);
+            }
+        }
+        
+        //Guardamos las reservas
+        for(ReservaVuelo r : resNewVuelos) {
+            admin.save(r);
+        }
+        
+        //Miramos si hay algun cero en 'related'
+        Object[] filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(cols[0].equals("0")) {
+                primeraVez = true;
+            }
+        }
+        
+        //Actualizamos la asociacion
+        Connection conn = quickDBtoJDBC(admin);
+        Statement stmt = conn.createStatement();
+        for(ReservaVuelo r : resNewVuelos) {
+            stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + r.getSuperID() + "," + this.id + "," + r.getSuperID() + ")");
+        }
+        
+        if(primeraVez) {
+            stmt.executeUpdate("UPDATE PaqueteReserva SET related=(id+1) WHERE id >= 0");
+        }
+        
+        //Cerramos JDBC y devolvemos la conexi&oacute;n recibida.
+        stmt.close();
+        conn.close();*/
+        return admin;
+    }
+    
+    /**
+     * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase actualizarViajOrgSQL(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String nombreBD = getDBName(admin);
+        
+        //Obtenemos el listado de los nuevos hoteles
+        for(ReservaViajOrg r : this.getReservasVO()) {
+            if(r.getId() == 0) {
+                admin.save(r);
+            
+                //Obtenemos el indice que ocupa la reserva
+                Object[] filas = admin.obtainJoin("SELECT MAX(id) FROM ReservaViajOrg", 1);
+                Object[] fila = (Object[])filas[0];
+                int lastCol = Integer.parseInt((String)fila[0]);
+                
+                try {
+                    admin.obtain(r, "id = "+lastCol);
+                }
+                catch(java.lang.NullPointerException ex) {
+                    //Hacer algo
+                }
+
+                filas = admin.obtainJoin("SELECT parent_id FROM ReservaViajOrg WHERE id = "+lastCol, 1);
+                fila = (Object[])filas[0];
+                int parentId = Integer.parseInt((String)fila[0]);
+                
+                filas = admin.obtainJoin("SELECT MAX(id) FROM PaqueteReserva", 1);
+                fila = (Object[])filas[0];
+                int lastColPaqRes = Integer.parseInt((String)fila[0]);
+                
+                
+                
+                Connection conn = quickDBtoJDBC(admin);
+                Statement stmt = conn.createStatement();
+                
+                stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + (++lastColPaqRes) + "," + this.id + "," + parentId + ")");
+                
+                conn.close();
+                stmt.close();
+                
+                admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+            }
+        }
+        /*boolean primeraVez = false;
+        
+        //Obtenemos el listado de los nuevos hoteles
+        List<ReservaViajOrg> resNewViajOrg= new ArrayList<>();
+        for(ReservaViajOrg r : this.getReservasVO()) {
+            if(r.getId() == 0) {
+                resNewViajOrg.add(r);
+            }
+        }
+        
+        //Guardamos las reservas
+        for(ReservaViajOrg r : resNewViajOrg) {
+            admin.save(r);
+        }
+        
+        //Miramos si hay algun cero en 'related'
+        Object[] filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(cols[0].equals("0")) {
+                primeraVez = true;
+            }
+        }
+        
+        //Actualizamos la asociacion
+        Connection conn = quickDBtoJDBC(admin);
+        Statement stmt = conn.createStatement();
+        for(ReservaViajOrg r : resNewViajOrg) {
+            stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + r.getSuperID() + "," + this.id + "," + r.getSuperID() + ")");
+        }
+        
+        if(primeraVez) {
+            stmt.executeUpdate("UPDATE PaqueteReserva SET related=(id+1) WHERE id >= 0");
+        }
+        
+        //Cerramos JDBC y devolvemos la conexi&oacute;n recibida.
+        stmt.close();
+        conn.close();*/
+        return admin;
+    }
+
+    
+    /**
+     * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase actualizarViajeImsersoSQL(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String nombreBD = getDBName(admin);
+        
+        //Obtenemos el listado de los nuevos hoteles
+        for(ReservaViajeIMSERSO r : this.getReservasIMSERSO()) {
+            if(r.getId() == 0) {
+                admin.save(r);
+            
+                //Obtenemos el indice que ocupa la reserva
+                Object[] filas = admin.obtainJoin("SELECT MAX(id) FROM ReservaViajeIMSERSO", 1);
+                Object[] fila = (Object[])filas[0];
+                int lastCol = Integer.parseInt((String)fila[0]);
+                
+                try {
+                    admin.obtain(r, "id = "+lastCol);
+                }
+                catch(NullPointerException ex) {
+                    //Hacer algo
+                }
+
+                filas = admin.obtainJoin("SELECT parent_id FROM ReservaViajeIMSERSO WHERE id = "+lastCol, 1);
+                fila = (Object[])filas[0];
+                int parentId = Integer.parseInt((String)fila[0]);
+                
+                filas = admin.obtainJoin("SELECT MAX(id) FROM PaqueteReserva", 1);
+                fila = (Object[])filas[0];
+                int lastColPaqRes = Integer.parseInt((String)fila[0]);
+                
+                
+                
+                Connection conn = quickDBtoJDBC(admin);
+                Statement stmt = conn.createStatement();
+                
+                stmt.executeUpdate("INSERT INTO PaqueteReserva "
+                + "VALUES (" + (++lastColPaqRes) + "," + this.id + "," + parentId + ")");
+                
+                conn.close();
+                stmt.close();
+                
+                admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+            }
+        }
+        
+        /*String nombreBD = getDBName(admin);
+        boolean primeraVez = false;
+        
+        //Obtenemos el listado de los nuevos hoteles
+        List<ReservaViajeIMSERSO> resNewViajeIMSERSO= new ArrayList<>();
+        for(ReservaViajeIMSERSO r : this.getReservasIMSERSO()) {
+            if(r.getId() == 0) {
+                resNewViajeIMSERSO.add(r);
+            }
+        }
+        
+        //Guardamos las reservas
+        for(ReservaViajeIMSERSO r : resNewViajeIMSERSO) {
+            admin.save(r);
+        }
+        
+        //Miramos si hay algun cero en 'related'
+        Object[] filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(cols[0].equals("0")) {
+                primeraVez = true;
+            }
+        }
+        
+        //Actualizamos la asociacion
+        Connection conn = quickDBtoJDBC(admin);
+        Statement stmt = conn.createStatement();
+        for(ReservaViajeIMSERSO r : resNewViajeIMSERSO) {
+            stmt.executeUpdate("INSERT INTO PaqueteReserva (base,related) "
+                + "VALUES (" + this.id + "," + r.getSuperID() + ")");
+        }
+        
+        if(primeraVez) {
+            stmt.executeUpdate("UPDATE PaqueteReserva SET related=(id+1) WHERE id >= 0");
+        }
+        
+        //Cerramos JDBC y devolvemos la conexi&oacute;n recibida.
+        stmt.close();
+        conn.close();*/
+        return admin;
+    }
+    
+    
     /**
      * Imprime las reservas.
      */
@@ -515,4 +964,76 @@ public class Paquete {
             System.out.println(i + ".-" + r.toString());
         }
     }
+    
+    /**
+     * Determina si el paquete contiene alguna reserva de hotel.
+     * @return "reservaVuelo"
+     */
+    public boolean contieneResHotel() {        
+        for(Reserva r : this.reservas) {
+            if(r.getTipoReserva().equals("reservaHotel")) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Determina si el paquete contiene alguna reserva de viaje organizado.
+     * @return "reservaVuelo"
+     */
+    public boolean contieneResViajOrg() {        
+        for(Reserva r : this.reservas) {
+            if(r.getTipoReserva().equals("reservaVO")) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Determina si el paquete contiene alguna reserva de viaje del IMSERSO.
+     * @return "reservaVuelo"
+     */
+    public boolean contieneResViajeIMSERSO() {        
+        for(Reserva r : this.reservas) {
+            if(r.getTipoReserva().equals("reservaIMSERSO")) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Determina si el paquete contiene alguna reserva de vuelos.
+     * @return "reservaVuelo"
+     */
+    public boolean contieneResVuelo() {        
+        for(Reserva r : this.reservas) {
+            if(r.getTipoReserva().equals("reservaVuelo")) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /*public static void checkAsignaReservas(AdminBase admin) throws SQLException {
+        boolean primeraVez = false;
+        String nombreDB = Paquete.getDBName(admin);
+        
+        //Miramos si hay alguna columna a 0
+        Object[] filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(cols[0].equals("0")) {
+                primeraVez = true;
+            }
+        }
+        
+        admin.close();
+    }*/
 }

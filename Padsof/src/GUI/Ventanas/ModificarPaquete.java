@@ -76,8 +76,9 @@ public class ModificarPaquete extends Ventana{
         if(this.modificar.getText().equals(textoBoton)) {
             return "NuevoPaquete";
         }
-        else
+        else {
             return "Inicio";
+        }
     }
     
     /**
@@ -88,6 +89,7 @@ public class ModificarPaquete extends Ventana{
         this.controlador = controlador;
         this.modificar.addActionListener(controlador);
         this.buscar.addActionListener(controlador);
+        this.atras.addActionListener(controlador);
     }
 
     public JTextField getDniCliente() {

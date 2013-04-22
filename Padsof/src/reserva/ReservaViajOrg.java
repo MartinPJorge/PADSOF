@@ -74,6 +74,10 @@ public class ReservaViajOrg extends Reserva {
     public void setInfoViajOrg(InfoViajOrg infoViajOrg) {
         this.infoViajOrg = infoViajOrg;
     }
+    
+    public int getSuperID() {
+        return super.getId();
+    }
 
     /**
      * Calcula el precio de la reserva.

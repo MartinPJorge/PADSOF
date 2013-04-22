@@ -191,6 +191,7 @@ public class AddVueloControler implements ActionListener{
         
         ReservaVuelo reservaVuelo = new ReservaVuelo(dia, mes, year, nombre+" "+apellidos, 
            dni, localizadores.get(filaSeleccionada),  precio);
+        reservaVuelo.setEstado("Confirmado");
         
         //Metemos la reserva en el paquete
         try {

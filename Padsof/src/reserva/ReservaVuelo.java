@@ -78,6 +78,10 @@ public class ReservaVuelo extends Reserva {
         return this.localizador;
     }
     
+    public int getSuperID() {
+        return super.getId();
+    }
+    
     /**
      * 
      * @return cantidad pagada de la reserva

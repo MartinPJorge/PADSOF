@@ -13,6 +13,7 @@ import cat.quickdb.db.AdminBase;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +22,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import myexception.NoResultsExc;
 import padsof.Booking;
 import reserva.Paquete;
@@ -48,18 +48,31 @@ public class ModificarPaqueteControler implements ActionListener{
         if(pulsado.equals(this.ventana.getBuscar().getText())) {
             try {
                 buscarPaquetes();
-            } catch (    SinRellenarEx | NoResultsExc ex) {
+            } catch (    SinRellenarEx ex) {
                 JOptionPane.showMessageDialog(null, ex);
+            }
+            catch(NoResultsExc ex) {
+                JOptionPane.showMessageDialog(null, "No hay paquetes creados.");
             }
         }
         
         //Modificar uno de los paquetes
         else if(pulsado.equals(this.ventana.getModificar().getText())) {
+            AdminBase admin = null;
+            
             try {
                 Paquete paqSeleccionado = null;
                 
                 checkSeleccionado();
+                
+                //Comprobamos que la tabla de PaqueteReserva este correcta
+                admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());
+                admin = Booking.checkAsignaReservas(admin);
+                System.out.println("Se ejecuta check.");
+                
+                
                 paqSeleccionado = getPaqSeleccionado();
+
                 
                 actualizarEstados();
                 NuevoPaquete nuevaVentana = (NuevoPaquete)this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
@@ -67,9 +80,25 @@ public class ModificarPaqueteControler implements ActionListener{
                 nuevaVentana.setClaveVentanaAnt("ModificarPaquete");
                 nuevaVentana.actualizarEncabezado();
                 nuevaVentana.mostrarInfo();
-            } catch (    NoResultsExc | SinSeleccionarEx ex) {
+                
+                admin = this.aplicacion.desbordaAsociacion(admin);
+                admin.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ModificarPaqueteControler.class.getName()).log(Level.SEVERE, null, ex);
+                if(admin != null) {admin.close();}
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ModificarPaqueteControler.class.getName()).log(Level.SEVERE, null, ex);
+                if(admin != null) {admin.close();}
+            } catch (SinSeleccionarEx ex) {
                 JOptionPane.showMessageDialog(null, ex);
             }
+            catch(NoResultsExc ex) {
+                JOptionPane.showMessageDialog(null, "No hay paquetes creados.");
+            }
+        }
+        
+        else {
+            this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
         }
     }
     
@@ -84,6 +113,15 @@ public class ModificarPaqueteControler implements ActionListener{
         if(this.ventana.getDniCliente().getText().equals("")) {
             throw new SinRellenarEx();
         }
+        
+        //Miramos si hay paquetes creados
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());
+        Object[] existe = admin.obtainJoin("SELECT name FROM sqlite_master WHERE type='table' AND name='Paquete'", 1);
+        if(existe == null){
+            admin.close();
+            throw new NoResultsExc();
+        }
+        admin.close();
         
         //Buscamos los paquetes por el DNI del cliente
         List<Paquete> paquetes = new ArrayList<Paquete>();
@@ -182,12 +220,26 @@ public class ModificarPaqueteControler implements ActionListener{
      */
     public Paquete getPaqSeleccionado() throws SinSeleccionarEx, NoResultsExc {        
         Paquete paqSelected = null;
-        ZebraJTable tabla = (ZebraJTable) this.ventana.getTablaResults().getViewport().getView();
-        int filaSel = tabla.getSelectedRow();
+        AdminBase admin = null;
         
-        //Obtenemos el paquete seleccionado
-        Object[] fila = tabla.getRow(filaSel);
-        paqSelected = this.aplicacion.buscarPaquete((Integer)fila[0]);
+        try {
+            ZebraJTable tabla = (ZebraJTable) this.ventana.getTablaResults().getViewport().getView();
+            int filaSel = tabla.getSelectedRow();
+            
+            paqSelected = new Paquete();
+            
+            
+            admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());            
+            //Obtenemos el paquete seleccionado
+            Object[] fila = tabla.getRow(filaSel);
+            paqSelected = this.aplicacion.buscarPaquete((Integer)fila[0]);
+            
+            paqSelected.cargarDatosPaqueteSQL(admin);
+            admin.close();
+        } catch (ClassNotFoundException | SQLException | ParseException ex) {
+            Logger.getLogger(ModificarPaqueteControler.class.getName()).log(Level.SEVERE, null, ex);
+            admin.close();
+        }
         
         return paqSelected;
     }

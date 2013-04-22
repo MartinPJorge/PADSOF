@@ -5,6 +5,7 @@
 package GUI.Controladores;
 
 import GUI.Ventanas.Inicio;
+import GUI.Ventanas.ModificarPaquete;
 import GUI.Ventanas.Ventana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +28,10 @@ public class InicioControler implements ActionListener{
         String pulsado = ((JButton)e.getSource()).getText();
         
         Ventana ventana = this.ventanaInicio.cambiarVentana(this.ventanaInicio.claveVentana(pulsado));
-        
+        if(pulsado.equals("Modificar")) {
+            ModificarPaquete ventanuco = (ModificarPaquete) ventana;
+            ModificarPaqueteControler controlador = (ModificarPaqueteControler) ventana.getControlador();
+            controlador.resetearCampos();
+        }
     }
 }

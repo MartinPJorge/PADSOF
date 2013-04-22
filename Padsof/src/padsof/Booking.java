@@ -10,7 +10,9 @@ import catalogo.CatalogoViajIMSERSO;
 import catalogo.CatalogoViajOrg;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -642,7 +644,90 @@ public class Booking {
      */
     public void savePaquete(Paquete p) throws SQLException, ClassNotFoundException {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
-        p.guardar(admin);
-        admin.save(admin);
+        admin = p.guardar(admin);
+        //admin.save(admin);
+        admin.close();
+    }
+    
+    /**
+     * Comprueba que la tabla PaqueteReserva no tenga ceros en la columna 'related'.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public static AdminBase checkAsignaReservas(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String nombreBD = Paquete.getDBName(admin);
+        boolean primeraVez = false;
+
+        Object[] filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(cols[0].equals("0")) {
+                primeraVez = true;
+            }
+        }
+        
+        //Actualizamos la asociacion
+        Connection conn = Paquete.quickDBtoJDBC(admin);
+        Statement stmt = conn.createStatement();
+
+        if(primeraVez) {
+            stmt.executeUpdate("UPDATE PaqueteReserva SET related=(id+1) WHERE id >= 0");
+        }
+        
+        //Cerramos JDBC y devolvemos la conexi&oacute;n recibida.
+        stmt.close();
+        conn.close();
+        return AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
+    }
+    
+    
+    /**
+     * Controla la situaci&oacute;n particular en la que la columna de id de la 
+     * tabla de asociaci&oacute;n, queda por encima de la columna de 'related's.
+     * @param admin
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException 
+     */
+    public AdminBase desbordaAsociacion(AdminBase admin) throws SQLException, ClassNotFoundException {
+        String nombreBD = Paquete.getDBName(admin);
+        boolean primeraVez = false;
+
+        //Minimo indice de los ids
+        Double minIz = Double.POSITIVE_INFINITY;;
+        Object[] filas = admin.obtainJoin("SELECT id FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(Double.parseDouble(cols[0]) < minIz) {
+                minIz = Double.parseDouble(cols[0]);
+            }
+        }
+        
+        //Maximo indice de los relateds
+        Double minDer = Double.POSITIVE_INFINITY;;
+        filas = admin.obtainJoin("SELECT related FROM PaqueteReserva", 1);
+        for(Object fila : filas) {
+            String[] cols = (String[]) fila;
+            if(Double.parseDouble(cols[0]) < minDer) {
+                minDer = Double.parseDouble(cols[0]);
+            }
+        }
+        
+        
+        //Actualizamos la asociacion
+        Connection conn = Paquete.quickDBtoJDBC(admin);
+        Statement stmt = conn.createStatement();
+
+        if(minIz > minDer) {
+            
+            stmt.executeUpdate("UPDATE PaqueteReserva SET id = (related-1) WHERE id >= 0");
+        }
+        
+        //Cerramos JDBC y devolvemos la conexi&oacute;n recibida.
+        stmt.close();
+        conn.close();
+        return AdminBase.initialize(AdminBase.DATABASE.SQLite, nombreBD);
     }
 }

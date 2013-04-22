@@ -176,6 +176,7 @@ public class AddHotelControler implements ActionListener{
         this.ventana.getPrecioNoche().setText(null);
         this.ventana.getEntrada().setText(null);
         this.ventana.getDias().setText(null);
+        this.ventana.getFooter().getTotal().setText(null);
         
         //Si es la 1 vez que entramos, anadimos un boton vacio.
         if(this.ventana.getBotones().getButtonCount() == 3) {
@@ -311,7 +312,10 @@ public class AddHotelControler implements ActionListener{
             botonSelected.setText("supD");
         }
         
-        return new ReservaHotel(dia, mes, year, tipoHab, 
+        ReservaHotel reserva = new ReservaHotel(dia, mes, year, tipoHab, 
                 botonSelected.getText(), Integer.parseInt(dias), this.resBusquedaActual.get(filaSel));
+        reserva.setEstado("10%");
+        
+        return reserva;
     }
 }

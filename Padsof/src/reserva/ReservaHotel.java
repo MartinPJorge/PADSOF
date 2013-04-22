@@ -6,13 +6,11 @@ package reserva;
 
 import cat.quickdb.annotation.Column;
 import cat.quickdb.annotation.Properties;
-import cat.quickdb.db.AdminBase;
 import catalogo.InfoHotel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import cat.quickdb.db.connection.ConnectionDB;
 
 /**
  * Clase ReservaHotel
@@ -112,6 +110,14 @@ public class ReservaHotel extends Reserva {
     
     public int getDia() {
         return this.dias;
+    }
+
+    public int getDias() {
+        return dias;
+    }
+    
+    public int getSuperID() {
+        return super.getId();
     }
 
     /**

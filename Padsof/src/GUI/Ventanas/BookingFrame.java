@@ -12,9 +12,13 @@ import GUI.Controladores.InicioControler;
 import GUI.Controladores.LoginControler;
 import GUI.Controladores.ModificarPaqueteControler;
 import GUI.Controladores.NuevoPaqueteControler;
+import com.sun.istack.internal.logging.Logger;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.util.HashMap;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 import javax.swing.JFrame;
 import padsof.Booking;
 
@@ -80,6 +84,7 @@ public class BookingFrame extends JFrame{
         this.setMinimumSize(new Dimension(400, 300));
         contenedor.add(login);
         this.setVisible(true);
+        LogManager.getLogManager().reset();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     

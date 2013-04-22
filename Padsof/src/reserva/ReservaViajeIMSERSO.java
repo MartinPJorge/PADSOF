@@ -70,6 +70,10 @@ public class ReservaViajeIMSERSO extends Reserva {
     public void setNumPersonas(int numPersonas) {
         this.numPersonas = numPersonas;
     }
+    
+    public int getSuperID() {
+        return super.getId();
+    }
 
     /**
      * Calcula el precio de la reserva.

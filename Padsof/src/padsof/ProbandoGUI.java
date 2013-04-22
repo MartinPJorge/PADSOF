@@ -6,10 +6,14 @@ package padsof;
 
 import GUI.Ventanas.BookingFrame;
 import cat.quickdb.db.AdminBase;
+import catalogo.InfoHotel;
+import catalogo.InfoViajOrg;
 import persona.Administrador;
 import persona.Cliente;
 import persona.Vendedor;
 import reserva.Paquete;
+import reserva.ReservaHotel;
+import reserva.ReservaViajOrg;
 
 /**
  *
@@ -17,6 +21,7 @@ import reserva.Paquete;
  */
 public class ProbandoGUI {
     public static void main(String[] args) {
+        
         // Registramos el administrador
         Booking booking = new Booking("BookingDB");
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, booking.bookingDBName);

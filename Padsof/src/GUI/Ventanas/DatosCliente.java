@@ -39,6 +39,7 @@ public class DatosCliente extends Ventana {
         
         //Creamos los 2 paneles
         this.crearPaquete = new JButton("Crear Paquete");
+        this.atras = new JButton("Atrás");
         this.iniNuevoCliente();
         this.iniRegistradoCliente();
                         
@@ -51,6 +52,7 @@ public class DatosCliente extends Ventana {
         this.setLayout(new BorderLayout());
         this.add(pDatos, BorderLayout.CENTER);
         JPanel flowPanel = new JPanel(new FlowLayout());
+        flowPanel.add(this.atras);
         flowPanel.add(this.crearPaquete);
         this.add(BorderLayout.SOUTH, flowPanel);
     }
@@ -121,7 +123,12 @@ public class DatosCliente extends Ventana {
 
     @Override
     public String claveVentana(String textoBoton) {
-        return "NuevoPaquete";
+        if(textoBoton.equals("Atrás")) {
+            return "Inicio";
+        }
+        else {
+            return "NuevoPaquete";
+        }
     }
 
     public Formulario getNuevoCliente() {
@@ -145,5 +152,6 @@ public class DatosCliente extends Ventana {
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.crearPaquete.addActionListener(this.controlador);
+        this.atras.addActionListener(this.controlador);
     }
 }
