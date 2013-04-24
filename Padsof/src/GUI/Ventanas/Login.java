@@ -95,6 +95,7 @@ public class Login extends Ventana{
      * Especifica el controlador a usar por la ventana de Inicio.
      * @param controlador 
      */
+    @Override
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.login.addActionListener(this.controlador);

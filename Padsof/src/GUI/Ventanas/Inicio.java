@@ -108,6 +108,15 @@ public class Inicio extends Ventana{
         else if(textoBoton.equals(this.modificar.getText())){
             return "ModificarPaquete";
         }
+        else if(textoBoton.equals(this.margen.getText())){
+            return "Márgenes";
+        }
+        else if(textoBoton.equals(this.facturacion.getText())){
+            return "Facturación";
+        }
+        else if(textoBoton.equals(this.gestion.getText())){
+            return "Gestión";
+        }
         else{
             return "Login";
         }
@@ -117,9 +126,13 @@ public class Inicio extends Ventana{
      * Especifica el controlador a usar por la ventana de Inicio.
      * @param controlador 
      */
+    @Override
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.crear.addActionListener(this.controlador);
         this.modificar.addActionListener(this.controlador);
+        this.gestion.addActionListener(this.controlador);
+        this.facturacion.addActionListener(this.controlador);
+        this.margen.addActionListener(this.controlador);
     }
 }

@@ -391,7 +391,7 @@ public class Booking {
                         idUsr = scan.nextInt();
                         System.out.println("Facturación realizada por el vendedor con idUsr=" + idUsr + " :");
                         System.out.println("Facturación de Hoteles:" + this.factHoteles(idUsr));
-                        System.out.println("Facturación de Vuelos:" + this.factVuelos(idUsr));
+                        System.out.println("Facturación de Vuelos:" + this.factVuelos(idUsr, new Date(), new Date()));
                         System.out.println("Facturación de Viajes Organizados:" + this.factViajesOrg(idUsr));
                         break;
                     case 4:
@@ -406,36 +406,17 @@ public class Booking {
 
     }
 
+    
     /**
      * Recibe un idUsr de un Vendedor, lo busca, y devuelve su Facturación de
-     * servicios (Vuelos).
+     * servicios (Vuelos) posterior a fromDate y anterior a toDate.
      *
      * @param idUsr
+     * @param fromDate - fecha inicio
+     * @param toDate - fecha final
      * @return Facturacion de Vuelos del Vendedor
      */
-    public double factVuelos(int idUsr) {
-        GregorianCalendar cal = new GregorianCalendar(1970, 0, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaInicial;
-        try {
-            fechaInicial = sdf.parse(sdf.format(cal.getTime()));
-        } catch (ParseException ex) {
-            Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
-            return 0.0;
-        }
-        return factVuelos(idUsr, fechaInicial);
-
-    }
-
-    /**
-     * Recibe un idUsr de un Vendedor, lo busca, y devuelve su Facturación de
-     * servicios (Vuelos) posterior a fromDate.
-     *
-     * @param idUsr
-     * @param fromDate
-     * @return Facturacion de Vuelos del Vendedor
-     */
-    public double factVuelos(int idUsr, Date fromDate) {
+    public double factVuelos(int idUsr, Date fromDate, Date toDate) {
         double fact = 0.0;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -447,7 +428,8 @@ public class Booking {
                 for (Reserva r : reservas) {
                     if (r instanceof ReservaVuelo) {
                         if (sdf.parse(r.getFechaInicio()).equals(fromDate)
-                                || sdf.parse(r.getFechaInicio()).after(fromDate)) {
+                                || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                                && sdf.parse(r.getFechaInicio()).before(toDate))) {
                             fact += r.calcularPagado();
                         }
                     }
@@ -456,6 +438,34 @@ public class Booking {
             admin.close();
             return fact;
         } catch (ParseException | NoResultsExc ex) {
+            Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No se ha podido completar la operación.");
+            return -1;
+        }
+
+    }
+    
+    public double factVuelos(Date fromDate, Date toDate) {
+        try {
+            double fact = 0.0;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
+            Reserva r = new Reserva();
+            ArrayList<Reserva> res = admin.obtainAll(r, "1=1");
+            if(res==null)
+                return 0.0;
+            for (Reserva ri : res) {
+                if (r instanceof ReservaVuelo) {
+                    if (sdf.parse(r.getFechaInicio()).equals(fromDate)
+                            || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                            && sdf.parse(r.getFechaInicio()).before(toDate))) {
+                        fact += ri.calcularPagado();
+                    }
+                }
+            }
+            admin.close();
+            return fact;
+        } catch (ParseException ex) {
             Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("No se ha podido completar la operación.");
             return -1;
@@ -473,24 +483,27 @@ public class Booking {
     public double factHoteles(int idUsr) {
         GregorianCalendar cal = new GregorianCalendar(1970, 0, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaInicial;
+        Date fechaInicial, fechaFinal;
         try {
             fechaInicial = sdf.parse(sdf.format(cal.getTime()));
+            fechaFinal = sdf.parse(sdf.format(new Date()));
         } catch (ParseException ex) {
             Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
             return 0.0;
         }
-        return factHoteles(idUsr, fechaInicial);
+        return factHoteles(idUsr, fechaInicial, fechaFinal);
     }
 
     /**
      * Recibe un idUsr de un Vendedor, lo busca, y devuelve su Facturación de
-     * servicios (Hoteles) posterior a fromDate.
+     * servicios (Hoteles) posterior a fromDate y anterior a toDate.
      *
      * @param idUsr
+     * @param fromDate - fecha inicio
+     * @param toDate - fecha final
      * @return Facturacion de Hoteles del Vendedor
      */
-    public double factHoteles(int idUsr, Date fromDate) {
+    public double factHoteles(int idUsr, Date fromDate, Date toDate) {
         try {
             double fact = 0.0;
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -502,7 +515,8 @@ public class Booking {
                 for (Reserva r : reservas) {
                     if (r instanceof ReservaHotel) {
                         if (sdf.parse(r.getFechaInicio()).equals(fromDate)
-                                || sdf.parse(r.getFechaInicio()).after(fromDate)) {
+                                || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                                && sdf.parse(r.getFechaInicio()).before(toDate))) {
                             fact += r.calcularPagado();
                         }
                     }
@@ -511,6 +525,33 @@ public class Booking {
             admin.close();
             return fact;
         } catch (ParseException | NoResultsExc ex) {
+            Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No se ha podido completar la operación.");
+            return -1;
+        }
+    }
+    
+    public double factHoteles(Date fromDate, Date toDate) {
+        try {
+            double fact = 0.0;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
+            Reserva r = new Reserva();
+            ArrayList<Reserva> res = admin.obtainAll(r, "1=1");
+            if(res==null)
+                return 0.0;
+            for (Reserva ri : res) {
+                if (r instanceof ReservaHotel) {
+                    if (sdf.parse(r.getFechaInicio()).equals(fromDate)
+                            || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                            && sdf.parse(r.getFechaInicio()).before(toDate))) {
+                        fact += ri.calcularPagado();
+                    }
+                }
+            }
+            admin.close();
+            return fact;
+        } catch (ParseException ex) {
             Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("No se ha podido completar la operación.");
             return -1;
@@ -527,24 +568,28 @@ public class Booking {
     public double factViajesOrg(int idUsr) {
         GregorianCalendar cal = new GregorianCalendar(1970, 0, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaInicial;
+        Date fechaInicial, fechaFinal;
         try {
             fechaInicial = sdf.parse(sdf.format(cal.getTime()));
+            fechaFinal = sdf.parse(sdf.format(new Date()));
         } catch (ParseException ex) {
             Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
             return 0.0;
         }
-        return factViajesOrg(idUsr, fechaInicial);
+        return factViajesOrg(idUsr, fechaInicial, fechaFinal);
     }
 
     /**
      * Recibe un idUsr de un Vendedor, lo busca, y devuelve su Facturación de
-     * servicios (Viajes Organizados y Viajes del IMSERSO) posterior a untilDate.
+     * servicios (Viajes Organizados y Viajes del IMSERSO) posterior a fromDate
+     * y anterior a toDate.
      *
      * @param idUsr
+     * @param fromDate - fecha inicio
+     * @param toDate - fecha final
      * @return Facturacion de Viajes Organizados y del IMSERSO del Vendedor
      */
-    public double factViajesOrg(int idUsr, Date fromDate) {
+    public double factViajesOrg(int idUsr, Date fromDate, Date toDate) {
         try {
             double fact = 0.0;
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -556,8 +601,9 @@ public class Booking {
                 for (Reserva r : reservas) {
                     if (r instanceof ReservaViajOrg || r instanceof ReservaViajeIMSERSO) {
                         if (sdf.parse(r.getFechaInicio()).equals(fromDate)
-                                || sdf.parse(r.getFechaInicio()).after(fromDate)) {
-                            fact += p.calcularPagado();
+                                || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                                && sdf.parse(r.getFechaInicio()).before(toDate))) {
+                            fact += r.calcularPagado();
                         }
                     }
                 }
@@ -571,6 +617,33 @@ public class Booking {
         }
     }
 
+    public double factViajesOrg(Date fromDate, Date toDate) {
+        try {
+            double fact = 0.0;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
+            Reserva r = new Reserva();
+            ArrayList<Reserva> res = admin.obtainAll(r, "1=1");
+            if(res==null)
+                return 0.0;
+            for (Reserva ri : res) {
+                if (r instanceof ReservaViajOrg || r instanceof ReservaViajeIMSERSO) {
+                    if (sdf.parse(r.getFechaInicio()).equals(fromDate)
+                            || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                            && sdf.parse(r.getFechaInicio()).before(toDate))) {
+                        fact += ri.calcularPagado();
+                    }
+                }
+            }
+            admin.close();
+            return fact;
+        } catch (ParseException ex) {
+            Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No se ha podido completar la operación.");
+            return -1;
+        }
+    }
+    
     /**
      * Recibe un idUsr de un Vendedor, lo busca, y devuelve su Facturación
      * total.
@@ -605,10 +678,9 @@ public class Booking {
 
     /**
      * Devuelve la Facturación total de todos los servicios reservados por todos
-     * los Vendedores.
-     * <br/><u>Nota</u>:<br/>
-     * Antes de llamar a este m&eacute;todo es necesario haber cerrado toda posible 
-     * conexi&oacute;n con la BD.
+     * los Vendedores. <br/><u>Nota</u>:<br/> Antes de llamar a este
+     * m&eacute;todo es necesario haber cerrado toda posible conexi&oacute;n con
+     * la BD.
      *
      * @return Facturacion de total de todos los Vendedores.
      */
@@ -634,6 +706,47 @@ public class Booking {
         return facturacion;
 
     }
+
+    /**
+     * Devuelve la Facturación total de todos los servicios reservados por todos
+     * los Vendedores entre las fechas fromDate y toDate. <br/><u>Nota</u>:<br/>
+     * Antes de llamar a este m&eacute;todo es necesario haber cerrado toda
+     * posible conexi&oacute;n con la BD.
+     *
+     * @param fromDate - fecha inicio
+     * @param toDate - fecha final
+     * @return Facturacion de total de todos los Vendedores.
+     */
+    public double factTotal(Date fromDate, Date toDate) {
+
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.bookingDBName);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Paquete p = new Paquete();
+        double facturacion = 0.0;
+        Object[] o = admin.obtainJoin("SELECT p.id FROM Paquete AS p", 1);
+        for (Object nav : o) {
+            try {
+                String[] fila = (String[]) nav;
+                admin.obtain(p, "id = " + fila[0]);
+                p.cargarDatosPaqueteSQL(admin);
+                for (Reserva r : p.getReservas()) {
+                    if (sdf.parse(r.getFechaInicio()).equals(fromDate)
+                            || (sdf.parse(r.getFechaInicio()).after(fromDate)
+                            && sdf.parse(r.getFechaInicio()).before(toDate))) {
+                        facturacion += r.calcularPagado();
+                    }
+                }
+            } catch (ClassNotFoundException | SQLException | ParseException ex) {
+                Logger.getLogger(Booking.class.getName()).log(Level.SEVERE, null, ex);
+                admin.close();
+            }
+        }
+
+        admin.close();
+        return facturacion;
+
+    }
+
     
     
     /**

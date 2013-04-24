@@ -15,25 +15,13 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import reserva.Paquete;
-import reserva.ReservaHotel;
-import reserva.ReservaViajOrg;
-import reserva.ReservaViajeIMSERSO;
-import reserva.ReservaVuelo;
-import reserva.Vuelos;
+import reserva.*;
 
 /**
  *
@@ -530,6 +518,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
      * Especifica el controlador a usar por la ventana de Inicio.
      * @param controlador 
      */
+    @Override
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.addVuelo.addActionListener(this.controlador);

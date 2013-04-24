@@ -6,7 +6,6 @@ package reserva;
 
 import cat.quickdb.annotation.Column;
 import cat.quickdb.annotation.Properties;
-import cat.quickdb.db.AdminBase;
 import catalogo.InfoViajeIMSERSO;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -128,6 +127,7 @@ public class ReservaViajeIMSERSO extends Reserva {
                     + ReservaViajeIMSERSO.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen,usuario);
         }
     }
 

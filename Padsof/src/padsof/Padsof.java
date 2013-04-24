@@ -150,7 +150,7 @@ public class Padsof {
         double facHoteles = booking.factHoteles(1);
         double facVendedor = booking.factTotal(1);
         double facVO = booking.factViajesOrg(1);
-        double facVuelos = booking.factVuelos(1);
+        double facVuelos = booking.factVuelos(1, new Date(), new Date()); //cambiado
         
         System.out.printf("Facturacion total: %.2f\n", facTotal);
         System.out.printf("Facturacion de hoteles por el vendedor 1: %.2f\n", facHoteles);

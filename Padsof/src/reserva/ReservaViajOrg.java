@@ -92,8 +92,8 @@ public class ReservaViajOrg extends Reserva {
     }
 
     /**
-     * Cambia el margen de beneficios de las reservas de viajes organizados de
-     * que el administrador lo solicite.
+     * Cambia el margen de beneficios de las reservas de viajes organizados cuando
+     * el administrador lo solicite.
      *
      * @param margen
      * @param usuario
@@ -130,6 +130,7 @@ public class ReservaViajOrg extends Reserva {
                     + ReservaViajOrg.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen, usuario);
         }
     }
 

@@ -8,6 +8,7 @@ import cat.quickdb.db.AdminBase;
 import catalogo.InfoHotel;
 import catalogo.InfoViajOrg;
 import catalogo.InfoViajeIMSERSO;
+import es.uam.eps.pads.services.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,8 +19,7 @@ import java.util.logging.Logger;
 import myexception.ClosedPackageExc;
 import myexception.FailedLoginExc;
 import myexception.NoResultsExc;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.*;
 import persona.Administrador;
 import persona.Cliente;
@@ -255,7 +255,13 @@ public class BookingTest {
         Date salida = cal.getTime();
         cal = new GregorianCalendar(2014, 0, 6);
         Date llegada = cal.getTime();
-        List<String> vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", "PERTH JANDAKOT", salida, llegada);
+        List<String> vuelos;
+        try {
+            vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", "PERTH JANDAKOT", salida, llegada);
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(BookingTest.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
         ReservaVuelo reservaVuelo = Vuelos.reservar(vuelos.get(0), "PacoPalomero", "52372839");
         reservaVuelo.setEstado("confirmado");
         try {
@@ -271,7 +277,7 @@ public class BookingTest {
             Logger.getLogger(BookingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         admin.close();
-        double facturacion = b.factVuelos(v2.getIdUsr());
+        double facturacion = b.factVuelos(v2.getIdUsr(), new Date(), new Date());
         boolean conSentido = false;
         if (facturacion >= pNew.calcularPagado()) {
             conSentido = true;

@@ -52,7 +52,7 @@ public class ReservaVuelo extends Reserva {
         ReservaVuelo.margen = margen;
     }
     
-    public void setMargen(double margen, String user) {
+    public static void setMargen(double margen, String user) {
         if(user.equals("admin")) {
             setMargen(margen);
         }
@@ -121,6 +121,7 @@ public class ReservaVuelo extends Reserva {
             ReservaVuelo.getMargen()+" WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen, usuario);
         }        
     }
 }

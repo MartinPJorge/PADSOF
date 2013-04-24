@@ -4,9 +4,12 @@
  */
 package reserva;
 
+import es.uam.eps.pads.services.InvalidParameterException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import org.junit.*;
 
@@ -49,7 +52,13 @@ public class VuelosTest {
         String llegada = "";
         Date ida = null;
         Date vuelta = null;
-        List result = Vuelos.obtenerVuelos(salida, llegada, ida, vuelta);
+        List result;
+        try {
+            result = Vuelos.obtenerVuelos(salida, llegada, ida, vuelta);
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(VuelosTest.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
         assertEquals(0, result.size());
     }
     
@@ -63,7 +72,13 @@ public class VuelosTest {
         System.out.println("obtenerVuelosNoExisten");
         Date ida = null;
         Date vuelta = null;
-        List result = Vuelos.obtenerVuelos("Jarafuel", "Requena", ida, vuelta);
+        List result;
+        try {
+            result = Vuelos.obtenerVuelos("Jarafuel", "Requena", ida, vuelta);
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(VuelosTest.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
         assertEquals(0, result.size());
     }
 
@@ -90,8 +105,14 @@ public class VuelosTest {
     @Test
     public void testObtenerVuelos() {
         System.out.println("obtenerVuelos");
-        List<String> vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", 
-                "PERTH JANDAKOT", new Date(), new Date());
+        List<String> vuelos;
+        try {
+            vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", 
+       "PERTH JANDAKOT", new Date(), new Date());
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(VuelosTest.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
         
         assertEquals(false, vuelos.isEmpty());
     }

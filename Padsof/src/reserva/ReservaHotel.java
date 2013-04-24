@@ -142,6 +142,7 @@ public class ReservaHotel extends Reserva {
                     + ReservaHotel.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen, usuario);
         }
     }
 

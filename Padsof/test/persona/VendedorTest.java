@@ -8,6 +8,7 @@ import cat.quickdb.db.AdminBase;
 import catalogo.InfoHotel;
 import catalogo.InfoViajOrg;
 import catalogo.InfoViajeIMSERSO;
+import es.uam.eps.pads.services.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,7 +71,13 @@ public class VendedorTest {
         Date salida = cal.getTime();
         cal = new GregorianCalendar(2014, 0, 6);
         Date llegada = cal.getTime();
-        List<String> vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", "PERTH JANDAKOT", salida, llegada);
+        List<String> vuelos;
+        try {
+            vuelos = Vuelos.obtenerVuelos("KABUL INTERNATIONAL", "PERTH JANDAKOT", salida, llegada);
+        } catch (InvalidParameterException ex) {
+            Logger.getLogger(VendedorTest.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
         ReservaVuelo reservaVuelo = Vuelos.reservar(vuelos.get(0), "PacoPalomero", "52372839");
 
         adm = new Administrador("Ivan", "Marquez", "12345678A", 1, 1, 1990, 0, "1234");
