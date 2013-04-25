@@ -21,8 +21,11 @@ import persona.Vendedor;
 import reserva.Paquete;
 
 /**
- *
- * @author ivan
+ * Clase controladora de la Ventana ModificarPass
+ * 
+* @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class ModificarPassControl implements ActionListener {
 
@@ -30,12 +33,23 @@ public class ModificarPassControl implements ActionListener {
     private ModificarPass vista;
     private Vendedor actual;
 
+    /**
+     * Constructor del controlador
+     *
+     * @param vista
+     * @param aplic
+     */
     public ModificarPassControl(ModificarPass vista, Booking aplic) {
         this.aplic = aplic;
         this.vista = vista;
         this.actual = null;
     }
 
+    /**
+     * Método que lleva a cabo el control efectivo.
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object fuente = e.getSource();
@@ -45,12 +59,11 @@ public class ModificarPassControl implements ActionListener {
             this.vista.cambiarVentana(this.vista.claveVentana(textBut));
         } else if (fuente == vista.getBuscar()) {
             String idStr = vista.getIdInput().getText();
-
             Vendedor v;
             try {
                 v = aplic.buscarVendedor(Integer.parseInt(idStr));
             } catch (NoResultsExc ex) {
-                JOptionPane.showMessageDialog(null, "La búsqueda en la Base de Datos de vendedores con el"
+                JOptionPane.showMessageDialog(vista, "La búsqueda en la Base de Datos de vendedores con el"
                         + "ID especificado no produjo ningún resultado.",
                         "ERROR - Búsqueda sin resultados", JOptionPane.INFORMATION_MESSAGE);
                 return;
@@ -65,15 +78,12 @@ public class ModificarPassControl implements ActionListener {
 
             actual = v;
 
-        } else if (fuente == vista.getBorrar()) {
+        } else if (fuente == vista.getModify()) {
             int opc;
             if (actual == null) {
-                JOptionPane.showMessageDialog(null, "Para dar de baja a un vendedor, antes debe"
+                JOptionPane.showMessageDialog(null, "Para modificar la contraseña de un vendedor, antes debe "
                         + "buscarlo por su ID.",
                         "ERROR - Vendedor no seleccionado", JOptionPane.INFORMATION_MESSAGE);
-            } else if (actual.getIdUsr() == 0) {
-                JOptionPane.showMessageDialog(null, "No se puede dar de baja a un administrador.",
-                        "ERROR - Administrador imborrable", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 String npass = vista.getNewPass().getText();
                 String npass2 = vista.getRepeatNewP().getText();
@@ -83,13 +93,13 @@ public class ModificarPassControl implements ActionListener {
                             "ERROR - Contraseñas distintas", JOptionPane.INFORMATION_MESSAGE);
                     return;
                 }
-                opc = JOptionPane.showInternalConfirmDialog(null, "¿Está seguro de querer dar de baja"
-                        + "a este vendedor?", "Petición de Confirmación", JOptionPane.OK_CANCEL_OPTION);
+                opc = JOptionPane.showConfirmDialog(vista, "¿Está seguro de querer cambiar la contraseña "
+                        + "de este vendedor?", "Petición de Confirmación", JOptionPane.OK_CANCEL_OPTION);
                 if (opc == JOptionPane.CANCEL_OPTION || opc == JOptionPane.CLOSED_OPTION) {
                     return;
                 }
                 cambiarPassword(npass);
-                
+
                 actual = null;
                 this.vista.cambiarVentana(this.vista.claveVentana(textBut));
             }
@@ -97,6 +107,11 @@ public class ModificarPassControl implements ActionListener {
         }
     }
 
+    /**
+     * Método auxiliar que realiza el cambio de contraseña en la base de datos.
+     *
+     * @param pass
+     */
     private void cambiarPassword(String pass) {
         try {
             AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplic.getBookingDBName());
@@ -106,10 +121,10 @@ public class ModificarPassControl implements ActionListener {
                 stmt.executeUpdate(query);
                 stmt.close();
             }
-            
+
             JOptionPane.showMessageDialog(null, "La contraseña del vendedor especificado ha sido "
-                        + "cambiada correctamente.", "Modificación realizada", JOptionPane.INFORMATION_MESSAGE);
-                    
+                    + "cambiada correctamente.", "Modificación realizada", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (SQLException ex) {
             Logger.getLogger(BajaVControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

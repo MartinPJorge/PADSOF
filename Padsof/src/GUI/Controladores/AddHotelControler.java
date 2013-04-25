@@ -27,8 +27,11 @@ import padsof.Booking;
 import reserva.ReservaHotel;
 
 /**
+ * Clase controladora de la Ventana AddHotel
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class AddHotelControler implements ActionListener{
     private AddHotel ventana;
@@ -36,6 +39,11 @@ public class AddHotelControler implements ActionListener{
     private List<InfoHotel> resBusquedaActual;
     private ReservaHotel reservaActual;
     
+    /**
+     * Constructor de la clase
+     * @param ventana
+     * @param aplicacion
+     */
     public AddHotelControler(AddHotel ventana, Booking aplicacion) {
         this.ventana = ventana;
         this.aplicacion = aplicacion;
@@ -152,7 +160,6 @@ public class AddHotelControler implements ActionListener{
     
     /**
      * Se encarga de intentar a&ntilde;adir una reserva de hotel al paquete.
-     * @param resHoteles
      * @throws SinSeleccionarEx
      * @throws SinRellenarEx
      * @throws FechaInvalidaEx 
@@ -249,7 +256,6 @@ public class AddHotelControler implements ActionListener{
      * Calcula el total que supondr&iacute;a llevar a cabo una reserva con los 
      * datos especificados, y muestra dicha cantidad en el cuadro de texto bajo 
      * el nombre de 'Total'.
-     * @param resHoteles
      * @throws SinRellenarEx
      * @throws SinSeleccionarEx
      * @throws FechaInvalidaEx 

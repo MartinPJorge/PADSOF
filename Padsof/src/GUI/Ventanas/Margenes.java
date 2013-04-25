@@ -12,8 +12,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
- *
- * @author e265923
+ * Clase para la GUI que representa la Ventana en la que modificamos los márgenes de beneficios.
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class Margenes extends Ventana{
     private JFormattedTextField mHoteles;
@@ -23,6 +25,11 @@ public class Margenes extends Ventana{
     private JButton modify;
     private JButton atras;
     
+    /**
+     * Constructor de la clase.
+     * @param padre
+     * @param nombre
+     */
     public Margenes(BookingFrame padre, String nombre) {
         super(nombre, padre, 550, 550);
         
@@ -32,6 +39,9 @@ public class Margenes extends Ventana{
         
     }
 
+    /**
+     * Método auxiliar para diseñar el panel entero de esta clase.
+     */
     private void iniMargenes(){
         JPanel form = new JPanel(new GridBagLayout());
         JPanel campos = new JPanel(new SpringLayout());
@@ -142,13 +152,18 @@ public class Margenes extends Ventana{
     }
 
     
+    /**
+     * Devuelve, a partir de textoBoton, el nombre de la ventana a la que cambiaremos.
+     * @param textoBoton
+     * @return nombre de la siguiente ventana
+     */
     @Override
     public String claveVentana(String textoBoton) {
         return "Inicio";
     }
     
     /**
-     * Especifica el controlador a usar por la ventana de Gestión.
+     * Especifica el controlador a usar por la ventana de Márgenes.
      * @param controlador 
      */
     @Override

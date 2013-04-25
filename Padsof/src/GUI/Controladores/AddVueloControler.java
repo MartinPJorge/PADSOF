@@ -32,8 +32,11 @@ import reserva.ReservaVuelo;
 import reserva.Vuelos;
 
 /**
+ * Clase controladora de la Ventana AddVuelo
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class AddVueloControler implements ActionListener{
     private AddVuelo ventana;

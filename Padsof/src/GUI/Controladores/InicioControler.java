@@ -16,8 +16,11 @@ import myexception.PermissionExc;
 import padsof.Booking;
 
 /**
+ * Clase controladora de la Ventana Inicio
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class InicioControler implements ActionListener{
     private Inicio ventanaInicio;
@@ -33,7 +36,7 @@ public class InicioControler implements ActionListener{
         String pulsado = ((JButton)e.getSource()).getText();
         
         //Miramos si no es admin e intenta acceder donde no puede
-        if(pulsado.equals("Facturación") || pulsado.equals("Modificar")) {
+        if(pulsado.equals("Facturación") || pulsado.equals("Modificar márgenes") || pulsado.equals("Gestión de usuarios")) {
             try {
                 if(this.aplicacion.getSesion().isAdmin() == false) {
                     JOptionPane.showMessageDialog(null, "No puedes acceder a esta sección.");

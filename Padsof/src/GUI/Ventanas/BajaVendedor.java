@@ -12,106 +12,119 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
+ * Clase para la GUI que representa la Ventana en la que damos de baja a un
+ * Vendedor.
  *
- * @author ivan
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
-public class BajaVendedor extends Ventana{
+public class BajaVendedor extends Ventana {
+
     private JButton buscar;
     private JTextField idInput;
-    
     private JTextField name;
     private JTextField surname;
     private JTextField dni;
-    private JTextField fechaNac;    
-    
+    private JTextField fechaNac;
     private JTextField id;
     private JTextField pass;
-
     private JButton atras;
     private JButton borrar;
-    
-    
-    public BajaVendedor(BookingFrame padre, String nombre){
-        super(new SpringLayout(), nombre, padre, 550, 550);
-        
+
+    /**
+     * Constructor de la clase.
+     *
+     * @param padre
+     * @param nombre
+     */
+    public BajaVendedor(BookingFrame padre, String nombre) {
+        super(new SpringLayout(), nombre, padre, 550, 600);
+
         this.iniBusqueda();
         this.iniForm();
-        
-        this.setBorder(BorderFactory.createTitledBorder(nombre));     
+
+        this.setBorder(BorderFactory.createTitledBorder(nombre));
         SpringUtilities.makeCompactGrid(this, 2, 1, 9, 9, 9, 20);
     }
-    
-    private void iniBusqueda(){
+
+    /**
+     * Método auxiliar para diseñar el panel de búsqueda de esta clase.
+     */
+    private void iniBusqueda() {
         JPanel busqueda = new JPanel(new FlowLayout());
         busqueda.setBorder(BorderFactory.createTitledBorder("Búsqueda de Vendedor"));
-        
+
         JLabel idlab = new JLabel("Introduzca el ID del Vendedor: ");
         idInput = new JTextField(10);
         idlab.setLabelFor(idInput);
         idlab.setVisible(true);
         idInput.setVisible(true);
-        
+
         buscar = new JButton("Buscar");
-        
+
         busqueda.add(idlab);
         busqueda.add(idInput);
         busqueda.add(buscar);
         JPanel aux = new JPanel(new GridBagLayout());
         aux.add(busqueda);
-        busqueda= aux;
+        busqueda = aux;
         this.add(busqueda);
     }
-    
-    private void iniForm(){
+
+    /**
+     * Método auxiliar para diseñar el panel del formulario de esta clase.
+     */
+    private void iniForm() {
         JPanel form = new JPanel(new SpringLayout());
         form.setBorder(BorderFactory.createTitledBorder("Datos del Vendedor"));
-        
+
         this.name = new JTextField(20);
         JLabel nom = new JLabel("Nombre: ");
         nom.setLabelFor(name);
         form.add(nom);
-        form.add(name);  
+        form.add(name);
         name.setEnabled(false);
-                
+
         this.surname = new JTextField();
         JLabel apel = new JLabel("Apellidos: ");
         apel.setLabelFor(surname);
         form.add(apel);
         form.add(surname);
         surname.setEnabled(false);
-        
+
         this.dni = new JTextField();
         JLabel dnilab = new JLabel("DNI: ");
         dnilab.setLabelFor(dni);
         form.add(dnilab);
         form.add(dni);
         dni.setEnabled(false);
-        
+
         this.fechaNac = new JTextField();
         JLabel fecha = new JLabel("Fecha de Nacimiento: ");
         fecha.setLabelFor(fechaNac);
         form.add(fecha);
         form.add(fechaNac);
         fechaNac.setEnabled(false);
-        
-   
+
+
         this.id = new JTextField();
         JLabel idlab = new JLabel("ID Vendedor: ");
         idlab.setLabelFor(id);
         form.add(idlab);
         form.add(id);
         id.setEnabled(false);
-        
+
         this.pass = new JTextField();
         JLabel contra = new JLabel("Contraseña: ");
         contra.setLabelFor(pass);
         form.add(contra);
         form.add(pass);
         pass.setEnabled(false);
-        
+
         SpringUtilities.makeCompactGrid(form, 6, 2, 8, 8, 20, 20);
         form.setVisible(true);
-        
+
         JPanel abajo = new JPanel(new FlowLayout());
         this.atras = new JButton("Atrás");
         atras.setVisible(true);
@@ -119,9 +132,9 @@ public class BajaVendedor extends Ventana{
         borrar.setVisible(true);
         abajo.add(atras);
         abajo.add(borrar);
-        
+
         abajo.setVisible(true);
-        
+
         JPanel general = new JPanel();
         general.setLayout(new BoxLayout(general, BoxLayout.Y_AXIS));
         general.add(form);
@@ -173,8 +186,6 @@ public class BajaVendedor extends Ventana{
         this.fechaNac = fechaNac;
     }
 
-    
-
     public JTextField getId() {
         return id;
     }
@@ -215,17 +226,22 @@ public class BajaVendedor extends Ventana{
         this.surname = surname;
     }
 
-    
-    
+    /**
+     * Devuelve, a partir de textoBoton, el nombre de la ventana a la que
+     * cambiaremos.
+     *
+     * @param textoBoton
+     * @return nombre de la siguiente ventana
+     */
     @Override
     public String claveVentana(String textoBoton) {
         return "Gestión";
     }
-    
-    
+
     /**
-     * Especifica el controlador a usar por la ventana de Factruación.
-     * @param controlador 
+     * Especifica el controlador a usar por la ventana de BajaVendedor.
+     *
+     * @param controlador
      */
     @Override
     public void setControlador(ActionListener controlador) {

@@ -30,7 +30,9 @@ public class Administrador extends Vendedor {
      * @param nombre
      * @param apellido
      * @param DNI
-     * @param fechaNac
+     * @param dia 
+     * @param mes 
+     * @param anio 
      * @param id
      * @param password
      */

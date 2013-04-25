@@ -21,8 +21,11 @@ import persona.Vendedor;
 import reserva.Paquete;
 
 /**
+ * Clase controladora de la Ventana BajaVendedor
  *
- * @author ivan
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class BajaVControl implements ActionListener {
 
@@ -30,12 +33,23 @@ public class BajaVControl implements ActionListener {
     private BajaVendedor vista;
     private Vendedor actual;
 
+    /**
+     * Constructor del controlador
+     *
+     * @param vista
+     * @param aplic
+     */
     public BajaVControl(BajaVendedor vista, Booking aplic) {
         this.aplic = aplic;
         this.vista = vista;
         this.actual = null;
     }
 
+    /**
+     * Método que lleva a cabo el control efectivo.
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object fuente = e.getSource();
@@ -88,6 +102,9 @@ public class BajaVControl implements ActionListener {
         }
     }
 
+    /**
+     * Método auxiliar que realiza el borrado del vendedor en la base de datos.
+     */
     private void borrarVendedor() {
         try {
             AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplic.getBookingDBName());

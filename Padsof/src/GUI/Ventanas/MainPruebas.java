@@ -8,8 +8,11 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**
+ * Clase para la GUI - Main de Pruebas de Estilo de Ventana.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class MainPruebas {
     public static void main(String[] args) {

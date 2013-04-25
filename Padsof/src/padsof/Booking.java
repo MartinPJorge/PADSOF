@@ -274,7 +274,7 @@ public class Booking {
      *
      * @param c
      * @param v
-     * @return
+     * @return Paquete
      */
     public Paquete crearPaquete(Cliente c, Vendedor v) {
         try {
@@ -765,7 +765,7 @@ public class Booking {
     /**
      * Comprueba que la tabla PaqueteReserva no tenga ceros en la columna 'related'.
      * @param admin
-     * @return
+     * @return AdminBase(BD)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -800,7 +800,7 @@ public class Booking {
      * Controla la situaci&oacute;n particular en la que la columna de id de la 
      * tabla de asociaci&oacute;n, queda por encima de la columna de 'related's.
      * @param admin
-     * @return
+     * @return AdminBase(BD)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */

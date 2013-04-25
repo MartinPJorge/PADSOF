@@ -13,20 +13,25 @@ import javax.swing.JFrame;
 import padsof.Booking;
 
 /**
+ * Clase principal de la GUI que extiende JFrame y representa la aplicación
+ * entera, ya que se encarga de las transiciones de Ventana.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
-public class BookingFrame extends JFrame{
-    private HashMap<String,Ventana> ventanas;
-    
+public class BookingFrame extends JFrame {
+
+    private HashMap<String, Ventana> ventanas;
+
     /**
-     * Cuidado, los nombres puestos en el hashMap deben de coincidir con los que 
-     * se devuelven en los m&eacute;todos 'claveVentana()' de cada una de las distintas 
-     * ventanas insertadas.
+     * Cuidado, los nombres puestos en el hashMap deben de coincidir con los que
+     * se devuelven en los m&eacute;todos 'claveVentana()' de cada una de las
+     * distintas ventanas insertadas.
      */
     public BookingFrame(Booking aplicacion) {
         super();
-        
+
         //Nombres de ventanas
         String nomInicio = "Inicio";
         String nomLogin = "Login";
@@ -44,14 +49,14 @@ public class BookingFrame extends JFrame{
         String modif = "ModifPass";
 
         //Crear ventanas
-        NuevoPaquete newPaq = new NuevoPaquete(this,nuevoPaq);
+        NuevoPaquete newPaq = new NuevoPaquete(this, nuevoPaq);
         DatosCliente datos = new DatosCliente(this, datosCliente);
-        AddHotel hot = new AddHotel(this,hotel);
-        AddViajOrg viajOrg = new AddViajOrg(this,viajeOrga);
-        AddVuelo vuelos = new AddVuelo(this,vuelo);
+        AddHotel hot = new AddHotel(this, hotel);
+        AddViajOrg viajOrg = new AddViajOrg(this, viajeOrga);
+        AddVuelo vuelos = new AddVuelo(this, vuelo);
         Login login = new Login(this, nomLogin);
-        Inicio ventanaIni = new Inicio(this,nomInicio);
-        ModificarPaquete paquete = new ModificarPaquete(this,nomMod);
+        Inicio ventanaIni = new Inicio(this, nomInicio);
+        ModificarPaquete paquete = new ModificarPaquete(this, nomMod);
         Facturacion fact = new Facturacion(this, facturacion);
         Margenes marg = new Margenes(this, margenes);
         Gestion gest = new Gestion(this, gestion);
@@ -59,8 +64,8 @@ public class BookingFrame extends JFrame{
         AltaVendedor altaVend = new AltaVendedor(this, altaV);
         ModificarPass modPass = new ModificarPass(this, modif);
         Container contenedor = this.getContentPane();
-        
-        
+
+
         //Especificamos los controladores
         login.setControlador(new LoginControler(login, aplicacion));
         ventanaIni.setControlador(new InicioControler(ventanaIni, aplicacion));
@@ -76,9 +81,9 @@ public class BookingFrame extends JFrame{
         bajaVend.setControlador(new BajaVControl(bajaVend, aplicacion));
         altaVend.setControlador(new AltaVControl(altaVend, aplicacion));
         modPass.setControlador(new ModificarPassControl(modPass, aplicacion));
-        
+
         //Metemos las ventanas en el hashMap
-        this.ventanas = new HashMap<String,Ventana>();
+        this.ventanas = new HashMap<String, Ventana>();
         this.ventanas.put(nuevoPaq, newPaq);
         this.ventanas.put(nomInicio, ventanaIni);
         this.ventanas.put(nomLogin, login);
@@ -95,9 +100,9 @@ public class BookingFrame extends JFrame{
         this.ventanas.put(altaV, altaVend);
         this.ventanas.put(modif, modPass);
 
-        
-        
-        
+
+
+
         //Mostramos la ventana
         this.setMinimumSize(new Dimension(400, 300));
         contenedor.add(login);
@@ -105,8 +110,8 @@ public class BookingFrame extends JFrame{
         LogManager.getLogManager().reset();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
-    public HashMap<String,Ventana> getVentanas() {
+
+    public HashMap<String, Ventana> getVentanas() {
         return this.ventanas;
     }
 }

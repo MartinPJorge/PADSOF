@@ -17,8 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 /**
+ * Clase para la GUI que representa la Ventana de Login.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class Login extends Ventana{
     private JLabel titulo;
@@ -77,7 +80,7 @@ public class Login extends Ventana{
     
     /**
      * Devuelve el texto introducido en el campo del ID.
-     * @return 
+     * @return String
      */
     public String getId() {
         return this.idC.getText();
@@ -85,7 +88,7 @@ public class Login extends Ventana{
     
     /**
      * Devuelve el texto introducido en el campo de la contrase&ntilde;a.
-     * @return 
+     * @return password
      */
     public String getPassword() {
         return this.passwordC.getText();

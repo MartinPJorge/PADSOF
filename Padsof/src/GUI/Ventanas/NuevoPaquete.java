@@ -36,8 +36,11 @@ import reserva.ReservaVuelo;
 import reserva.Vuelos;
 
 /**
- *
- * @author Jorge
+ * Clase para la GUI que representa la Ventana de creación de Paquetes.
+ * de un Vendedor.
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class NuevoPaquete extends Ventana implements TableModelListener{
     private JLabel encabezado;

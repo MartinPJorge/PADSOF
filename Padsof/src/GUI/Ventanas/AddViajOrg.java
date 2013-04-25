@@ -20,10 +20,14 @@ import javax.swing.SpringLayout;
 import reserva.Paquete;
 
 /**
+ * Clase para la GUI que representa la Ventana de buscar y añadir Viajes.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
-public class AddViajOrg extends Ventana{
+public class AddViajOrg extends Ventana {
+
     private JTextField precio;
     private JTextField noches;
     private JTextField personas;
@@ -34,79 +38,79 @@ public class AddViajOrg extends Ventana{
     private JButton calcular;
     private JComboBox tipoViaje;
     private Paquete currPaq;
-    
+
     public AddViajOrg(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre, padre, 650,600);
+        super(new SpringLayout(), nombre, padre, 650, 600);
         this.iniResultados();
         JPanel abajo = this.iniDetalles();
-        this.footer = new FooterServicios(padre,"FooterVO");
-        
+        this.footer = new FooterServicios(padre, "FooterVO");
+
         this.add(this.iniFiltro());
         this.add(this.resultados);
         this.add(abajo);
         this.add(this.footer);
-        
+
         SpringUtilities.makeCompactGrid(this, 4, 1, 6, 6, 6, 6);
         this.setVisible(true);
     }
-    
+
     /**
      * Inicializa la secci&oacute;n en la que mostramos los datos a filtrar.
      */
     private JPanel iniFiltro() {
         JPanel filtro = new JPanel(new SpringLayout());
         this.buscar = new JButton("Buscar");
-        
+
         //Creamos los elementos
         JLabel precio = new JLabel("Precio:");
         JLabel noches = new JLabel("Noches:");
         this.precio = new JTextField(5);
         this.noches = new JTextField(5);
-        
+
         //Introducimos los elementos
         filtro.add(precio);
         filtro.add(this.precio);
         filtro.add(noches);
         filtro.add(this.noches);
         SpringUtilities.makeCompactGrid(filtro, 2, 2, 6, 6, 6, 6);
-        
+
         //Hacemos un panel para evitar que se expandan los JTextField
         JPanel corset = new JPanel(new GridBagLayout());
         corset.add(filtro);
-        
+
         String[] elems = {"Organizado", "IMSERSO"};
         this.tipoViaje = new JComboBox(elems);
-        
+
         JPanel campos = new JPanel();
         campos.add(corset);
         campos.add(this.tipoViaje);
-        
+
         //Metemos el formulario y el boton
         JPanel params = new JPanel(new SpringLayout());
         params.add(campos);
         JPanel botonPan = new JPanel(new GridBagLayout());
         botonPan.add(this.buscar);
         params.add(botonPan);
-        
+
         SpringUtilities.makeCompactGrid(params, 2, 1, 6, 6, 6, 6);
         params.setBorder(BorderFactory.createTitledBorder("Filtrar resultados"));
-        
+
         return params;
     }
-    
+
     /**
      * Inicializa la secci&pacute;n en la que se muestran los resultados.
      */
     private void iniResultados() {
         String[] titulos = {"Nombre", "Precio", "Días", "Noches", "F.Salida", "Loc.Salida",
-        "Localidades", "Descripción"};
+            "Localidades", "Descripción"};
         JTable tabla = new ZebraJTable(null, titulos);
         this.resultados = new JScrollPane(tabla);
     }
-    
+
     /**
-     * Inicializa la secci&oacute;n el la que mostramos los campos para especificar 
-     * los detalles.
+     * Inicializa la secci&oacute;n el la que mostramos los campos para
+     * especificar los detalles.
      */
     private JPanel iniDetalles() {
         JPanel detallesPan = new JPanel(new SpringLayout());
@@ -115,22 +119,22 @@ public class AddViajOrg extends Ventana{
         JPanel panCampos = new JPanel(new SpringLayout());
         this.calcular = new JButton("Calcular");
         corset.add(this.calcular);
-        
+
         JLabel personas = new JLabel("Personas:");
         this.personas = new JTextField(3);
         JLabel fecha = new JLabel("Fecha:");
         this.fecha = new JTextField(7);
-        
+
         panCampos.add(personas);
         panCampos.add(this.personas);
         panCampos.add(fecha);
         panCampos.add(this.fecha);
         SpringUtilities.makeCompactGrid(panCampos, 2, 2, 6, 6, 6, 6);
         corsetCampos.add(panCampos);
-        
+
         detallesPan.add(corsetCampos);
         detallesPan.add(corset);
-        
+
         SpringUtilities.makeCompactGrid(detallesPan, 2, 1, 6, 6, 6, 6);
         return detallesPan;
     }
@@ -222,7 +226,7 @@ public class AddViajOrg extends Ventana{
 
     /**
      *
-     * @return
+     * @return nomrbe
      */
     public String getNombre() {
         return nombre;
@@ -243,12 +247,11 @@ public class AddViajOrg extends Ventana{
     public JButton getCalcular() {
         return calcular;
     }
-    
-    
-    
+
     /**
      * Especifica el controlador a usar por la ventana de a&ntilde;adir hoteles.
-     * @param controlador 
+     *
+     * @param controlador
      */
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;

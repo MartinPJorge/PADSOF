@@ -23,8 +23,11 @@ import persona.Cliente;
 import reserva.Paquete;
 
 /**
+ * Clase controladora de la Ventana DatosCliente
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class DatosClienteControler implements ActionListener{
     private DatosCliente ventana;

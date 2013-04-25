@@ -20,115 +20,115 @@ import reserva.Paquete;
 import reserva.ReservaVuelo;
 
 /**
+ * Clase para la GUI que representa la Ventana de buscar y añadir Vuelos.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
-public class AddVuelo extends Ventana{
+public class AddVuelo extends Ventana {
+
     private JPanel filtrarRes;
     private JButton filtrar;
-    
     private JTextField salida;
     private JTextField hSalida;
     private JTextField ida;
     private JTextField hLlegada;
-    
     private JScrollPane scrollResults;
-    
     private Formulario detalles;
     private FooterServicios footer;
     private Paquete currentPaq;
     private ReservaVuelo currReserva;
-    
-    
+
     public AddVuelo(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre,padre, 650,600);
+        super(new SpringLayout(), nombre, padre, 650, 600);
         this.iniFiltro();
         this.iniResultados();
         this.iniDetalles();
         this.footer = new FooterServicios(padre, "FooterVuelo");
         this.footer.getTotal().setVisible(false);
         this.footer.getTotalL().setVisible(false);
-        
+
         this.add(this.filtrarRes);
         this.add(this.scrollResults);
         this.add(this.detalles);
         this.add(this.footer);
         this.currReserva = new ReservaVuelo();
-        
+
         SpringUtilities.makeCompactGrid(this, 4, 1, 6, 6, 6, 6);
         this.setVisible(true);
     }
-    
+
     /**
      * Inicializa la secci&oacute;n en la que mostramos los datos a filtrar.
      */
     private void iniFiltro() {
         this.filtrarRes = new JPanel(new SpringLayout());
-        
+
         //Parte izquierda del filtro
         Formulario iz = new Formulario();
-        
+
         JLabel origen = new JLabel("Salida:");
         JLabel dia = new JLabel("F.Salida:");
         this.salida = new JTextField(5);
         this.hSalida = new JTextField(5);
         JTextField diaC = new JTextField(5);
-        
+
         iz.addTexto(origen, this.salida);
         iz.addTexto(dia, this.hSalida);
         iz.aplicarCambios();
-        
-        
-        
+
+
+
         //Parte derecha del filtro
         Formulario der = new Formulario();
-        
+
         JLabel destino = new JLabel("Destino:");
         JLabel company = new JLabel("F.LLegada:");
         this.ida = new JTextField(5);
         this.hLlegada = new JTextField(5);
 
-       
+
         der.addTexto(destino, this.ida);
         der.addTexto(company, this.hLlegada);
         der.aplicarCambios();
 
-        
+
         JPanel campos = new JPanel();
         campos.add(iz);
         campos.add(der);
-        
+
         this.filtrarRes.add(campos);
         this.filtrar = new JButton("Buscar");
         JPanel panBoton = new JPanel(new GridBagLayout());
         panBoton.add(this.filtrar);
         this.filtrarRes.add(panBoton);
         SpringUtilities.makeCompactGrid(this.filtrarRes, 2, 1, 6, 6, 6, 6);
-        
+
         this.filtrarRes.setBorder(BorderFactory.createTitledBorder("Filtrar resultados"));
     }
-    
+
     /**
      * Inicializa la secci&pacute;n en la que se muestran los resultados.
      */
     private void iniResultados() {
-        String[] tituloColumnas = {"Origen","Destino", "Fecha","H.salida", 
-            "H.llegada","Precio"};
-        Object[][] filas = {{"Origen","Destino", "Fecha","H.salida", 
-            "H.llegada","Precio"}};
-        
+        String[] tituloColumnas = {"Origen", "Destino", "Fecha", "H.salida",
+            "H.llegada", "Precio"};
+        Object[][] filas = {{"Origen", "Destino", "Fecha", "H.salida",
+                "H.llegada", "Precio"}};
+
         ZebraJTable resultados = new ZebraJTable(filas, tituloColumnas, -1);
-        
+
         this.scrollResults = new JScrollPane(resultados);
     }
-    
+
     /**
-     * Inicializa la secci&oacute;n el la que mostramos los campos para especificar 
-     * los detalles.
+     * Inicializa la secci&oacute;n el la que mostramos los campos para
+     * especificar los detalles.
      */
     private void iniDetalles() {
         this.detalles = new Formulario("Detalles");
-        
+
         //Creamos los elementos
         JLabel nombre = new JLabel("Nombre:");
         JTextField nombreC = new JTextField(10);
@@ -136,7 +136,7 @@ public class AddVuelo extends Ventana{
         JTextField apellidosC = new JTextField(10);
         JLabel dni = new JLabel("DNI:");
         JTextField dniC = new JTextField(10);
-        
+
         //Introducimos los elementos
         this.detalles.addTexto(nombre, nombreC);
         this.detalles.addTexto(apellidos, apellidosC);
@@ -183,7 +183,7 @@ public class AddVuelo extends Ventana{
 
     /**
      *
-     * @param currReserva 
+     * @param currReserva
      */
     public void setCurrReserva(ReservaVuelo currReserva) {
         this.currReserva = currReserva;
@@ -252,13 +252,11 @@ public class AddVuelo extends Ventana{
     public Formulario getDetalles() {
         return detalles;
     }
-    
-    
-    
-        
+
     /**
      * Especifica el controlador a usar por la ventana de Inicio.
-     * @param controlador 
+     *
+     * @param controlador
      */
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;

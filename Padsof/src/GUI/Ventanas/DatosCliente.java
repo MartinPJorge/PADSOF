@@ -19,8 +19,11 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 /**
+ * Clase para la GUI que representa la Ventana de datos de Cliente.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class DatosCliente extends Ventana {
     private Formulario nuevoCliente;

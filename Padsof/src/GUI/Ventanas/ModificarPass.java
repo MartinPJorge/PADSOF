@@ -5,15 +5,18 @@
 package GUI.Ventanas;
 
 import GUI.Recursos.SpringUtilities;
-import com.toedter.calendar.JDateChooser;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
- *
- * @author ivan
+ * Clase para la GUI que representa la Ventana en la que modificamos la contraseña
+ * de un Vendedor.
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class ModificarPass extends Ventana{
     private JButton buscar;
@@ -31,11 +34,16 @@ public class ModificarPass extends Ventana{
     private JTextField repeatNewP;
 
     private JButton atras;
-    private JButton borrar;
+    private JButton modify;
     
     
+    /**
+     * Constructor de la clase.
+     * @param padre
+     * @param nombre
+     */
     public ModificarPass(BookingFrame padre, String nombre){
-        super(new SpringLayout(), nombre, padre, 550, 550);
+        super(new SpringLayout(), nombre, padre, 550, 600);
         
         this.iniBusqueda();
         this.iniForm();
@@ -44,6 +52,9 @@ public class ModificarPass extends Ventana{
         SpringUtilities.makeCompactGrid(this, 2, 1, 9, 9, 9, 20);
     }
     
+    /**
+     * Método auxiliar para diseñar el panel de búsqueda de esta clase.
+     */
     private void iniBusqueda(){
         JPanel busqueda = new JPanel(new FlowLayout());
         busqueda.setBorder(BorderFactory.createTitledBorder("Búsqueda de Vendedor"));
@@ -65,6 +76,9 @@ public class ModificarPass extends Ventana{
         this.add(busqueda);
     }
     
+    /**
+     * Método auxiliar para diseñar el panel del formulario de esta clase.
+     */
     private void iniForm(){
         JPanel form = new JPanel(new SpringLayout());
         form.setBorder(BorderFactory.createTitledBorder("Datos del Vendedor"));
@@ -138,10 +152,10 @@ public class ModificarPass extends Ventana{
         JPanel abajo = new JPanel(new FlowLayout());
         this.atras = new JButton("Atrás");
         atras.setVisible(true);
-        this.borrar = new JButton("Modificar Contraseña");
-        borrar.setVisible(true);
+        this.modify = new JButton("Modificar Contraseña");
+        modify.setVisible(true);
         abajo.add(atras);
-        abajo.add(borrar);
+        abajo.add(modify);
         
         abajo.setVisible(true);
         
@@ -166,13 +180,14 @@ public class ModificarPass extends Ventana{
         this.atras = atras;
     }
 
-    public JButton getBorrar() {
-        return borrar;
+    public JButton getModify() {
+        return modify;
     }
 
-    public void setBorrar(JButton borrar) {
-        this.borrar = borrar;
+    public void setModify(JButton modify) {
+        this.modify = modify;
     }
+
 
     public JButton getBuscar() {
         return buscar;
@@ -254,12 +269,27 @@ public class ModificarPass extends Ventana{
     public void setSurname(JTextField surname) {
         this.surname = surname;
     }
-    
-    
-    
+
+    /**
+     * Devuelve, a partir de textoBoton, el nombre de la ventana a la que cambiaremos.
+     * @param textoBoton
+     * @return nombre de la siguiente ventana
+     */
     @Override
     public String claveVentana(String textoBoton) {
         return "Gestión";
+    }
+    
+    /**
+     * Especifica el controlador a usar por la ventana de Modificar Contraseña.
+     * @param controlador 
+     */
+    @Override
+    public void setControlador(ActionListener controlador) {
+        this.controlador = controlador;
+        this.buscar.addActionListener(controlador);
+        this.modify.addActionListener(controlador);
+        this.atras.addActionListener(controlador);
     }
     
 }

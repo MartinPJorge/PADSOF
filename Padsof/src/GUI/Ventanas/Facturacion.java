@@ -7,16 +7,19 @@ package GUI.Ventanas;
 import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.ZebraJTable;
 import com.toedter.calendar.JDateChooser;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicBorders;
 
 
 /**
- *
- * @author e265923
+ * Clase para la GUI que representa la Ventana en la que visualizamos la Facturación realizada.
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class Facturacion extends Ventana {
     private JDateChooser desde;
@@ -39,8 +42,13 @@ public class Facturacion extends Ventana {
     private JPanel resultados;
     private JButton atras;
 
+    /**
+     * Constructor de la clase.
+     * @param padre
+     * @param nombre
+     */
     public Facturacion(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre, padre, 650, 600);
+        super(new SpringLayout(), nombre, padre, 600, 650);
 
         this.setLayout(new SpringLayout());
 
@@ -56,6 +64,9 @@ public class Facturacion extends Ventana {
         SpringUtilities.makeCompactGrid(this, 3, 1, 9, 9, 9, 9);
     }
 
+    /**
+     * Método auxiliar para diseñar el panel de búsqueda de esta clase.
+     */
     private void iniBusqueda() {
         //Panel fechas
         JPanel fechas = new JPanel(new SpringLayout());
@@ -158,6 +169,9 @@ public class Facturacion extends Ventana {
         
     }
     
+    /**
+     * Método auxiliar para diseñar el panel de resultados de esta clase.
+     */
     private void iniResultados(){
         String[][] predef={{"","","","",""}};
         Object[] cols = {"DNI Cliente", "Id Vendedor", "Paquete", "Fecha", "Tipo", "Precio"};
@@ -172,7 +186,7 @@ public class Facturacion extends Ventana {
         JLabel etiq = new JLabel("Facturación: ");
         this.precio = new JTextField();
         etiq.setLabelFor(precio);
-        precio.setPreferredSize(new Dimension(50, 30));
+        precio.setPreferredSize(new Dimension(150, 50));
      
         etiq.setVisible(true);
         precio.setVisible(true);
@@ -306,6 +320,11 @@ public class Facturacion extends Ventana {
     }
 
     
+    /**
+     * Devuelve, a partir de textoBoton, el nombre de la ventana a la que cambiaremos.
+     * @param textoBoton
+     * @return nombre de la siguiente ventana
+     */
     @Override
     public String claveVentana(String textoBoton) {
         return "Inicio";

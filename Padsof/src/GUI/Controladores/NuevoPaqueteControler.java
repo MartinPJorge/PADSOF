@@ -27,8 +27,11 @@ import reserva.ReservaViajeIMSERSO;
 import reserva.ReservaVuelo;
 
 /**
+ * Clase controladora de la Ventana NuevoPaquete
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class NuevoPaqueteControler implements ActionListener{
     private NuevoPaquete ventana;

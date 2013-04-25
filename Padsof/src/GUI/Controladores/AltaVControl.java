@@ -17,19 +17,33 @@ import padsof.Booking;
 import persona.Vendedor;
 
 /**
+ * Clase controladora de la Ventana AltaVendedor
  *
- * @author ivan
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class AltaVControl implements ActionListener {
 
     private Booking aplic;
     private AltaVendedor vista;
 
+    /**
+     * Constructor del controlador
+     *
+     * @param vista
+     * @param aplic
+     */
     public AltaVControl(AltaVendedor vista, Booking aplic) {
         this.aplic = aplic;
         this.vista = vista;
     }
 
+    /**
+     * Método que lleva a cabo el control efectivo.
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object fuente = e.getSource();

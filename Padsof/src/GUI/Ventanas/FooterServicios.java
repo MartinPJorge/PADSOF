@@ -15,24 +15,28 @@ import java.awt.Dimension;
 import javax.swing.JTextField;
 
 /**
+ * Clase para la GUI que representa la Ventana de botones auxiliares (volver,
+ * añadir, ect).
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
-public class FooterServicios extends Ventana{
+public class FooterServicios extends Ventana {
+
     private JTextField total;
     private JButton volver;
     private JButton add;
     private JButton invisible;
     private JLabel totalL;
-    
+
     /**
-     * Constructor de la clase FooterServicios.<br/>
-     * Esta clase se encarga de crear un pie de ventana para los paneles de 
-     * a&ntilde;adir servicios.
+     * Constructor de la clase FooterServicios.<br/> Esta clase se encarga de
+     * crear un pie de ventana para los paneles de a&ntilde;adir servicios.
      */
     public FooterServicios(BookingFrame padre, String nombre) {
-        super(new BorderLayout(), nombre,padre,0,0);
-        
+        super(new BorderLayout(), nombre, padre, 0, 0);
+
         //Mostrar el total
         this.totalL = new JLabel("Total:");
         this.total = new JTextField("");
@@ -47,7 +51,7 @@ public class FooterServicios extends Ventana{
         //Boton invisible
         this.invisible = new JButton();
         this.invisible.setVisible(false);
-        
+
         //Botones de navegacion
         JPanel right = new JPanel();
         this.volver = new JButton("Atrás");
@@ -56,7 +60,7 @@ public class FooterServicios extends Ventana{
         //this.add.addActionListener(new ClickCambioVentana());
         right.add(this.volver);
         right.add(this.add);
-        
+
         //Ajustar los elementos
         this.add(left, BorderLayout.WEST);
         this.add(invisible, BorderLayout.CENTER);
@@ -99,6 +103,4 @@ public class FooterServicios extends Ventana{
     public JLabel getTotalL() {
         return totalL;
     }
-    
-    
 }

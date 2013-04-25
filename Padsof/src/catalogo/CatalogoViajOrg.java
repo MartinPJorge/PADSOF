@@ -74,7 +74,6 @@ public class CatalogoViajOrg {
      * nombreBD. <br/><u>Nota:</u><br/> Es necesario cerrar toda conexi&oacute;n
      * con la BD antes de llamar a este m&eacute;todo.
      *
-     * @param archivoCSV
      * @throws FileNotFoundException
      * @throws IOException
      */

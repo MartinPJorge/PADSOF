@@ -128,7 +128,7 @@ public class Paquete {
      * Comprueba si alguna de las Reservas del Paquete empieza hoy o ya ha
      * pasado: si es as&iacute; , cierra el Paquete.
      *
-     * @return
+     * @return String
      * @throws ParseException
      */
     public String compPaquete() throws ParseException {
@@ -175,7 +175,7 @@ public class Paquete {
      * nombreBD.
      *
      * @param admin
-     * @return
+     * @return ArrayList<ReservaHotel>
      * @throws ClassNotFoundException
      * @throws SQLException
      */
@@ -231,7 +231,7 @@ public class Paquete {
      * la nombreBD.
      *
      * @param admin
-     * @return
+     * @return ArrayList<ReservaVuelo>
      * @throws ClassNotFoundException
      * @throws SQLException
      * @throws ParseException
@@ -521,7 +521,7 @@ public class Paquete {
     /**
      * Dada una conexi&oacute;n, devuelve el nombre de la BD.
      * @param admin
-     * @return
+     * @return String
      * @throws SQLException 
      */
     public static String getDBName(AdminBase admin) throws SQLException {
@@ -542,7 +542,7 @@ public class Paquete {
     /**
      * Dada una conexi&oacute;n de quickDB, devuelve una de JDBC.
      * @param admin
-     * @return
+     * @return Connection de la BD
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -559,7 +559,7 @@ public class Paquete {
     /**
      * Actualiza en la BD los nuevos servicios introducidos en el paquete.
      * @param admin
-     * @return
+     * @return AdminBase (DB)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -583,7 +583,7 @@ public class Paquete {
     /**
      * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
      * @param admin
-     * @return
+     * @return AdminBase (DB)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -631,7 +631,7 @@ public class Paquete {
     /**
      * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
      * @param admin
-     * @return
+     * @return AdminBase (DB)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -677,7 +677,7 @@ public class Paquete {
     /**
      * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
      * @param admin
-     * @return
+     * @return AdminBase (DB)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -724,7 +724,7 @@ public class Paquete {
     /**
      * Actualiza en la base de datos los nuevos hoteles introducidos en el paquete.
      * @param admin
-     * @return
+     * @return AdminBase (DB)
      * @throws SQLException
      * @throws ClassNotFoundException 
      */
@@ -908,7 +908,7 @@ public class Paquete {
     
     /**
      * Obtiene la fecha de inicio m&aacute;s cercana de un paquete.
-     * @return 
+     * @return Reserva
      */
     public Reserva obtenerPrimeraReserva() {
         Reserva resCerca = this.getReservas().get(0);

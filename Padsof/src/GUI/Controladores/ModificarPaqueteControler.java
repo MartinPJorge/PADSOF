@@ -27,8 +27,11 @@ import padsof.Booking;
 import reserva.Paquete;
 
 /**
+ * Clase controladora de la Ventana ModificarPaquete
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class ModificarPaqueteControler implements ActionListener{
     private ModificarPaquete ventana;
@@ -276,7 +279,7 @@ public class ModificarPaqueteControler implements ActionListener{
     
     /**
      * Obtiene solo los atributos del paquete seleccionado.
-     * @return
+     * @return Paquete
      * @throws NoResultsExc 
      */
     private Paquete estadoPaqSeleccionado() throws NoResultsExc {

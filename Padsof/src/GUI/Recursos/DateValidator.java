@@ -8,6 +8,10 @@ package GUI.Recursos;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 
+ * @author ivan
+ */
 public class DateValidator {
 
     private Pattern pattern;
@@ -73,7 +77,7 @@ public class DateValidator {
     /**
      * Obtiene el d&iacute;a de una fecha con formato dd/mm/yyyy
      * @param date
-     * @return 
+     * @return int
      */
     public static int obtainDay(String date) {
         String[] elems = date.split("/");
@@ -83,7 +87,7 @@ public class DateValidator {
     /**
      * Obtiene el mes de una fecha con formato dd/mm/yyyy
      * @param date
-     * @return 
+     * @return int
      */
     public static int obtainMonth(String date) {
         String[] elems = date.split("/");
@@ -93,7 +97,7 @@ public class DateValidator {
     /**
      * Obtiene el a&ntilde;o de una fecha con formato dd/mm/yyyy
      * @param date
-     * @return 
+     * @return int
      */
     public static int obtainYear(String date) {
         String[] elems = date.split("/");
@@ -103,7 +107,7 @@ public class DateValidator {
     /**
      * Obtiene el d&iacute;a de una fecha con formato yyyy/dd/mm
      * @param date
-     * @return 
+     * @return int
      */
     public static int obtainDayV2(String date) {
         String[] elems = date.split("/");
@@ -113,7 +117,7 @@ public class DateValidator {
     /**
      * Obtiene el mes de una fecha con formato yyyy/dd/mm
      * @param date
-     * @return 
+     * @return int
      */
     public static int obtainMonthV2(String date) {
         String[] elems = date.split("/");
@@ -123,7 +127,7 @@ public class DateValidator {
     /**
      * Obtiene el a&ntilde;o de una fecha con formato yyyy/dd/mm
      * @param date
-     * @return 
+     * @return int
      */
     public static int obtainYearV2(String date) {
         String[] elems = date.split("/");
@@ -156,7 +160,7 @@ public class DateValidator {
      * Devuelve una cadena con el formato hh:mm, con la hora y los minutos especificados.
      * @param hour
      * @param minutes
-     * @return 
+     * @return String
      */
     public static String formatHour(int hour, int minutes) {
         String hourStr = (new Integer(hour)).toString();

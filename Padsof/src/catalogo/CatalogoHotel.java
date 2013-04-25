@@ -81,9 +81,9 @@ public class CatalogoHotel {
      * nombreBD. <br/><u>Nota:</u><br/> Es necesario cerrar toda conexi&oacute;n
      * con la BD antes de llamar a este m&eacute;todo.
      *
-     * @param archivoCSV
      * @throws FileNotFoundException
      * @throws IOException
+     * @throws ParseException  
      */
     public void leerCSV() throws FileNotFoundException, IOException, ParseException {
         BufferedReader buf = new BufferedReader(new InputStreamReader(

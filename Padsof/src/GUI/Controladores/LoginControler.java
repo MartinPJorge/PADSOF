@@ -21,8 +21,11 @@ import persona.Vendedor;
 import reserva.*;
 
 /**
+ * Clase controladora de la Ventana Login
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class LoginControler implements ActionListener{
     private Login loginVentana;
@@ -91,6 +94,13 @@ public class LoginControler implements ActionListener{
      */
     public void comprobarPaquetes() {
         AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());
+        
+        Object[] existe = admin.obtainJoin("SELECT name FROM sqlite_master WHERE type='table' AND name='Pauete'", 1);
+        if(existe == null) {
+            admin.close(); 
+            return;
+        }
+        
         Date now = new Date();
         SimpleDateFormat formater = new SimpleDateFormat("yyyy/dd/MM");
         String ahora = formater.format(now);
@@ -123,7 +133,7 @@ public class LoginControler implements ActionListener{
                 Reserva resCercana = paq.obtenerPrimeraReserva();
                 if(DateValidator.compareDates(resCercana.getFechaInicio(), ahora) < 0) {
                     admin = paq.actualizarEstado(admin, "cancelado");
-                    JOptionPane.showMessageDialog(null, "El paquete "+paq.getId()+" se ha cerrado debido a que alguna de sus reservas a expirado.");
+                    JOptionPane.showMessageDialog(null, "El paquete "+paq.getId()+" se ha cerrado debido a que alguna de sus reservas ha expirado.");
                 }
             }
         }

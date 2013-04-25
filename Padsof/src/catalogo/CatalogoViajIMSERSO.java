@@ -80,9 +80,9 @@ public class CatalogoViajIMSERSO {
      * nombreBD. <br/><u>Nota:</u><br/> Es necesario cerrar toda conexi&oacute;n
      * con la BD antes de llamar a este m&eacute;todo.
      *
-     * @param admin
      * @throws FileNotFoundException
      * @throws IOException
+     * @throws ParseException  
      */
     public void leerCSV() throws FileNotFoundException, IOException, ParseException {
         BufferedReader buf = new BufferedReader(new InputStreamReader(

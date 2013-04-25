@@ -29,8 +29,11 @@ import reserva.ReservaViajOrg;
 import reserva.ReservaViajeIMSERSO;
 
 /**
+ * Clase controladora de la Ventana AddViajOrg
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class AddViajOrgControler implements ActionListener{
     private AddViajOrg ventana;
@@ -39,12 +42,21 @@ public class AddViajOrgControler implements ActionListener{
     private List<InfoViajeIMSERSO> viajsIMSAct;
     private String ultimaBusqueda;  //VO - VIMS
     
+    /**
+     * 
+     * @param ventana
+     * @param aplicacion
+     */
     public AddViajOrgControler(AddViajOrg ventana, Booking aplicacion) {
         this.ventana = ventana;
         this.aplicacion = aplicacion;
         this.ultimaBusqueda = null;
     }
     
+    /**
+     * 
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         
@@ -160,10 +172,10 @@ public class AddViajOrgControler implements ActionListener{
      * y lanza las correspondientes excepciones en caso contrario.<br/>
      * Dependiendo del argumento el m&eacute;todo comprobar&aacute; solo los campos 
      * de b&uacute;squeda, o tambi&eacute;n los campos de detalles.
-     * @param checkNPersonas<br/><ul><li>true - mira el n&uacute;mero de personas</li>
-     * <li>false - solo mira los datos del filtro</li></ul>
+     * @param checkNPersonas 
      * @throws SinSeleccionarEx
-     * @throws SinRellenarEx 
+     * @throws SinRellenarEx
+     * @throws FechaInvalidaEx  
      */
     public void checkDatos(boolean checkNPersonas) throws SinSeleccionarEx, SinRellenarEx, FechaInvalidaEx {
         String tipoViaje = (String)this.ventana.getTipoViaje().getSelectedItem();
@@ -252,6 +264,9 @@ public class AddViajOrgControler implements ActionListener{
     /**
      * Busca un viaje organizado a partir de los datos proporcionados, y cambia 
      * el valor de la variable viajsOrgAct por los resultados de la b&uacute;squeda.
+     * @throws SinSeleccionarEx 
+     * @throws SinRellenarEx
+     * @throws FechaInvalidaEx  
      */
     public void buscarViajeOrg() throws SinSeleccionarEx, SinRellenarEx, FechaInvalidaEx {
         checkDatos(false);
@@ -267,6 +282,11 @@ public class AddViajOrgControler implements ActionListener{
     /**
      * Busca un viaje del IMSERSO a partir de los datos proporcionados, y cambia 
      * el valor de la variable viajsOrgAct por los resultados de la b&uacute;squeda.
+     * @throws NoEsAncianoException 
+     * @throws SinSeleccionarEx 
+     * @throws NoResultsExc
+     * @throws SinRellenarEx
+     * @throws FechaInvalidaEx  
      */
     public void buscarViajeIMSERSO() throws NoEsAncianoException, SinSeleccionarEx, SinRellenarEx, FechaInvalidaEx, NoResultsExc {
         checkDatos(false);
@@ -296,6 +316,9 @@ public class AddViajOrgControler implements ActionListener{
      * Devuelve una nueva reserva de viaje organizado bas&aacute;ndose en los 
      * datos seleccionados.
      * @return nueva reserva de viaje organizado
+     * @throws SinSeleccionarEx 
+     * @throws SinRellenarEx
+     * @throws FechaInvalidaEx  
      */
     public ReservaViajOrg reservaViajOrg() throws SinSeleccionarEx, SinRellenarEx, FechaInvalidaEx {
         String fecha = null;
@@ -322,6 +345,9 @@ public class AddViajOrgControler implements ActionListener{
      * Devuelve una nueva reserva de viaje del IMSERSO bas&aacute;ndose en los 
      * datos seleccionados.
      * @return nueva reserva de viaje organizado
+     * @throws SinSeleccionarEx
+     * @throws SinRellenarEx
+     * @throws FechaInvalidaEx  
      */
     public ReservaViajeIMSERSO reservaViajeIMSERSO() throws SinSeleccionarEx, SinRellenarEx, FechaInvalidaEx {
         String fecha = null;

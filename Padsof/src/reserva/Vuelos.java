@@ -82,7 +82,7 @@ public class Vuelos {
      * @param llegada
      * @param ida
      * @param vuelta
-     * @return
+     * @return List<String>
      */
     public static List<String> obtenerVuelosCiudad(String salida, String llegada,
             Date ida, Date vuelta) {
@@ -137,7 +137,7 @@ public class Vuelos {
      * Muestra la informaci&oacute;n de los Vuelos cuyo id est&aacute;n en el
      * array 'Vuelos'.
      *
-     * @param Vuelos
+     * @param vuelos
      */
     private static void mostrarVuelos(List<String> vuelos) {
         System.out.println("id\tsalida\tllegada\tprecio");
@@ -249,7 +249,7 @@ public class Vuelos {
     /**
      * Devuelve el origen del vuelo.
      * @param localizador
-     * @return 
+     * @return String
      */
     public static String getOrigen(String localizador) {
         FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
@@ -266,7 +266,7 @@ public class Vuelos {
     /**
      * Devuelve el destino del vuelo.
      * @param localizador
-     * @return 
+     * @return String
      */
     public static String getDestino(String localizador) {
         FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
@@ -283,7 +283,7 @@ public class Vuelos {
     /**
      * Devuelve la fecha de salida del vuelo.
      * @param localizador
-     * @return 
+     * @return Date
      */
     public static Date getSalida(String localizador) {
         FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();
@@ -300,7 +300,7 @@ public class Vuelos {
     /**
      * Devuelve la fecha de llegada del vuelo.
      * @param localizador
-     * @return 
+     * @return Date
      */
     public static Date getLlegada(String localizador) {
         FlightsProvider fp = ServicesFactory.getServicesFactory().getFlightsProvider();

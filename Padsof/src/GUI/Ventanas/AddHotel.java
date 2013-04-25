@@ -26,10 +26,14 @@ import javax.swing.table.TableColumnModel;
 import reserva.Paquete;
 
 /**
+ * Clase para la GUI que representa la Ventana de buscar y añadir Hoteles.
  *
- * @author Jorge
+ * @author Jorge Martín Pérez
+ * @author Iván Márquez Pardo
+ * @version 1.0
  */
 public class AddHotel extends Ventana {
+
     private JPanel filtrarRes;
     private JPanel detalles;
     private JScrollPane resultados;
@@ -52,25 +56,26 @@ public class AddHotel extends Ventana {
      * @param nombre
      */
     public AddHotel(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre,padre,650,650);
+        super(new SpringLayout(), nombre, padre, 650, 650);
         this.iniFiltro();
         this.resultados();
         this.ajustarTamCols();
         this.iniDetalles();
-        this.footer = new FooterServicios(padre,"FooterHotel");
-        
+        this.footer = new FooterServicios(padre, "FooterHotel");
+
         this.calcular = new JButton("Calcular");
         JPanel panCalcula = new JPanel(new GridBagLayout());
         panCalcula.add(this.calcular);
-        
+
         this.add(panCalcula);
         this.add(footer);
-        
+
         SpringUtilities.makeCompactGrid(this, 5, 1, 6, 6, 6, 6);
     }
-    
+
     /**
-     * Inicializa la secci&oacute;n en la que se muestran los campos para filtrar.
+     * Inicializa la secci&oacute;n en la que se muestran los campos para
+     * filtrar.
      */
     private void iniFiltro() {
         JPanel campos = new JPanel();
@@ -81,55 +86,55 @@ public class AddHotel extends Ventana {
         JLabel tipoHabitacion = new JLabel("Habitación:");
         JLabel precioNoche = new JLabel("Precio noche:");
         JLabel estrellas = new JLabel("Estrellas:");
-        
+
         //Creamos los campos
         this.ciudad = new JTextField();
         String[] tiposHab = {"Individual", "Matrimonio", "Triple"};
         this.tipoHab = new JComboBox(tiposHab);
         this.precioNoche = new JTextField();
-        Integer[] estrellasI = {1,2,3,4,5};
+        Integer[] estrellasI = {1, 2, 3, 4, 5};
         this.estrellas = new JComboBox(estrellasI);
-        
+
         //Creamos los formularios
         Formulario iz = new Formulario();
         Formulario der = new Formulario();
-        
-        
+
+
         //Introducimos los campos
         iz.addTexto(ciudad, this.ciudad);
         iz.addTexto(tipoHabitacion, this.tipoHab);
         der.addTexto(precioNoche, this.precioNoche);
         der.addTexto(estrellas, this.estrellas);
-        
+
         //Metemos el panel en la ventana
         iz.aplicarCambios();
         der.aplicarCambios();
         campos.add(iz);
         campos.add(der);
-        
+
         //Metemos los elementos
         panBoton.add(this.filtar);
         this.filtrarRes.add(campos);
         this.filtrarRes.add(panBoton);
         this.filtrarRes.setBorder(BorderFactory.createTitledBorder("Filtrar resultados"));
-        
+
         SpringUtilities.makeCompactGrid(this.filtrarRes, 2, 1, 6, 6, 6, 6);
-        
+
         this.add(this.filtrarRes);
     }
-    
+
     /**
      * Inicializa la tabla de resultados.
      */
     private void resultados() {
-        String[] titulos = {"Nombre", "País","Ciudad", "★★★", "Simple", "Doble", 
-                            "Triple", "Desayuno", "M.P", "P.C", "Características"};
+        String[] titulos = {"Nombre", "País", "Ciudad", "★★★", "Simple", "Doble",
+            "Triple", "Desayuno", "M.P", "P.C", "Características"};
         JTable tablaRes = new ZebraJTable(null, titulos, -1);
         this.resultados = new JScrollPane(tablaRes);
-        
+
         this.add(resultados);
     }
-    
+
     /**
      * Inicializa la secci&oacute;n en la que se muestran los detalles a elegir.
      */
@@ -142,8 +147,8 @@ public class AddHotel extends Ventana {
         this.entrada.setToolTipText("dd/mm/yyyy");
         this.dias = new JTextField(5);
         JPanel datosRellenar = new JPanel();
-        
-        
+
+
         //Radio botones
         this.listBotones = new ArrayList<>();
         JPanel radioBot = new JPanel(new SpringLayout());
@@ -151,39 +156,42 @@ public class AddHotel extends Ventana {
         JRadioButton opcion1 = new JRadioButton("Media pensión");
         JRadioButton opcion2 = new JRadioButton("Pensión completa");
         JRadioButton opcion3 = new JRadioButton("Desayuno");
-        this.botones.add(opcion1); this.listBotones.add(opcion1);
-        this.botones.add(opcion2); this.listBotones.add(opcion2);
-        this.botones.add(opcion3); this.listBotones.add(opcion3);
+        this.botones.add(opcion1);
+        this.listBotones.add(opcion1);
+        this.botones.add(opcion2);
+        this.listBotones.add(opcion2);
+        this.botones.add(opcion3);
+        this.listBotones.add(opcion3);
         radioBot.add(comidas);
         radioBot.add(opcion1);
         radioBot.add(opcion2);
         radioBot.add(opcion3);
         SpringUtilities.makeCompactGrid(radioBot, 4, 1, 6, 6, 6, 6);
-        
+
         //Parte de la derecha
         Formulario derecha = new Formulario();
         derecha.addTexto(entrada, this.entrada);
         derecha.addTexto(dias, this.dias);
         derecha.aplicarCambios();
-        
+
         //Introducimos las 2 partes del panel
         datosRellenar.add(radioBot);
         datosRellenar.add(derecha);
-        
+
         this.detalles.setBorder(BorderFactory.createTitledBorder("Detalles"));
         this.detalles.add(datosRellenar);
         this.add(this.detalles);
-        
+
         SpringUtilities.makeGrid(this.detalles, 1, 1, 6, 6, 6, 6);
     }
-    
+
     /**
      * Ajusta el tama&ntilde;o de las columnas de la tabla de b&uacute;squeda.
      */
     public void ajustarTamCols() {
         ZebraJTable tabla = (ZebraJTable) this.resultados.getViewport().getView();
         TableColumnModel modelCol = tabla.getColumnModel();
-        
+
         modelCol.getColumn(0).setMinWidth(100);
     }
 
@@ -279,7 +287,7 @@ public class AddHotel extends Ventana {
     public JTextField getDias() {
         return dias;
     }
-    
+
     /**
      *
      * @return el paquete actual
@@ -303,12 +311,11 @@ public class AddHotel extends Ventana {
     public JButton getCalcular() {
         return calcular;
     }
-    
-    
-    
+
     /**
      * Especifica el controlador a usar por la ventana de a&ntilde;adir hoteles.
-     * @param controlador 
+     *
+     * @param controlador
      */
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
