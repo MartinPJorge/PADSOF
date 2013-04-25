@@ -68,12 +68,8 @@ public class ModificarPaqueteControler implements ActionListener{
                 //Comprobamos que la tabla de PaqueteReserva este correcta
                 admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());
                 admin = Booking.checkAsignaReservas(admin);
-                System.out.println("Se ejecuta check.");
                 
-                
-                //paqSeleccionado = getPaqSeleccionado();
-
-                
+              
                 actualizarEstados();
                 paqSeleccionado = estadoPaqSeleccionado();
                 
@@ -197,9 +193,6 @@ public class ModificarPaqueteControler implements ActionListener{
                 String estado = (String)tabla.getRow(i)[3];
                 
                 Paquete paq = this.aplicacion.buscarPaquete(paqId);
-                /*int abierto = (estado.equals("Abierto")) ? 1:0;
-                paq.setAbierto(abierto);
-                admin = paq.modificar(admin);*/
                 admin = paq.actualizarEstado(admin, estado);
             } catch (NoResultsExc ex) {
                 Logger.getLogger(ModificarPaqueteControler.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,6 +202,8 @@ public class ModificarPaqueteControler implements ActionListener{
         }
         admin.close();
     }
+    
+    
     
     
     /**
@@ -278,7 +273,6 @@ public class ModificarPaqueteControler implements ActionListener{
         this.ventana.getTablaResults().remove(tablaAntigua);
         this.ventana.getTablaResults().setViewportView(tablaVacia);
     }
-    
     
     /**
      * Obtiene solo los atributos del paquete seleccionado.

@@ -173,7 +173,12 @@ public class AddVueloControler implements ActionListener{
         }
     }
     
-    
+    /**
+     * Obtiene el vuelo seleccionado, y lo a&ntilde;ade al paquete.
+     * @param localizadores
+     * @throws SinRellenarEx
+     * @throws SinSeleccionarEx 
+     */
     public void addVuelo(List<String> localizadores) throws SinRellenarEx, SinSeleccionarEx {
         String nombre = ((JTextField)this.ventana.getDetalles().getTextos().get(0)).getText();
         String apellidos = ((JTextField)this.ventana.getDetalles().getTextos().get(1)).getText();

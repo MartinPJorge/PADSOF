@@ -60,5 +60,9 @@ public class InicioControler implements ActionListener{
             DatosClienteControler controlador = (DatosClienteControler) ventanuco.getControlador();
             controlador.resetCampos();
         }
+        
+        else if(pulsado.equals("Salir")) {
+            this.aplicacion.setSesion(null);
+        }
     }
 }

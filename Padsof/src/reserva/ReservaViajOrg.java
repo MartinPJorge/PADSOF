@@ -92,8 +92,8 @@ public class ReservaViajOrg extends Reserva {
     }
 
     /**
-     * Cambia el margen de beneficios de las reservas de viajes organizados de
-     * que el administrador lo solicite.
+     * Cambia el margen de beneficios de las reservas de viajes organizados cuando
+     * el administrador lo solicite.
      *
      * @param margen
      * @param usuario
@@ -130,6 +130,7 @@ public class ReservaViajOrg extends Reserva {
                     + ReservaViajOrg.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen, usuario);
         }
     }
 
@@ -144,5 +145,19 @@ public class ReservaViajOrg extends Reserva {
         } else {
             return this.precio;
         }
+    }
+    
+    /**
+     * Saca el m&aacute;rgen de la BD, y se lo asigna a todas las reservas de viajes 
+     * organizados.
+     * @param admin 
+     */
+    public static void sacaMargenBD(AdminBase admin) {
+        Object[] filas = admin.obtainJoin("SELECT margen FROM ReservaViajOrg", 1);
+        
+        //Si la tabla no existe
+        if(filas == null){return;}
+        
+        ReservaViajOrg.margen = Double.parseDouble((String)(((Object[])filas[0])[0]));
     }
 }

@@ -113,7 +113,7 @@ public class AddHotelControler implements ActionListener{
         if(tipoHab.equals("Individual")) {
             resHoteles = this.aplicacion.getCatalogoHotel().buscaHotel(null, null, ciudad, estrellas, precio, -1, -1, -1, -1, -1, null);
         }
-        else if(tipoHab.equals("Doble")) {
+        else if(tipoHab.equals("Matrimonio")) {
             resHoteles = this.aplicacion.getCatalogoHotel().buscaHotel(null, null, ciudad, estrellas, -1, precio, -1, -1, -1, -1, null);
         }
         else if(tipoHab.equals("Triple")) {

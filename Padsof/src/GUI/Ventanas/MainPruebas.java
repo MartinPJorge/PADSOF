@@ -4,12 +4,25 @@
  */
 package GUI.Ventanas;
 
+import java.awt.Dimension;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Jorge
  */
 public class MainPruebas {
     public static void main(String[] args) {
-        //BookingFrame ppal = new BookingFrame();
+        //BookingFrame ppal = new BookingFrame(null);
+        JFrame frame = new JFrame("Margenes");
+//        frame.add(new Facturacion("Ver Facturación", null));
+//        frame.add(new Margenes("Modificar Márgenes de Beneficios", null));
+//        frame.add(new Gestion("Gestión de Usuarios", null));
+        frame.add(new AltaVendedor(null, "Dar de Alta Vendedor"));
+//        frame.add(new BajaVendedor("Dar de Baja Vendedor", null));
+//        frame.add(new ModificarPass("Modificar Contraseña", null));
+        frame.setSize(new Dimension(580, 550));
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }

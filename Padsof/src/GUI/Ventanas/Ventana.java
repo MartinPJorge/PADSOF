@@ -67,6 +67,7 @@ public abstract class Ventana extends JPanel{
     public void redimensionar(Ventana nueva) {
         this.padre.setMinimumSize( new Dimension( nueva.dimX, nueva.dimY ) );
         this.padre.setSize(nueva.dimX, nueva.dimY);
+        this.padre.setPreferredSize(new Dimension( nueva.dimX, nueva.dimY ));
     }
     
     /**
@@ -87,10 +88,6 @@ public abstract class Ventana extends JPanel{
         }
     }
 
-    /**
-     * 
-     * @return el controlador asignado a la ventana
-     */
     public ActionListener getControlador() {
         return controlador;
     }
@@ -102,4 +99,5 @@ public abstract class Ventana extends JPanel{
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
     }
+    
 }

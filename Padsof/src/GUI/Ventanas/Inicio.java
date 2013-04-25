@@ -6,6 +6,7 @@ package GUI.Ventanas;
 
 import GUI.Recursos.SpringUtilities;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,18 +25,20 @@ public class Inicio extends Ventana{
     private JButton facturacion;
     private JButton margen;
     private JButton gestion;
+    private JButton salir;
     
     public Inicio(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre, padre, 400,350);
+        super(new SpringLayout(), nombre, padre, 400,400);
         this.iniPaquetes();
         this.iniIngresos();
         this.iniOtros();
-
+        this.iniSalir();
         
-        SpringUtilities.makeCompactGrid(this, 3, 1, 20,20,20,20);
+        SpringUtilities.makeCompactGrid(this, 4, 1, 20,20,20,20);
     }
     
-    /**
+    
+/**
      * Inicializa la parte de paquetes
      */
     private void iniPaquetes() {
@@ -106,6 +109,15 @@ public class Inicio extends Ventana{
         SpringUtilities.makeCompactGrid(otrosPan, 2, 1, 6, 6, 6, 6);
         this.add(otrosPan);
     }
+    
+    private void iniSalir() {
+        JPanel panSalir = new JPanel(new GridBagLayout());
+        this.salir = new JButton("Salir");
+        panSalir.add(this.salir);
+        
+        
+        this.add(panSalir);
+    }
 
     @Override
     public String claveVentana(String textoBoton) {
@@ -114,6 +126,15 @@ public class Inicio extends Ventana{
         }
         else if(textoBoton.equals(this.modificar.getText())){
             return "ModificarPaquete";
+        }
+        else if(textoBoton.equals(this.margen.getText())){
+            return "Márgenes";
+        }
+        else if(textoBoton.equals(this.facturacion.getText())){
+            return "Facturación";
+        }
+        else if(textoBoton.equals(this.gestion.getText())){
+            return "Gestión";
         }
         else{
             return "Login";
@@ -124,12 +145,14 @@ public class Inicio extends Ventana{
      * Especifica el controlador a usar por la ventana de Inicio.
      * @param controlador 
      */
+    @Override
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.crear.addActionListener(this.controlador);
         this.modificar.addActionListener(this.controlador);
-        this.facturacion.addActionListener(this.controlador);
-        this.modificar.addActionListener(this.controlador);
         this.gestion.addActionListener(this.controlador);
+        this.facturacion.addActionListener(this.controlador);
+        this.margen.addActionListener(this.controlador);
+        this.salir.addActionListener(this.controlador);
     }
 }

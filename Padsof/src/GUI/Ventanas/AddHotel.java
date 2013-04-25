@@ -52,7 +52,7 @@ public class AddHotel extends Ventana {
      * @param nombre
      */
     public AddHotel(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre,padre,600,300);
+        super(new SpringLayout(), nombre,padre,650,650);
         this.iniFiltro();
         this.resultados();
         this.ajustarTamCols();
@@ -185,23 +185,8 @@ public class AddHotel extends Ventana {
         TableColumnModel modelCol = tabla.getColumnModel();
         
         modelCol.getColumn(0).setMinWidth(100);
-        /*modelCol.getColumn(1).setMinWidth(20);
-        modelCol.getColumn(2).setMinWidth(20);
-        modelCol.getColumn(3).setMinWidth(20);
-        modelCol.getColumn(4).setMinWidth(20);
-        modelCol.getColumn(5).setMinWidth(20);
-        modelCol.getColumn(6).setMinWidth(20);
-        modelCol.getColumn(7).setMinWidth(20);
-        modelCol.getColumn(8).setMinWidth(20);
-        modelCol.getColumn(9).setMinWidth(20);   
-        modelCol.getColumn(10).setMinWidth(20);   */
     }
 
-    /**
-     * 
-     * @param textoBoton
-     * @return la clave de esta ventana en el hash de todas las ventanas
-     */
     @Override
     public String claveVentana(String textoBoton) {
         return "NuevoPaquete";
@@ -209,7 +194,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return bot&oacute;n de filtrar resultados.
+     * @return el bot&oacute;n de filtrar
      */
     public JButton getFiltar() {
         return filtar;
@@ -217,7 +202,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return campo de texto donde se introduce la ciudad
+     * @return el campo de texto de la ciudad
      */
     public JTextField getCiudad() {
         return ciudad;
@@ -225,7 +210,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return campo de texto donde se introduce el precio/noche
+     * @return el campo de texto del num. de noches
      */
     public JTextField getPrecioNoche() {
         return precioNoche;
@@ -233,7 +218,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return comboBox del tipo de habitaciones
+     * @return el comboBox del tipo de habitaci&oacute;n
      */
     public JComboBox getTipoHab() {
         return tipoHab;
@@ -241,7 +226,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return comboBox con las estrellas
+     * @return el comboBox de las estrellas del hotel
      */
     public JComboBox getEstrellas() {
         return estrellas;
@@ -249,7 +234,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return el panel de scroll de los resultados
+     * @return el scroll panel de los resultados de al b&uacute;squeda
      */
     public JScrollPane getResultados() {
         return resultados;
@@ -257,7 +242,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return el footer de la aplicaci&oacute;n
+     * @return el footer
      */
     public FooterServicios getFooter() {
         return footer;
@@ -265,7 +250,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return el grupo de botones
+     * @return el grupo de radio botones
      */
     public ButtonGroup getBotones() {
         return botones;
@@ -273,7 +258,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return el listado de botones
+     * @return la lista de radio botones
      */
     public List<JRadioButton> getListBotones() {
         return listBotones;
@@ -281,7 +266,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return campo de texto con la fecha de entrada
+     * @return el campo de texto de la entrada
      */
     public JTextField getEntrada() {
         return entrada;
@@ -289,7 +274,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return campo de texto con los dias
+     * @return el campo de texto de los d&iacute;as
      */
     public JTextField getDias() {
         return dias;
@@ -297,14 +282,14 @@ public class AddHotel extends Ventana {
     
     /**
      *
-     * @return paquete actual
+     * @return el paquete actual
      */
     public Paquete getCurrentPaq() {
         return currentPaq;
     }
 
     /**
-     * 
+     *
      * @param currentPaq
      */
     public void setCurrentPaq(Paquete currentPaq) {
@@ -313,7 +298,7 @@ public class AddHotel extends Ventana {
 
     /**
      *
-     * @return bot&oacute;n para calcular el precio
+     * @return el bot&oacute;n de calcular el precio
      */
     public JButton getCalcular() {
         return calcular;

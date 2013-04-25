@@ -155,4 +155,6 @@ public class DatosClienteControler implements ActionListener{
         
         this.ventana.getEdad3().setSelected(false);
     }
+    
+    
 }

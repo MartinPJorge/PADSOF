@@ -11,17 +11,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import myexception.NoResultsExc;
 import padsof.Booking;
 import persona.Vendedor;
-import reserva.Paquete;
-import reserva.Reserva;
+import reserva.*;
 
 /**
  *
@@ -39,6 +36,13 @@ public class LoginControler implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
+            String pulsado = ((JButton)e.getSource()).getText();
+            
+            if(pulsado.equals("¿Has olvidado tu contraseña?")) {
+                JOptionPane.showMessageDialog(null, "Contacta con el administrador para recuperar tu contraseña.");
+                return;
+            }
+            
             //Comprobamos si los campos se han rellenado
             if(this.loginVentana.getPassword().equals("") || this.loginVentana.getId().equals("")) {
                 JOptionPane.showMessageDialog(null, "Error, hay campos sin rellenar.");
@@ -54,11 +58,6 @@ public class LoginControler implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Error, el ID de usuario debe de ser un número.");
                 return;
             }
-            
-            /*if(idUsr == null) {
-                JOptionPane.showMessageDialog(null, "Error, el ID de usuario es un número.");
-                return;
-            } */
             
             Vendedor vendedor = aplicacion.buscarVendedor(idUsr);
             String password = vendedor.getPassword();
@@ -76,16 +75,17 @@ public class LoginControler implements ActionListener{
             //Comprobamos si hay paquetes que cerrar
             comprobarPaquetes();
             
+            //Obtenemos los m&aacute;rgenes de beneficios
+            sacarMargenesBD();
+            
             //Cambiamos de ventana
-            String pulsado = ((JButton)e.getSource()).getText();
             this.loginVentana.cambiarVentana(this.loginVentana.claveVentana(pulsado));
             
         } catch (NoResultsExc ex) {
             JOptionPane.showMessageDialog(null, "Fallo de autentificación.\nNo se ha encontrado ningún usuario con esos datos.");
         }
     }
-    
-    
+
     /**
      * Se encarga de cerrar los paquetes cuya fecha de inicio haya expirado.
      */
@@ -119,6 +119,7 @@ public class LoginControler implements ActionListener{
         //Cancelamos los paquetes que esten por detras de hoy
         for(Paquete paq : paquetes) {
             if(paq.getAbierto() != 0) {
+                if(paq.getReservas() == null || paq.getReservas().isEmpty()) {continue;}
                 Reserva resCercana = paq.obtenerPrimeraReserva();
                 if(DateValidator.compareDates(resCercana.getFechaInicio(), ahora) < 0) {
                     admin = paq.actualizarEstado(admin, "cancelado");
@@ -126,6 +127,21 @@ public class LoginControler implements ActionListener{
                 }
             }
         }
+        
+        admin.close();
+    }
+    
+    /**
+     * Saca los m&aacute;rgenes de beneficio de la BD, y se lo asigna a las distintas 
+     * clases de reservas.
+     */
+    public void sacarMargenesBD() {
+        AdminBase admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());
+        
+        ReservaHotel.sacaMargenBD(admin);
+        ReservaVuelo.sacaMargenBD(admin);
+        ReservaViajOrg.sacaMargenBD(admin);
+        ReservaViajeIMSERSO.sacaMargenBD(admin);
         
         admin.close();
     }

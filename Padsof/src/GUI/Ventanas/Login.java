@@ -29,7 +29,7 @@ public class Login extends Ventana{
     private JButton olvidado;
     
     public Login(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre,padre, 300,200);
+        super(new SpringLayout(), nombre,padre, 400,300);
         
         //Titulo
         this.titulo = new JLabel("Booking");
@@ -95,8 +95,10 @@ public class Login extends Ventana{
      * Especifica el controlador a usar por la ventana de Inicio.
      * @param controlador 
      */
+    @Override
     public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
         this.login.addActionListener(this.controlador);
+        this.olvidado.addActionListener(this.controlador);
     }
 }

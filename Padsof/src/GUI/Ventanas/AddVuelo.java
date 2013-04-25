@@ -40,13 +40,8 @@ public class AddVuelo extends Ventana{
     private ReservaVuelo currReserva;
     
     
-    /**
-     *
-     * @param padre
-     * @param nombre
-     */
     public AddVuelo(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre,padre, 300,100);
+        super(new SpringLayout(), nombre,padre, 650,600);
         this.iniFiltro();
         this.iniResultados();
         this.iniDetalles();

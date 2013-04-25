@@ -29,8 +29,6 @@ public class FooterServicios extends Ventana{
      * Constructor de la clase FooterServicios.<br/>
      * Esta clase se encarga de crear un pie de ventana para los paneles de 
      * a&ntilde;adir servicios.
-     * @param padre 
-     * @param nombre 
      */
     public FooterServicios(BookingFrame padre, String nombre) {
         super(new BorderLayout(), nombre,padre,0,0);

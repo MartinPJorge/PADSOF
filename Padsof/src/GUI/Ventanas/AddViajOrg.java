@@ -35,13 +35,8 @@ public class AddViajOrg extends Ventana{
     private JComboBox tipoViaje;
     private Paquete currPaq;
     
-    /**
-     *
-     * @param padre
-     * @param nombre
-     */
     public AddViajOrg(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre, padre, 300,300);
+        super(new SpringLayout(), nombre, padre, 650,600);
         this.iniResultados();
         JPanel abajo = this.iniDetalles();
         this.footer = new FooterServicios(padre,"FooterVO");

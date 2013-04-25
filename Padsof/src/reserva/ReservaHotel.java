@@ -6,6 +6,7 @@ package reserva;
 
 import cat.quickdb.annotation.Column;
 import cat.quickdb.annotation.Properties;
+import cat.quickdb.db.AdminBase;
 import catalogo.InfoHotel;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -87,6 +88,12 @@ public class ReservaHotel extends Reserva {
         this.suplemento = suplemento;
     }
 
+    public void setDias(int dias) {
+        this.dias = dias;
+    }
+    
+    
+
     /**
      *
      * @param margen
@@ -103,14 +110,11 @@ public class ReservaHotel extends Reserva {
      * @param usuario
      */
     public static void setMargen(double margen, String usuario) {
-        if (usuario.equals("admin")) {
+        if (usuario != null && usuario.equals("admin")) {
             setMargen(margen);
         }
     }
-    
-    public int getDia() {
-        return this.dias;
-    }
+
 
     public int getDias() {
         return dias;
@@ -132,7 +136,7 @@ public class ReservaHotel extends Reserva {
      */
     public static void setMargenSQL(double margen, String usuario, String nombreBD) throws ClassNotFoundException, SQLException {
 
-        if (usuario.equals("admin")) {
+        if (usuario != null && usuario.equals("admin")) {
             ReservaHotel.setMargen(margen);
 
             Class.forName("org.sqlite.JDBC");
@@ -142,6 +146,7 @@ public class ReservaHotel extends Reserva {
                     + ReservaHotel.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen, usuario);
         }
     }
 
@@ -152,22 +157,27 @@ public class ReservaHotel extends Reserva {
     public void calcularPrecio() {
         double precio = 0;
 
+        
         // Miramos el tipo de habitacion.
-        if (this.tipoHabitacion.equals("simple")) {
-            precio += this.infoHotel.getPrecioSimple();
-        } else if (this.tipoHabitacion.equals("doble")) {
-            precio += this.infoHotel.getPrecioDoble();
-        } else if (this.tipoHabitacion.equals("triple")) {
-            precio += this.infoHotel.getPrecioTriple();
+        if(this.tipoHabitacion != null) {
+            if (this.tipoHabitacion.equals("simple")) {
+                precio += this.infoHotel.getPrecioSimple();
+            } else if (this.tipoHabitacion.equals("doble")) {
+                precio += this.infoHotel.getPrecioDoble();
+            } else if (this.tipoHabitacion.equals("triple")) {
+                precio += this.infoHotel.getPrecioTriple();
+            }
         }
 
         // Miramos los suplementos.
-        if (this.suplemento.equals("supD")) {
-            precio += this.infoHotel.getSupDesayuno();
-        } else if (this.suplemento.equals("supMP")) {
-            precio += this.infoHotel.getSupMP();
-        } else if (this.suplemento.equals("supPC")) {
-            precio += this.infoHotel.getSupPC();
+        if(this.suplemento != null) {
+            if (this.suplemento.equals("supD")) {
+                precio += this.infoHotel.getSupDesayuno();
+            } else if (this.suplemento.equals("supMP")) {
+                precio += this.infoHotel.getSupMP();
+            } else if (this.suplemento.equals("supPC")) {
+                precio += this.infoHotel.getSupPC();
+            }
         }
 
         precio = (ReservaHotel.margen == 0) ? 
@@ -186,5 +196,18 @@ public class ReservaHotel extends Reserva {
         } else {
             return this.precio;
         }
+    }
+    
+    /**
+     * Saca el m&aacute;rgen de la BD, y se lo asigna a todas las reservas de hoteles.
+     * @param admin 
+     */
+    public static void sacaMargenBD(AdminBase admin) {
+        Object[] filas = admin.obtainJoin("SELECT margen FROM ReservaHotel", 1);
+        
+        //Si la tabla no existe
+        if(filas == null){return;}
+        
+        ReservaHotel.margen = Double.parseDouble((String)(((Object[])filas[0])[0]));
     }
 }

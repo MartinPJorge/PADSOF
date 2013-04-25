@@ -502,7 +502,7 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
             infoVuelos[i][1] = ""+info.getCategoria();
             infoVuelos[i][2] = reserva.getSuplemento();
             infoVuelos[i][3] = reserva.getFechaInicio();
-            infoVuelos[i][4] = ""+reserva.getDia();
+            infoVuelos[i][4] = ""+reserva.getDias();
             infoVuelos[i][5] = ""+reserva.getPrecio();
             infoVuelos[i][6] = reserva.getEstado();
         }

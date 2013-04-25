@@ -33,11 +33,9 @@ public class DatosCliente extends Ventana {
     
     /**
      * Constructor de la ventana para introducir los datos de un cliente.
-     * @param padre 
-     * @param nombre 
      */
     public DatosCliente(BookingFrame padre, String nombre) {
-        super(new SpringLayout(), nombre, padre, 400,350);
+        super(new SpringLayout(), nombre, padre, 700,350);
         
         //Creamos los 2 paneles
         this.crearPaquete = new JButton("Crear Paquete");
@@ -123,8 +121,7 @@ public class DatosCliente extends Ventana {
         this.nuevoCliente.aplicarCambios();
     }   
 
-    
-    @Override
+     @Override
     public String claveVentana(String textoBoton) {
         if(textoBoton.equals("Atrás")) {
             return "Inicio";

@@ -21,7 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import padsof.Booking;
 import reserva.Paquete;
-import reserva.Reserva;
 import reserva.ReservaHotel;
 import reserva.ReservaViajOrg;
 import reserva.ReservaViajeIMSERSO;
@@ -62,10 +61,6 @@ public class NuevoPaqueteControler implements ActionListener{
                     //admin = pacAct.modificar(admin);
                     admin = pacAct.actualizarSQL(admin);
                     admin = this.aplicacion.desbordaAsociacion(admin);
-                    
-                    pacAct.actualizarEstadoReservas(admin); //---------sacmnjqwidjqwds..
-                    
-                    
                     admin.close();
                     vamosAModificar = true;
                 }
@@ -230,5 +225,4 @@ public class NuevoPaqueteControler implements ActionListener{
         
         this.ventana.getPrecio().setText(""+total);
     }
-    
 }

@@ -4,14 +4,7 @@
  */
 package GUI.Ventanas;
 
-import GUI.Controladores.AddHotelControler;
-import GUI.Controladores.AddViajOrgControler;
-import GUI.Controladores.AddVueloControler;
-import GUI.Controladores.DatosClienteControler;
-import GUI.Controladores.InicioControler;
-import GUI.Controladores.LoginControler;
-import GUI.Controladores.ModificarPaqueteControler;
-import GUI.Controladores.NuevoPaqueteControler;
+import GUI.Controladores.*;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.util.HashMap;
@@ -43,6 +36,12 @@ public class BookingFrame extends JFrame{
         String viajeOrga = "ViajeOrganizado";
         String nuevoPaq = "NuevoPaquete";
         String datosCliente = "DatosCliente";
+        String facturacion = "Facturación";
+        String margenes = "Márgenes";
+        String gestion = "Gestión";
+        String bajaV = "BajaVendedor";
+        String altaV = "AltaVendedor";
+        String modif = "ModifPass";
 
         //Crear ventanas
         NuevoPaquete newPaq = new NuevoPaquete(this,nuevoPaq);
@@ -53,7 +52,14 @@ public class BookingFrame extends JFrame{
         Login login = new Login(this, nomLogin);
         Inicio ventanaIni = new Inicio(this,nomInicio);
         ModificarPaquete paquete = new ModificarPaquete(this,nomMod);
+        Facturacion fact = new Facturacion(this, facturacion);
+        Margenes marg = new Margenes(this, margenes);
+        Gestion gest = new Gestion(this, gestion);
+        BajaVendedor bajaVend = new BajaVendedor(this, bajaV);
+        AltaVendedor altaVend = new AltaVendedor(this, altaV);
+        ModificarPass modPass = new ModificarPass(this, modif);
         Container contenedor = this.getContentPane();
+        
         
         //Especificamos los controladores
         login.setControlador(new LoginControler(login, aplicacion));
@@ -64,7 +70,13 @@ public class BookingFrame extends JFrame{
         hot.setControlador(new AddHotelControler(hot, aplicacion));
         viajOrg.setControlador(new AddViajOrgControler(viajOrg, aplicacion));
         paquete.setControlador(new ModificarPaqueteControler(paquete, aplicacion));
-
+        fact.setControlador(new FacturacionControl(fact, aplicacion));
+        marg.setControlador(new MargenesControl(marg, aplicacion));
+        gest.setControlador(new GestionControl(gest, aplicacion));
+        bajaVend.setControlador(new BajaVControl(bajaVend, aplicacion));
+        altaVend.setControlador(new AltaVControl(altaVend, aplicacion));
+        modPass.setControlador(new ModificarPassControl(modPass, aplicacion));
+        
         //Metemos las ventanas en el hashMap
         this.ventanas = new HashMap<String,Ventana>();
         this.ventanas.put(nuevoPaq, newPaq);
@@ -76,6 +88,15 @@ public class BookingFrame extends JFrame{
         this.ventanas.put(viajeOrga, viajOrg);
         this.ventanas.put(nuevoPaq, newPaq);
         this.ventanas.put(datosCliente, datos);
+        this.ventanas.put(facturacion, fact);
+        this.ventanas.put(margenes, marg);
+        this.ventanas.put(gestion, gest);
+        this.ventanas.put(bajaV, bajaVend);
+        this.ventanas.put(altaV, altaVend);
+        this.ventanas.put(modif, modPass);
+
+        
+        
         
         //Mostramos la ventana
         this.setMinimumSize(new Dimension(400, 300));
@@ -85,10 +106,6 @@ public class BookingFrame extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    /**
-     * 
-     * @return la tabla hash de las ventanas
-     */
     public HashMap<String,Ventana> getVentanas() {
         return this.ventanas;
     }

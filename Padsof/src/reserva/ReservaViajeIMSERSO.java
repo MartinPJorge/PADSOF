@@ -128,6 +128,7 @@ public class ReservaViajeIMSERSO extends Reserva {
                     + ReservaViajeIMSERSO.getMargen() + " WHERE id > -1");
             stmt.close();
             conn.close();
+            setMargen(margen,usuario);
         }
     }
 
@@ -141,5 +142,18 @@ public class ReservaViajeIMSERSO extends Reserva {
         } else {
             return this.precio;
         }
+    }
+    
+    /**
+     * Saca el m&aacute;rgen de la BD, y se lo asigna a todas las reservas de hoteles.
+     * @param admin 
+     */
+    public static void sacaMargenBD(AdminBase admin) {
+        Object[] filas = admin.obtainJoin("SELECT margen FROM ReservaViajeIMSERSO", 1);
+        
+        //Si la tabla no existe
+        if(filas == null){return;}
+        
+        ReservaViajeIMSERSO.margen = Double.parseDouble((String)(((Object[])filas[0])[0]));
     }
 }
