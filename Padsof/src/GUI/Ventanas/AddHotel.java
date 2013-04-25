@@ -4,9 +4,8 @@
  */
 package GUI.Ventanas;
 
-import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.Formulario;
-import GUI.Recursos.MiModeloTabla;
+import GUI.Recursos.SpringUtilities;
 import GUI.Recursos.ZebraJTable;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
@@ -25,7 +24,6 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.table.TableColumnModel;
 import reserva.Paquete;
-import sun.reflect.generics.tree.BottomSignature;
 
 /**
  *
@@ -48,6 +46,11 @@ public class AddHotel extends Ventana {
     private Paquete currentPaq;
     private JButton calcular;
 
+    /**
+     *
+     * @param padre
+     * @param nombre
+     */
     public AddHotel(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre,padre,600,300);
         this.iniFiltro();
@@ -194,63 +197,124 @@ public class AddHotel extends Ventana {
         modelCol.getColumn(10).setMinWidth(20);   */
     }
 
+    /**
+     * 
+     * @param textoBoton
+     * @return la clave de esta ventana en el hash de todas las ventanas
+     */
     @Override
     public String claveVentana(String textoBoton) {
         return "NuevoPaquete";
     }
 
+    /**
+     *
+     * @return bot&oacute;n de filtrar resultados.
+     */
     public JButton getFiltar() {
         return filtar;
     }
 
+    /**
+     *
+     * @return campo de texto donde se introduce la ciudad
+     */
     public JTextField getCiudad() {
         return ciudad;
     }
 
+    /**
+     *
+     * @return campo de texto donde se introduce el precio/noche
+     */
     public JTextField getPrecioNoche() {
         return precioNoche;
     }
 
+    /**
+     *
+     * @return comboBox del tipo de habitaciones
+     */
     public JComboBox getTipoHab() {
         return tipoHab;
     }
 
+    /**
+     *
+     * @return comboBox con las estrellas
+     */
     public JComboBox getEstrellas() {
         return estrellas;
     }
 
+    /**
+     *
+     * @return el panel de scroll de los resultados
+     */
     public JScrollPane getResultados() {
         return resultados;
     }
 
+    /**
+     *
+     * @return el footer de la aplicaci&oacute;n
+     */
     public FooterServicios getFooter() {
         return footer;
     }
 
+    /**
+     *
+     * @return el grupo de botones
+     */
     public ButtonGroup getBotones() {
         return botones;
     }
 
+    /**
+     *
+     * @return el listado de botones
+     */
     public List<JRadioButton> getListBotones() {
         return listBotones;
     }
 
+    /**
+     *
+     * @return campo de texto con la fecha de entrada
+     */
     public JTextField getEntrada() {
         return entrada;
     }
 
+    /**
+     *
+     * @return campo de texto con los dias
+     */
     public JTextField getDias() {
         return dias;
     }
     
+    /**
+     *
+     * @return paquete actual
+     */
     public Paquete getCurrentPaq() {
         return currentPaq;
     }
 
+    /**
+     * 
+     * @param currentPaq
+     */
     public void setCurrentPaq(Paquete currentPaq) {
         this.currentPaq = currentPaq;
     }
 
+    /**
+     *
+     * @return bot&oacute;n para calcular el precio
+     */
     public JButton getCalcular() {
         return calcular;
     }

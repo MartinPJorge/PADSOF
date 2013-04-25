@@ -71,10 +71,27 @@ public class ModificarPaqueteControler implements ActionListener{
                 System.out.println("Se ejecuta check.");
                 
                 
-                paqSeleccionado = getPaqSeleccionado();
+                //paqSeleccionado = getPaqSeleccionado();
 
                 
                 actualizarEstados();
+                paqSeleccionado = estadoPaqSeleccionado();
+                
+                /*Si el paquete seleccionado se ha cancelado antes de darle al 
+                  boton, entonces nos quedamos en la ventana y lo cancelamos.*/
+                if(paqSeleccionado.getAbierto() == 0) {
+                    try {
+                        buscarPaquetes();
+                    } catch (SinRellenarEx ex) {
+                        Logger.getLogger(ModificarPaqueteControler.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    JOptionPane.showMessageDialog(null, "Paquete cerrado");
+                    return;
+                }
+                
+                paqSeleccionado = getPaqSeleccionado();
+                
                 NuevoPaquete nuevaVentana = (NuevoPaquete)this.ventana.cambiarVentana(this.ventana.claveVentana(pulsado));
                 nuevaVentana.setPaqActual(paqSeleccionado);
                 nuevaVentana.setClaveVentanaAnt("ModificarPaquete");
@@ -180,10 +197,11 @@ public class ModificarPaqueteControler implements ActionListener{
                 String estado = (String)tabla.getRow(i)[3];
                 
                 Paquete paq = this.aplicacion.buscarPaquete(paqId);
-                int abierto = (estado.equals("Abierto")) ? 1:0;
+                /*int abierto = (estado.equals("Abierto")) ? 1:0;
                 paq.setAbierto(abierto);
-                admin = paq.modificar(admin);
-            } catch (    SQLException | ClassNotFoundException | NoResultsExc ex) {
+                admin = paq.modificar(admin);*/
+                admin = paq.actualizarEstado(admin, estado);
+            } catch (NoResultsExc ex) {
                 Logger.getLogger(ModificarPaqueteControler.class.getName()).log(Level.SEVERE, null, ex);
                 admin.close();
                 return;
@@ -259,5 +277,32 @@ public class ModificarPaqueteControler implements ActionListener{
         
         this.ventana.getTablaResults().remove(tablaAntigua);
         this.ventana.getTablaResults().setViewportView(tablaVacia);
+    }
+    
+    
+    /**
+     * Obtiene solo los atributos del paquete seleccionado.
+     * @return
+     * @throws NoResultsExc 
+     */
+    private Paquete estadoPaqSeleccionado() throws NoResultsExc {
+        Paquete paqSelected = null;
+        AdminBase admin = null;
+        
+        ZebraJTable tabla = (ZebraJTable) this.ventana.getTablaResults().getViewport().getView();
+        int filaSel = tabla.getSelectedRow();
+
+        paqSelected = new Paquete();
+
+
+        admin = AdminBase.initialize(AdminBase.DATABASE.SQLite, this.aplicacion.getBookingDBName());            
+        //Obtenemos el paquete seleccionado
+        Object[] fila = tabla.getRow(filaSel);
+        paqSelected = this.aplicacion.buscarPaquete((Integer)fila[0]);
+
+        admin.close();
+
+        
+        return paqSelected;
     }
 }

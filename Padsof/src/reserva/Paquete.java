@@ -4,6 +4,7 @@
  */
 package reserva;
 
+import GUI.Recursos.DateValidator;
 import cat.quickdb.annotation.Column;
 import cat.quickdb.db.AdminBase;
 import cat.quickdb.query.Query;
@@ -15,6 +16,9 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import myexception.ClosedPackageExc;
 
 /**
@@ -1036,4 +1040,96 @@ public class Paquete {
         
         admin.close();
     }*/
+    
+    /**
+     * Se encarga de actualizar el estado de un paquete y de sus reservas tanto 
+     * en la informaci&acute;n de la instancia como en la BD.<br/>
+     * <u>Nota</u>:<br/>
+     * Es necesario reasignar la conexi&oacute;n pasada al retorno.
+     * @param admin
+     * @param nuevoEstado
+     * @return AdminBase - la conexi&oacute;n a la BD
+     */
+    public AdminBase actualizarEstado(AdminBase admin, String nuevoEstado) {
+        //Abrir
+        if(nuevoEstado.equals("Abierto")) {
+            this.abierto = 1;
+            return admin;
+        }
+        
+        //Cerrar
+        else {
+            this.abierto = 0;
+            Connection c = null;
+            Statement stmt = null;
+            String dbName = null;
+            
+            //Abrimos una conexion con JDBC
+            try {
+                dbName = Paquete.getDBName(admin);
+                c = Paquete.quickDBtoJDBC(admin);
+                stmt = c.createStatement();
+                stmt.executeUpdate("UPDATE Paquete SET abierto = 0 WHERE id = " + this.id);
+            } catch (    SQLException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Error en la base de datos.");
+            }
+            
+            
+            //Actualizamos el estado de las reservas en la BD
+            for(Reserva r : this.reservas) {
+                if(r.getEstado().equals("cancelado") == false) {
+                    r.setEstado(nuevoEstado);
+                    
+                    try {
+                        String q = "UPDATE Reserva SET estado = 'cancelado' WHERE id = " + r.getId();
+                        stmt.executeUpdate(q);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                    }
+                }
+            }
+            
+            return AdminBase.initialize(AdminBase.DATABASE.SQLite, dbName);
+        }
+    }
+    
+    /**
+     * Actualiza los estados de las reservas del paquete en la BD.
+     * @param admin 
+     */
+    public void actualizarEstadoReservas(AdminBase admin) {
+        for(Reserva r : this.reservas) {
+            r.setEstado(r.getEstado(), admin);
+        }
+    }
+    
+    /**
+     * Obtiene la fecha de inicio m&aacute;s cercana de un paquete.
+     * @return 
+     */
+    public Reserva obtenerPrimeraReserva() {
+        Reserva resCerca = this.getReservas().get(0);
+        
+        for(Reserva r : this.getReservas()) {
+            String fecha = r.getFechaInicio();
+            
+            if(DateValidator.compareDates(r.getFechaInicio(), resCerca.getFechaInicio()) < 0) {
+                resCerca = r;
+            }
+        }
+        
+        return resCerca;
+    }
+    
+    /**
+     * Carga los estados de las reservas del paquete.
+     * @param admin 
+     */
+    public void cargarEstadoReservas(AdminBase admin) {
+        for(Reserva r : this.getReservas()) {
+            Object[] filas = admin.obtainJoin("SELECT estado FROM Reserva WHERE id = "+r.getId(), 1);
+            Object[] fila = (Object[])filas[0];
+            r.setEstado((String)fila[0]);
+        }
+    }
 }

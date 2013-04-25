@@ -12,12 +12,9 @@ import GUI.Controladores.InicioControler;
 import GUI.Controladores.LoginControler;
 import GUI.Controladores.ModificarPaqueteControler;
 import GUI.Controladores.NuevoPaqueteControler;
-import com.sun.istack.internal.logging.Logger;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.util.HashMap;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import javax.swing.JFrame;
 import padsof.Booking;
@@ -60,7 +57,7 @@ public class BookingFrame extends JFrame{
         
         //Especificamos los controladores
         login.setControlador(new LoginControler(login, aplicacion));
-        ventanaIni.setControlador(new InicioControler(ventanaIni));
+        ventanaIni.setControlador(new InicioControler(ventanaIni, aplicacion));
         datos.setControlador(new DatosClienteControler(datos, aplicacion));
         vuelos.setControlador(new AddVueloControler(vuelos));
         newPaq.setControlador(new NuevoPaqueteControler(newPaq, aplicacion));
@@ -88,6 +85,10 @@ public class BookingFrame extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
+    /**
+     * 
+     * @return la tabla hash de las ventanas
+     */
     public HashMap<String,Ventana> getVentanas() {
         return this.ventanas;
     }

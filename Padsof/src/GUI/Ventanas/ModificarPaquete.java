@@ -30,6 +30,11 @@ public class ModificarPaquete extends Ventana{
     private JScrollPane tablaResults;
     
     
+    /**
+     * Constructor de la ventana
+     * @param padre
+     * @param nombre
+     */
     public ModificarPaquete(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre, padre, 400,600);
         JPanel introduce = new JPanel();
@@ -56,6 +61,9 @@ public class ModificarPaquete extends Ventana{
         SpringUtilities.makeCompactGrid(this, 3, 1, 6, 6, 6, 6);
     }
     
+    /**
+     * Inicializa la parte realiva a los resultados, dentro de la ventana.
+     */
     private void iniResultados() {
         JLabel  abiertos = new JLabel("Paquetes abiertos:");
         String[] titulos = {"IdPaquete", "DNI cliente", "Productos", "Estado"};
@@ -92,18 +100,34 @@ public class ModificarPaquete extends Ventana{
         this.atras.addActionListener(controlador);
     }
 
+    /**
+     *
+     * @return campo de texto con el DNI del cliente
+     */
     public JTextField getDniCliente() {
         return dniCliente;
     }
 
+    /**
+     *
+     * @return el bot&oacute;n de buscar
+     */
     public JButton getBuscar() {
         return buscar;
     }
 
+    /**
+     *
+     * @return el scroll pane de los resultados
+     */
     public JScrollPane getTablaResults() {
         return tablaResults;
     }
 
+    /**
+     *
+     * @return el bot&oacute;n de modificar
+     */
     public JButton getModificar() {
         return modificar;
     }

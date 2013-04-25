@@ -140,7 +140,7 @@ public class DatosClienteControler implements ActionListener{
     /**
      * Se encarga de resetear todos los campos a rellenar en la ventana 'DatosCliente'.
      */
-    private void resetCampos() {
+    public void resetCampos() {
         List<Component> textos = this.ventana.getNuevoCliente().getTextos();
         for(Component campo : textos) {
             if(campo instanceof JTextField) {

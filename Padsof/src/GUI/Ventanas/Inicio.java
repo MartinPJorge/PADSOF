@@ -35,7 +35,9 @@ public class Inicio extends Ventana{
         SpringUtilities.makeCompactGrid(this, 3, 1, 20,20,20,20);
     }
     
-    
+    /**
+     * Inicializa la parte de paquetes
+     */
     private void iniPaquetes() {
         JPanel paquetes = new JPanel(new SpringLayout());
         JLabel labPaq = new JLabel("Paquetes");
@@ -57,7 +59,9 @@ public class Inicio extends Ventana{
         this.add(paquetes);
     }
     
-    
+    /**
+     * Inicializa la parte de ingresos
+     */
     private void iniIngresos() {
         JPanel ingresos = new JPanel(new SpringLayout());
         JLabel labIngreso = new JLabel("Ingresos");
@@ -81,6 +85,9 @@ public class Inicio extends Ventana{
         this.add(ingresos);
     }
     
+    /**
+     * Inicializa la parte de otros servicios
+     */
     private void iniOtros() {
         JPanel otrosPan = new JPanel(new SpringLayout());
         JLabel labOtros = new JLabel("Otros");
@@ -121,5 +128,8 @@ public class Inicio extends Ventana{
         this.controlador = controlador;
         this.crear.addActionListener(this.controlador);
         this.modificar.addActionListener(this.controlador);
+        this.facturacion.addActionListener(this.controlador);
+        this.modificar.addActionListener(this.controlador);
+        this.gestion.addActionListener(this.controlador);
     }
 }

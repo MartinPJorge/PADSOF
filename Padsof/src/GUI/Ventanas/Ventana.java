@@ -87,6 +87,10 @@ public abstract class Ventana extends JPanel{
         }
     }
 
+    /**
+     * 
+     * @return el controlador asignado a la ventana
+     */
     public ActionListener getControlador() {
         return controlador;
     }
@@ -95,10 +99,7 @@ public abstract class Ventana extends JPanel{
      * Especifica el controlador que utilizar&aacute; la ventana.
      * @param controlador 
      */
-    /*public void setControlador(ActionListener controlador) {
+    public void setControlador(ActionListener controlador) {
         this.controlador = controlador;
-    }*/
-    
-    
-    
+    }
 }

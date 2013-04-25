@@ -35,6 +35,11 @@ public class AddViajOrg extends Ventana{
     private JComboBox tipoViaje;
     private Paquete currPaq;
     
+    /**
+     *
+     * @param padre
+     * @param nombre
+     */
     public AddViajOrg(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre, padre, 300,300);
         this.iniResultados();
@@ -140,54 +145,106 @@ public class AddViajOrg extends Ventana{
         return "NuevoPaquete";
     }
 
+    /**
+     *
+     * @return campo de texto para el precio
+     */
     public JTextField getPrecio() {
         return precio;
     }
 
+    /**
+     *
+     * @return campo de texto para el n&uacute;mero de noches
+     */
     public JTextField getNoches() {
         return noches;
     }
 
+    /**
+     *
+     * @return panel de scroll con los resultados
+     */
     public JScrollPane getResultados() {
         return resultados;
     }
 
+    /**
+     *
+     * @return footer de la ventana
+     */
     public FooterServicios getFooter() {
         return footer;
     }
 
+    /**
+     *
+     * @return bot&oacute;n de b&uacute;squeda
+     */
     public JButton getBuscar() {
         return buscar;
     }
 
+    /**
+     *
+     * @return comboBox con el tipo de viaje
+     */
     public JComboBox getTipoViaje() {
         return tipoViaje;
     }
 
+    /**
+     *
+     * @return campo de texto para especificar el n&uacute;mero de personas
+     */
     public JTextField getPersonas() {
         return personas;
     }
 
+    /**
+     *
+     * @return campo de texto para la fecha de comienzo
+     */
     public JTextField getFecha() {
         return fecha;
     }
 
+    /**
+     *
+     * @return paquete actual
+     */
     public Paquete getCurrPaq() {
         return currPaq;
     }
 
+    /**
+     *
+     * @param currPaq
+     */
     public void setCurrPaq(Paquete currPaq) {
         this.currPaq = currPaq;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     *
+     * @return el marco contenedor de tipo 'BookingFrame'
+     */
     public BookingFrame getPadre() {
         return padre;
     }
 
+    /**
+     *
+     * @return el bot&oacute;n de calcular el precio
+     */
     public JButton getCalcular() {
         return calcular;
     }

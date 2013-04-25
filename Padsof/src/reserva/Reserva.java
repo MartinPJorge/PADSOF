@@ -77,7 +77,7 @@ public class Reserva {
     }
 
     public void setEstado(String estado) {
-        if (estado.equals("cancelado")) {
+        if (this.estado != null && estado.equals("cancelado")) {
             if (this.estado.equals("reservado")) {
                 this.estado = "canceladoTrasReservar";
             } else if (this.estado.equals("confirmado")) {

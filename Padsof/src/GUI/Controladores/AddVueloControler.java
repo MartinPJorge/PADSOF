@@ -80,7 +80,13 @@ public class AddVueloControler implements ActionListener{
         }
     }
     
-    
+    /**
+     * Se encarga de realizar la b&uacute;squeda de los vuelos a partir de los 
+     * datos introducidos, y adem&aacute;s llama a la funci&oacute;n de mostrar 
+     * los resultados en la tabla.
+     * @throws FechaInvalidaEx
+     * @throws ParseException 
+     */
     public void filtrarResultados() throws FechaInvalidaEx, ParseException {
         String strHIda = this.ventana.gethSalida().getText();
         String strHLlegada = this.ventana.gethLlegada().getText();
@@ -130,6 +136,10 @@ public class AddVueloControler implements ActionListener{
     }
     
     
+    /**
+     * Muestra la informaci&oacute;n de los vuelos con los localizadores especificados.
+     * @param localizadores 
+     */
     public void mostrarResultados(List<String> localizadores) {
         SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy/dd/MM");
         ZebraJTable resultsTable = (ZebraJTable)this.ventana.getScrollResults().getViewport().getView();

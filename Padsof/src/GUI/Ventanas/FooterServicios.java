@@ -29,6 +29,8 @@ public class FooterServicios extends Ventana{
      * Constructor de la clase FooterServicios.<br/>
      * Esta clase se encarga de crear un pie de ventana para los paneles de 
      * a&ntilde;adir servicios.
+     * @param padre 
+     * @param nombre 
      */
     public FooterServicios(BookingFrame padre, String nombre) {
         super(new BorderLayout(), nombre,padre,0,0);
@@ -63,10 +65,18 @@ public class FooterServicios extends Ventana{
         this.add(right, BorderLayout.EAST);
     }
 
+    /**
+     *
+     * @return el bot&oacute;n de volver
+     */
     public JButton getVolver() {
         return volver;
     }
 
+    /**
+     *
+     * @return el bot&oacute;n de a&ntilde;adir un servicio
+     */
     public JButton getAdd() {
         return add;
     }
@@ -76,10 +86,18 @@ public class FooterServicios extends Ventana{
         return "NuevoPaquete";
     }
 
+    /**
+     *
+     * @return el campo de texto con el precio total
+     */
     public JTextField getTotal() {
         return total;
     }
 
+    /**
+     *
+     * @return la etiqueta del precio total
+     */
     public JLabel getTotalL() {
         return totalL;
     }

@@ -40,6 +40,11 @@ public class AddVuelo extends Ventana{
     private ReservaVuelo currReserva;
     
     
+    /**
+     *
+     * @param padre
+     * @param nombre
+     */
     public AddVuelo(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre,padre, 300,100);
         this.iniFiltro();
@@ -149,54 +154,106 @@ public class AddVuelo extends Ventana{
         return "NuevoPaquete";
     }
 
+    /**
+     *
+     * @return el footer
+     */
     public FooterServicios getFooter() {
         return footer;
     }
 
+    /**
+     *
+     * @return el paquete actual
+     */
     public Paquete getCurrentPaq() {
         return currentPaq;
     }
 
+    /**
+     *
+     * @param currentPaq
+     */
     public void setCurrentPaq(Paquete currentPaq) {
         this.currentPaq = currentPaq;
     }
 
+    /**
+     *
+     * @return la reserva de vuelo actual
+     */
     public ReservaVuelo getCurrReserva() {
         return currReserva;
     }
 
+    /**
+     *
+     * @param currReserva 
+     */
     public void setCurrReserva(ReservaVuelo currReserva) {
         this.currReserva = currReserva;
     }
 
+    /**
+     *
+     * @return el bot&oacute;n de filtrar resultados
+     */
     public JButton getFiltrar() {
         return filtrar;
     }
 
+    /**
+     *
+     * @return el campo de texto con la salida
+     */
     public JTextField getSalida() {
         return salida;
     }
 
+    /**
+     *
+     * @return el campo de texto con la fecha de salida
+     */
     public JTextField gethSalida() {
         return hSalida;
     }
 
+    /**
+     *
+     * @return el campo de texto con la ida
+     */
     public JTextField getIda() {
         return ida;
     }
 
+    /**
+     *
+     * @return el campo de texto con la fecha de llegada
+     */
     public JTextField gethLlegada() {
         return hLlegada;
     }
 
+    /**
+     *
+     * @return el panel de scroll con los resultados
+     */
     public JScrollPane getScrollResults() {
         return scrollResults;
     }
 
+    /**
+     *
+     * @param scrollResults
+     */
     public void setScrollResults(JScrollPane scrollResults) {
         this.scrollResults = scrollResults;
     }
 
+    /**
+     *
+     * @return el formulario de detalles
+     */
     public Formulario getDetalles() {
         return detalles;
     }

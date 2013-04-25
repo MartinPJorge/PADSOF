@@ -70,36 +70,94 @@ public class DateValidator {
         }
     }
     
+    /**
+     * Obtiene el d&iacute;a de una fecha con formato dd/mm/yyyy
+     * @param date
+     * @return 
+     */
     public static int obtainDay(String date) {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[0]);
     }
     
+    /**
+     * Obtiene el mes de una fecha con formato dd/mm/yyyy
+     * @param date
+     * @return 
+     */
     public static int obtainMonth(String date) {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[1]);
     }
     
+    /**
+     * Obtiene el a&ntilde;o de una fecha con formato dd/mm/yyyy
+     * @param date
+     * @return 
+     */
     public static int obtainYear(String date) {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[2]);
     }
     
+    /**
+     * Obtiene el d&iacute;a de una fecha con formato yyyy/dd/mm
+     * @param date
+     * @return 
+     */
     public static int obtainDayV2(String date) {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[1]);
     }
     
+    /**
+     * Obtiene el mes de una fecha con formato yyyy/dd/mm
+     * @param date
+     * @return 
+     */
     public static int obtainMonthV2(String date) {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[2]);
     }
     
+    /**
+     * Obtiene el a&ntilde;o de una fecha con formato yyyy/dd/mm
+     * @param date
+     * @return 
+     */
     public static int obtainYearV2(String date) {
         String[] elems = date.split("/");
         return Integer.parseInt(elems[0]);
     }
+
+    /**
+     * Compara 2 fechas de formato dd/mm/yyyy
+     * @param date1
+     * @param date2
+     * @return &lt;0 es menor date1
+     *          &gt;0 es mayor date2
+     */
+    public static int compareDates(String date1, String date2) {
+        int day1 = DateValidator.obtainDay(date1);
+        int day2 = DateValidator.obtainDay(date2);
+        int month1 = DateValidator.obtainMonth(date1);
+        int month2 = DateValidator.obtainMonth(date2);
+        int year1 = DateValidator.obtainYear(date1);
+        int year2 = DateValidator.obtainYear(date2);
+        
+        if(year1 != year2) {return year1 - year2;}
+        else if(month1 != month2) {return month1 - month2;}
+        else if(day1 != day2) {return day1 - day2;}
+        
+        return 0;
+    }
     
+    /**
+     * Devuelve una cadena con el formato hh:mm, con la hora y los minutos especificados.
+     * @param hour
+     * @param minutes
+     * @return 
+     */
     public static String formatHour(int hour, int minutes) {
         String hourStr = (new Integer(hour)).toString();
         if(hourStr.length() == 1) {

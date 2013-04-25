@@ -56,6 +56,11 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     private Paquete paqActual;
     private String claveVentanaAnt;
     
+    /**
+     *
+     * @param padre
+     * @param nombre
+     */
     public NuevoPaquete(BookingFrame padre, String nombre) {
         super(new SpringLayout(), nombre, padre, 600,550);
         this.encabezado = new JLabel("");
@@ -299,46 +304,90 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         }
     }
 
+    /**
+     *
+     * @return bot&oacute;n para a&ntilde;adir un hotel
+     */
     public JButton getAddHotel() {
         return addHotel;
     }
 
+    /**
+     *
+     * @return bot&oacute;n para a&ntilde;adir un vuelo
+     */
     public JButton getAddVuelo() {
         return addVuelo;
     }
 
+    /**
+     *
+     * @return bot&oacute;n para a&ntilde;adir un viaje organizado
+     */
     public JButton getAddViajOrg() {
         return addViajOrg;
     }
 
+    /**
+     *
+     * @return paquete actual
+     */
     public Paquete getPaqActual() {
         return paqActual;
     }
 
+    /**
+     *
+     * @return bot&oacute;n para terminar
+     */
     public JButton getFinalizar() {
         return finalizar;
     }
 
+    /**
+     *
+     * @return scroll pane de los resultados de reservas de vuelos
+     */
     public JScrollPane getScrollVuelos() {
         return scrollVuelos;
     }
 
+    /**
+     *
+     * @return scroll pane de los resultados de reservas de hoteles
+     */
     public JScrollPane getScrollHoteles() {
         return scrollHoteles;
     }
 
+    /**
+     *
+     * @return scroll pane de los resultados de reservas de viajes organizados
+     */
     public JScrollPane getScrollViajOrg() {
         return scrollViajOrg;
     }
 
+    /**
+     *
+     * @return la clave de la ventana anterior
+     */
     public String getClaveVentanaAnt() {
         return claveVentanaAnt;
     }
 
+    /**
+     *
+     * @param claveVentanaAnt
+     */
     public void setClaveVentanaAnt(String claveVentanaAnt) {
         this.claveVentanaAnt = claveVentanaAnt;
     }
 
+    /**
+     *
+     * @return el campo de texto con el precio
+     */
     public JTextField getPrecio() {
         return precio;
     }
@@ -355,16 +404,27 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         System.out.println("ACTUALIZA LA BASE DE DATOS");
     }
 
+    /**
+     *
+     * @param paqActual
+     */
     public void setPaqActual(Paquete paqActual) {
         this.paqActual = paqActual;
     }
 
+    /**
+     *
+     * @return el bot&oacute;n para calcular el precio del paquete
+     */
     public JButton getCalcular() {
         return calcular;
     }
     
     
     
+    /**
+     * Muestra todas las reservas
+     */
     public void mostrarInfo() {
         mostrarInfoVuelo();
         mostrarInfoHotel();
@@ -372,6 +432,9 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
     }
     
     
+    /**
+     * Muestra las reservas de vuelos.
+     */
     public void mostrarInfoVuelo() {
         ArrayList<ReservaVuelo> vuelos = this.paqActual.getReservasVuelos();
         Object[][] infoVuelos = new String[vuelos.size()][7];
@@ -423,6 +486,9 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.scrollVuelos.setViewportView(tablaVuelos);
     }
     
+    /**
+     * Muestra las reservas de hoteles
+     */
     public void mostrarInfoHotel() {
         ArrayList<ReservaHotel> vuelos = this.paqActual.getReservasHotel();
         Object[][] infoVuelos = new String[vuelos.size()][7];
@@ -461,6 +527,9 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.scrollHoteles.setViewportView(tablaVuelos);
     }
     
+    /**
+     * Muestra las reservas de viajes organizados
+     */
     public void mostrarViajOrg() {
         ArrayList<ReservaViajOrg> viajesOrg = this.paqActual.getReservasVO();
         ArrayList<ReservaViajeIMSERSO> viajesIMSERSO = this.paqActual.getReservasIMSERSO();
@@ -521,6 +590,9 @@ public class NuevoPaquete extends Ventana implements TableModelListener{
         this.scrollViajOrg.setViewportView(tablaVuelos);
     }
     
+    /**
+     * Actualiza el encabezado de la ventana
+     */
     public void actualizarEncabezado() {
         this.encabezado.setText("Paquete: " + this.paqActual.getIdPaq() + 
                 " - Cliente: " + this.paqActual.getCliente());
